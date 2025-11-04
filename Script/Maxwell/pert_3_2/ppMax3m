@@ -1,0 +1,59 @@
+from pyoculus.fields import AnalyticCylindricalBfield
+from pyoculus.maps import CylindricalBfieldSection
+from pyoculus.solvers import FixedPoint, Manifold, PoincarePlot
+from matplotlib import pyplot as plt
+import numpy as np
+import logging
+
+plt.rcParams.update(
+    {
+        "text.usetex": False,
+        "font.family": "serif",
+        "font.size": 10,
+    }
+)
+logging.basicConfig(level=logging.DEBUG)
+
+POINCARE_ITS = 500
+SHEAR =  0.4
+SF = 0.8875
+
+maxwellboltzmann = {
+    "m": 3,
+    "n": 2,
+    "d": 1.75/np.sqrt(2),
+    "type": "maxwell-boltzmann",
+    "amplitude": 0.1,
+}
+
+separatrix = {"type": "circular-current-loop", "amplitude": -10, "R": 6, "Z": -5.5}
+
+fig, ax = plt.subplots(1, 1, figsize=(6, 6.6))
+
+
+
+perturbedfield = AnalyticCylindricalBfield.with_new_axis(
+    R=6, Z=0, sf=SF, shear=SHEAR, perturbations_args=[maxwellboltzmann]
+)
+perturbedmap = CylindricalBfieldSection.without_axis(perturbedfield, guess=[6., 0])
+axiscoords = np.array((perturbedmap.R0, perturbedmap.Z0))
+
+
+opoint1 = FixedPoint(perturbedmap)
+opoint1.find(t=1, guess=[6.4, -1])
+opointcoords1 = opoint1.coords[0]
+
+
+
+pplot = PoincarePlot.with_linspace(
+    perturbedmap,
+    [6.0, 0],
+    [8.0, 0],
+    30
+   )
+
+pplot.compute(POINCARE_ITS)
+pplot.plot(ax=ax, color="xkcd:dark grey", s=1.4, linewidths=0)
+ax.set_xlabel(r"$R[m]$")
+ax.set_ylabel(r"$Z[m]$")
+plt.savefig('ppMax3m.png', bbox_inches='tight', dpi=720)

@@ -1,0 +1,179 @@
+from pyoculus.fields import AxisymmetricCylindricalGridField
+from pyoculus.maps import CylindricalBfieldSection
+from pyoculus.solvers import FixedPoint, Manifold, PoincarePlot, ResonnanceZone
+import numpy as np
+from matplotlib import pyplot as plt
+import logging
+from matplotlib.path import Path
+
+plt.rcParams.update(
+    {
+        "text.usetex": False,
+        "font.family": "serif",
+        "font.size": 10,
+    }
+)
+logging.basicConfig(level=logging.DEBUG)
+
+DoubletField = AxisymmetricCylindricalGridField.from_matlab_file('./Script/Doublet/struct_for_chris.mat', with_perturbation=True)
+
+
+section = CylindricalBfieldSection(DoubletField, R0=0.88, Z0=0,domain=[(-np.inf, np.inf), (-np.inf, np.inf)], rtol=1e-10)
+
+fig, ax = plt.subplots(1, 1, figsize=(6, 6.6))
+
+Hits=np.load('Hits/Doublet_Island.npy')
+
+#xpoint= FixedPoint(section)
+#xpoint.find(1, [0.8865, -0.0001], method='scipy.root')
+#x_point_coord = xpoint.coords[0]
+
+
+##top island m=2
+left_o1 = FixedPoint(section)
+left_x1 = FixedPoint(section)
+right_o1 = FixedPoint(section)
+right_x1 = FixedPoint(section)
+
+
+#left_o1.find(2, [0.84,0.32], method='scipy.root')
+left_x1.find(2, [0.8152,0.482], method='scipy.root')
+right_o1.find(2, [0.930,0.513], method='scipy.root')#
+right_x1.find(2, [0.946,0.348], method='scipy.root')
+left_o1.find(2, [0.86,0.32], method='scipy.root')
+
+#left_o1_coord = left_o1.coords[0]
+right_o1_coord = right_o1.coords[0]
+left_x1_coord = left_x1.coords[0]
+right_x1_coord = right_x1.coords[0] 
+left_o1_coord = left_o1.coords[0]
+
+#left_o1.plot(ax=ax, marker='o', color="xkcd:blue")
+left_x1.plot(ax=ax, marker='x', color="xkcd:blue")
+right_o1.plot(ax=ax, marker='o', color="xkcd:blue")
+right_x1.plot(ax=ax, marker='x', color="xkcd:blue")
+left_o1.plot(ax=ax, marker='o', color="xkcd:blue")
+
+
+
+
+
+
+
+
+#right resonance
+
+
+eps_s1 = 8.2e-05
+eps_u1 = 7.4e-05
+
+eps_s2 = 8.1e-5
+eps_u2=7.2e-5
+
+manifold1_R = Manifold(section, left_x1, right_x1, right_o1_coord-left_x1_coord, right_o1_coord-right_x1_coord)
+manifold1_R.compute(
+   eps_s=eps_s1, eps_u=eps_u1, nint_s=60, nint_u=60, neps_s=20, neps_u=20)
+#manifold1.plot(ax=ax, markersize=0, lw=1.5)
+
+manifold2_R = Manifold(section, right_x1, left_x1,  right_o1_coord-right_x1_coord, right_o1_coord-left_x1_coord)
+manifold2_R.compute(
+   eps_s=eps_s2, eps_u=eps_u2, nint_s=60, nint_u=60, neps_s=20, neps_u=20)
+#manifold2.plot(ax=ax, markersize=0, lw=1.5)
+
+ax.set_aspect('equal') 
+#ax.set_xlim(0.8, 0.98)
+#ax.set_ylim(0.34, 0.54)
+
+#ax.scatter(Hits[:,:, 0], Hits[:,:, 1], color="xkcd:dark grey", s=1.4, linewidths=0)
+
+manifold1_R.find_clinics(first_guess_eps_s=eps_s1, first_guess_eps_u=eps_u1,n_points=1)
+manifold2_R.find_clinics(first_guess_eps_s=eps_s2, first_guess_eps_u=eps_u2,n_points=1)
+
+Reso_right=ResonnanceZone(manifold1_R,manifold2_R)
+
+contour_points_R=Reso_right.contour()
+        
+
+#FluxMeiss_R=Reso_right.area()
+#FluxMP_R=manifold1_R._AdL_integral_points(contour_points_R,dl=None, is_closed=True)
+#FluxSL_R=Reso_right.flux_approx_SL()
+
+#print(FluxMeiss_R, FluxMP_R, FluxSL_R)
+
+Reso_right.plot(with_clinics=True, ax=ax, markersize=0, lw=1.5)
+
+ax.set_xlabel(r"$R[m]$")
+ax.set_ylabel(r"$Z[m]$")
+
+#plt.savefig('Doublet_Top_island1.png', bbox_inches='tight', dpi=720)
+
+
+
+#texte = (
+#    r"$\phi_{meiss}=$" + f"{FluxMeiss:.5f}\n"
+#    r"$\phi_{MP}=$" + f"{FluxMP:.5f}\n"
+#    r"$\phi_{SL}=$" + f"{FluxSL:.5f}"
+#)
+#ax.text(6.2, -0.1, texte, fontsize=12, color='blue')  # moved to south-east
+
+
+
+
+
+
+
+
+
+
+
+
+
+#left resonance
+
+eps_s1 = 8.2e-05
+eps_u1 = 7.4e-05
+
+eps_s2 = 8.1e-5
+eps_u2=7.2e-5
+
+
+
+manifold1_L = Manifold(section, left_x1, right_x1, left_o1_coord-left_x1_coord, left_o1_coord-right_x1_coord)
+manifold1_L.compute(
+   eps_s=eps_s1, eps_u=eps_u1, nint_s=60, nint_u=60, neps_s=20, neps_u=20)
+#manifold1.plot(ax=ax, markersize=0, lw=1.5)
+
+manifold2_L = Manifold(section, right_x1, left_x1,  left_o1_coord-right_x1_coord, left_o1_coord-left_x1_coord)
+manifold2_L.compute(
+   eps_s=eps_s2, eps_u=eps_u2, nint_s=60, nint_u=60, neps_s=20, neps_u=20)
+#manifold2.plot(ax=ax, markersize=0, lw=1.5)
+
+ax.set_aspect('equal') 
+#ax.set_xlim(0.8, 0.98)
+#ax.set_ylim(0.34, 0.54)
+
+#ax.scatter(Hits[:,:, 0], Hits[:,:, 1], color="xkcd:dark grey", s=1.4, linewidths=0)
+
+manifold1_L.find_clinics(first_guess_eps_s=eps_s1, first_guess_eps_u=eps_u1,n_points=1)
+manifold2_L.find_clinics(first_guess_eps_s=eps_s2, first_guess_eps_u=eps_u2,n_points=1)
+
+Reso_Left=ResonnanceZone(manifold1_L,manifold2_L)
+
+contour_points_L=Reso_Left.contour()
+        
+
+
+#FluxMeiss_L=Reso_right.area()
+#FluxMP_L=manifold1_L._AdL_integral_points(contour_points_L,dl=None, is_closed=True)
+#FluxSL_L=Reso_right.flux_approx_SL()
+
+#print(FluxMeiss_L, FluxMP_L, FluxSL_L)
+
+Reso_Left.plot(with_clinics=True, ax=ax, markersize=0, lw=1.5)
+
+
+
+
+
+plt.show()
+

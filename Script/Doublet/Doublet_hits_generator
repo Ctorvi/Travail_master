@@ -1,0 +1,42 @@
+from pyoculus.fields import AxisymmetricCylindricalGridField
+from pyoculus.maps import CylindricalBfieldSection
+from pyoculus.solvers import FixedPoint, Manifold, PoincarePlot
+import numpy as np
+from matplotlib import pyplot as plt
+import logging
+
+fig, ax = plt.subplots(1, 1, figsize=(6, 6.6))
+
+plt.rcParams.update(
+    {
+        "text.usetex": False,
+        "font.family": "serif",
+        "font.size": 10,
+    }
+)
+logging.basicConfig(level=logging.DEBUG)
+
+DoubletField = AxisymmetricCylindricalGridField.from_matlab_file('./Script/Doublet/struct_for_chris.mat', with_perturbation=True)
+
+
+section = CylindricalBfieldSection(DoubletField, R0=0.88, Z0=0,domain=[(-np.inf, np.inf), (-np.inf, np.inf)], rtol=1e-10)
+
+guess_t = [0.8852,0.42]
+top_o = FixedPoint(section)
+top_o.find(1, guess_t, method='scipy.root')
+top_o_coord = top_o.coords[0]
+
+
+Top_R=[0.94,0.52]
+Top_L=[0.8152,0.482]
+p2=[0.85,0.51]
+
+pplot = PoincarePlot.with_segments(section, [top_o_coord , Top_R, p2, Top_L], [30, 10], connected=False)
+
+
+pplot.compute(400)
+pplot.plot(ax=ax, color="xkcd:dark grey")
+
+plt.show()
+
+np.save('Hits/Doublet_Island.npy', pplot._hits)

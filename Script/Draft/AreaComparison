@@ -1,0 +1,181 @@
+from pyoculus.fields import AnalyticCylindricalBfield
+from pyoculus.maps import CylindricalBfieldSection
+from pyoculus.solvers import FixedPoint, Manifold, ResonnanceZone, PoincarePlot
+from matplotlib import pyplot as plt
+import numpy as np
+import logging
+from matplotlib.path import Path
+
+
+def ComputeShoelace(xy): 
+    """
+    Shoelace formula for calculating the area of a polygon. 
+    xy: list of tuples or arrays of x,y coordinates of the polygon vertices. 
+    """
+
+    x = np.array([p[0] for p in xy])
+    y = np.array([p[1] for p in xy])
+    return 0.5*np.abs(np.dot(x,np.roll(y,1))-np.dot(y,np.roll(x,1)))
+
+def IndexClosestPoint(traj, point):
+
+    """Find the index of the point in traj closest to the given point."""
+
+    dist = np.linalg.norm(traj - point, axis=1)
+    idx = np.argmin(dist)
+    return idx
+
+
+
+plt.rcParams.update(
+    {
+        "text.usetex": False,
+        "font.family": "serif",
+        "font.size": 10,
+    }
+)
+logging.basicConfig(level=logging.DEBUG)
+
+POINCARE_ITS = 500
+SHEAR =  0.4
+SF = 0.8875
+
+maxwellboltzmann = {
+    "m": 3,
+    "n": 2,
+    "d": 1.75/np.sqrt(2),
+    "type": "maxwell-boltzmann",
+    "amplitude": 0.1,
+}
+
+separatrix = {"type": "circular-current-loop", "amplitude": -10, "R": 6, "Z": -5.5}
+
+fig, ax = plt.subplots(1, 1, figsize=(6, 6.6))
+
+
+
+perturbedfield = AnalyticCylindricalBfield.with_new_axis(
+    R=6, Z=0, sf=SF, shear=SHEAR, perturbations_args=[maxwellboltzmann]
+)
+perturbedmap = CylindricalBfieldSection.without_axis(perturbedfield, guess=[6., 0])
+axiscoords = np.array((perturbedmap.R0, perturbedmap.Z0))
+
+
+
+
+opointT = FixedPoint(perturbedmap)
+#opointT.find(t=3, guess=[7.6, 0.], method='scipy.root')
+opointT.find(t=3, guess=[4.7, 1.3], method='scipy.root')
+#opointT.find(t=3, guess=[4.7, -1.2], method='scipy.root')
+opointTcoords = opointT.coords[0]
+
+
+xpointL = FixedPoint(perturbedmap)
+xpointL.find(t=3, guess=[4.5, 0.0], method='scipy.root')
+#xpointL.find(t=3, guess=[6.4, -1.6], method='scipy.root')
+xpointLcoords = xpointL.coords[0]
+
+xpointT = FixedPoint(perturbedmap)
+#xpointT.find(t=3, guess=[6.4, 1.6], method='scipy.root')
+xpointT.find(t=3, guess=[6.4, -1.6], method='scipy.root')
+xpointTcoords = xpointT.coords[0]
+
+
+
+
+ResoManifoldDown = Manifold(perturbedmap, xpointL, xpointT)
+ResoManifoldDown.compute(
+  eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=8, neps_s=80, neps_u=80
+   )
+
+ResoManifoldDown.find_clinics(first_guess_eps_s=9e-6, first_guess_eps_u=8e-6)
+#ResoManifoldDown.plot_clinics(ax=ax)
+traj1=ResoManifoldDown.clinics[0].trajectory
+
+
+ResoManifoldUp = Manifold(perturbedmap, xpointT, xpointL)
+ResoManifoldUp.compute(
+    eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=8, neps_s=80, neps_u=80
+)
+ResoManifoldUp.find_clinics(first_guess_eps_s=9e-6, first_guess_eps_u=8e-6)
+#ResoManifoldUp.plot_clinics(ax=ax)
+traj2=ResoManifoldUp.clinics[0].trajectory
+
+
+
+MFDs=ResoManifoldDown._stable_trajectory  #from left to right
+MFDu=ResoManifoldDown._unstable_trajectory
+MFUs=ResoManifoldUp._stable_trajectory #from right to left
+MFUu=ResoManifoldUp._unstable_trajectory
+
+
+
+pointUp = traj2[7]
+#distUs = np.linalg.norm(MFUs - pointUp, axis=1)
+#distUu = np.linalg.norm(MFUu - pointUp, axis=1)
+idx_Us = IndexClosestPoint(MFUs, pointUp)
+idx_Uu = IndexClosestPoint(MFUu, pointUp)
+MFUs= MFUs[:idx_Us]
+MFUu= MFUu[:idx_Uu]
+MFUu= MFUu[::-1]  #on le renverse pour aller de gauche a droite
+
+
+pointDown = traj1[7]
+#distDs = np.linalg.norm(MFDs - pointDown, axis=1)
+#distDu = np.linalg.norm(MFDu - pointDown, axis=1)
+idx_Ds = IndexClosestPoint(MFDs, pointDown)
+idx_Du = IndexClosestPoint(MFDu, pointDown)
+MFDu= MFDu[:idx_Du]  
+MFDs= MFDs[:idx_Ds]         
+MFDu= MFDu[::-1]  #on le renverse pour aller de gauche a droite
+
+
+
+contour_points = np.vstack([
+    xpointLcoords,      # départ
+    MFDs,              # suit la première clinique
+    MFDu,      # sommet suivant 
+    xpointTcoords ])
+ #   MFUs,
+ #   MFUu      # suit la deuxième clinique dans l'autre sens
+#])
+
+
+
+# 1. Définir la grille couvrant le contour
+#xmin, xmax = contour_points[:,0].min(), contour_points[:,0].max()
+#ymin, ymax = contour_points[:,1].min(), contour_points[:,1].max()
+#nx, ny = 1000, 1000  # résolution de la grille
+#X, Y = np.meshgrid(np.linspace(xmin, xmax, nx), np.linspace(ymin, ymax, ny))
+#points_grid = np.vstack((X.ravel(), Y.ravel())).T
+
+# 2. Créer un Path pour le contour
+#contour_path = Path(contour_points)
+
+# 3. Tester si chaque point de la grille est à l'intérieur du contour
+#inside = contour_path.contains_points(points_grid)
+#inside_points = points_grid[inside]
+
+#B_inside = np.array([perturbedfield.B(pt)[1]*pt[0] for pt in inside_points])
+
+# Moyenne (si B retourne un scalaire)
+#mean_B = np.mean(B_inside)
+#print("Champ magnétique moyen sur la surface :", mean_B)
+
+# (Optionnel) Afficher la grille et le contour
+ax.plot(contour_points[:,0], contour_points[:,1], 'r-')
+# ax.scatter(inside_points[:,0], inside_points[:,1], s=1, color='blue', alpha=0.5)
+# plt.show()
+
+#ax.plot(contour_points[:, 0], contour_points[:, 1], 'o-', color='red', label='Contour points')
+#ax.legend()
+plt.show()
+# 
+#  
+#Area_SL=ComputeShoelace(contour_points)*perturbedfield.B(opointTcoords)*opointTcoords[0]
+#Area_MeanB=ComputeShoelace(contour_points)*mean_B
+#Area_MidPoint=ResoManifoldUp._AdL_integral_points(contour_points,dl=None, is_closed=True)
+#REZO3=ResonnanceZone(ResoManifoldDown,ResoManifoldUp)
+#A=REZO3.area()
+#print(Area_SL,Area_MidPoint,Area_MeanB,A)
+
