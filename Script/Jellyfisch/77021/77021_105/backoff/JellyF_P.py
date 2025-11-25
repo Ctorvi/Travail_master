@@ -103,7 +103,7 @@ tri = Triangulation(tri_x, tri_y, triangles)
 
 
 tpc=ax.tripcolor(tri, emi, shading='flat', edgecolors='none', vmin=0, vmax=3.e20)
-fig.colorbar(tpc, ax=ax, label='Émission')
+#fig.colorbar(tpc, ax=ax, label='Émission')
    
 
 
@@ -275,28 +275,28 @@ ratio=2.8158
 #####figure
 
 
-ax.set_xlim(0.62, 1.15)
-ax.set_ylim(-0.75, 0.75)
-ax.set_xlabel(r"$R[m]$")
-ax.set_ylabel(r"$Z[m]$")
-ax.set_aspect('equal') 
-ax.set_title('77021 at 1.05 s, angle=1.9 rad')
-plt.savefig('./Script/Jellyfisch/77021/77021_105/backoff/figures/Jellyfisch_Pert_mf_patch.png', bbox_inches='tight', dpi=720)
-plt.show()
+# ax.set_xlim(0.62, 1.15)
+# ax.set_ylim(-0.75, 0.75)
+# ax.set_xlabel(r"$R[m]$")
+# ax.set_ylabel(r"$Z[m]$")
+# ax.set_aspect('equal') 
+# ax.set_title('77021 at 1.05 s, angle=1.9 rad')
+# plt.savefig('./Script/Jellyfisch/77021/77021_105/backoff/figures/Jellyfisch_Pert_mf_patch.png', bbox_inches='tight', dpi=720)
+# plt.show()
 
 
 #####zoomed
 
 
 
-# ax.set_xlim(0.7, 1.0)
-# ax.set_ylim(-0.6, -0.1)
-# ax.set_xlabel(r"$R[m]$")
-# ax.set_ylabel(r"$Z[m]$")
-# ax.set_aspect('equal') 
-# ax.set_title('77021 at 1.05 s, angle=1.9 rad')
-# plt.savefig('./Script/Jellyfisch/77021/77021_105/backoff/figures/Jellyfisch_Pert_mf_patch_zoom.png', bbox_inches='tight', dpi=720)
-# plt.show()
+ax.set_xlim(0.7, 1.0)
+ax.set_ylim(-0.6, -0.1)
+ax.set_xlabel(r"$R[m]$")
+ax.set_ylabel(r"$Z[m]$")
+ax.set_aspect('equal') 
+ax.set_title('77021 at 1.05 s, angle=1.9 rad')
+plt.savefig('./Script/Jellyfisch/77021/77021_105/backoff/figures/Jellyfisch_Pert_mf_patch_zoom.png', bbox_inches='tight', dpi=720)
+plt.show()
 
 
 

@@ -46,14 +46,14 @@ x_point2_coord = x_point2.coords[0]
 
 
 
-# x_point3= FixedPoint(section)
-# x_point3.find(1, [1.05,-0.58], method='scipy.root')
-# x_point3_coord = x_point3.coords[0]
+x_point3= FixedPoint(section)
+x_point3.find(1, [1.05,-0.58], method='scipy.root')
+x_point3_coord = x_point3.coords[0]
 
 
-# x_point4= FixedPoint(section)
-# x_point4.find(1, [0.75,0.65], method='scipy.root')
-# x_point4_coord = x_point4.coords[0]
+x_point4= FixedPoint(section)
+x_point4.find(1, [0.75,0.65], method='scipy.root')
+x_point4_coord = x_point4.coords[0]
 
 
 
@@ -107,7 +107,7 @@ tri = Triangulation(tri_x, tri_y, triangles)
 
     
 tpc=ax.tripcolor(tri, emi, shading='flat', edgecolors='none', vmin=0, vmax=3.e20)
-fig.colorbar(tpc, ax=ax, label='Émission')
+#fig.colorbar(tpc, ax=ax, label='Émission')
    
 
 
@@ -122,12 +122,12 @@ fig.colorbar(tpc, ax=ax, label='Émission')
 
 
 
-manifold_1T = Manifold(section, x_point1, x_point1,-x_point1_coord+top_o_coord, -x_point1_coord+top_o_coord)
-manifold_1T.compute(
-   eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=16, neps_s=80, neps_u=480) #8 14 240
-manifold_1T.find_clinics(first_guess_eps_s=9e-6, first_guess_eps_u=8e-6)
-manifold_1T.plot_clinics(ax=ax)
-manifold_1T.save('./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_1T_NA.pkl')
+# manifold_1T = Manifold(section, x_point1, x_point1,-x_point1_coord+top_o_coord, -x_point1_coord+top_o_coord)
+# manifold_1T.compute(
+#    eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=15, neps_s=80, neps_u=240) #8 14 240
+# manifold_1T.find_clinics(first_guess_eps_s=9e-6, first_guess_eps_u=8e-6)
+# manifold_1T.plot_clinics(ax=ax)
+# manifold_1T.save('./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_1T_NA.pkl')
 
 
 
@@ -239,13 +239,13 @@ manifold_1T.save('./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_1T_
 
 
 manifold_1T  = Manifold.load("./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_1T_NA.pkl")
-# manifold_1B  = Manifold.load("./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_1B_NA.pkl")
-# manifold_2T  = Manifold.load("./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_2T_NA.pkl")
-# manifold_2B  = Manifold.load("./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_2B_NA.pkl")
-# manifold_3L = Manifold.load("./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_3L_NA.pkl")
-# manifold_3R  = Manifold.load("./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_3R_NA.pkl")
-# manifold_4T = Manifold.load("./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_4T_NA.pkl")
-# manifold_4B  = Manifold.load("./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_4B_NA.pkl")
+manifold_1B  = Manifold.load("./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_1B_NA.pkl")
+manifold_2T  = Manifold.load("./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_2T_NA.pkl")
+manifold_2B  = Manifold.load("./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_2B_NA.pkl")
+manifold_3L = Manifold.load("./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_3L_NA.pkl")
+manifold_3R  = Manifold.load("./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_3R_NA.pkl")
+manifold_4T = Manifold.load("./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_4T_NA.pkl")
+manifold_4B  = Manifold.load("./Script/Jellyfisch/77021/77021_120/backoff/manifolds_P/mf_4B_NA.pkl")
 
 
 
@@ -254,13 +254,13 @@ manifold_1T  = Manifold.load("./Script/Jellyfisch/77021/77021_120/backoff/manifo
 
 
 manifold_1T.plot(stepsize_limit=0.2, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-# manifold_1B.plot(ax=ax, markersize=0,lw=0.7,colors=["rosybrown", "xkcd:red"])
-# manifold_2T.plot(stepsize_limit=0.3, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-# manifold_2B.plot(stepsize_limit=0.3, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-# manifold_3L.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-# manifold_3R.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-# manifold_4T.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-# manifold_4B.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
+manifold_1B.plot(ax=ax, markersize=0,lw=0.7,colors=["rosybrown", "xkcd:red"])
+manifold_2T.plot(stepsize_limit=0.3, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
+manifold_2B.plot(stepsize_limit=0.3, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
+manifold_3L.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
+manifold_3R.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
+manifold_4T.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
+manifold_4B.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
 
 
 # ratio=2.8158
@@ -268,11 +268,11 @@ manifold_1T.plot(stepsize_limit=0.2, ax=ax, markersize=0, lw=0.7,colors=["rosybr
 
 # #Hits=np.load('./Script/Jellyfisch/77021_120/poincare_hits/jellyfisch_Pert_test.npy')
 # # ax.scatter(Hits[:,:, 0], Hits[:,:, 1], color="xkcd:dark grey", s=1.4, linewidths=0)
-# top_o.plot(ax=ax, marker='o', color="xkcd:white")
-# x_point1.plot(ax=ax, marker='x', color="xkcd:white")
-# x_point2.plot(ax=ax, marker='x', color="xkcd:white")
-# x_point3.plot(ax=ax, marker='x', color="xkcd:white")
-# x_point4.plot(ax=ax, marker='x', color="xkcd:white")
+top_o.plot(ax=ax, marker='o', color="xkcd:white")
+x_point1.plot(ax=ax, marker='x', color="xkcd:white")
+x_point2.plot(ax=ax, marker='x', color="xkcd:white")
+x_point3.plot(ax=ax, marker='x', color="xkcd:white")
+x_point4.plot(ax=ax, marker='x', color="xkcd:white")
 
 
 
@@ -281,28 +281,28 @@ manifold_1T.plot(stepsize_limit=0.2, ax=ax, markersize=0, lw=0.7,colors=["rosybr
 # #####figure
 
 
-# ax.set_xlim(0.62, 1.15)
-# ax.set_ylim(-0.75, 0.75)
-# ax.set_xlabel(r"$R[m]$")
-# ax.set_ylabel(r"$Z[m]$")
-# ax.set_aspect('equal') 
-# ax.set_title('77021 at 1.2 s, angle=1.9 rad')
-# #plt.savefig('./Script/Jellyfisch/77021/77021_120/backoff/figures/Jellyfisch_BO_Pert_mf_patch_NA_C3.png', bbox_inches='tight', dpi=720)
-# plt.show()
+ax.set_xlim(0.62, 1.15)
+ax.set_ylim(-0.75, 0.75)
+ax.set_xlabel(r"$R[m]$")
+ax.set_ylabel(r"$Z[m]$")
+ax.set_aspect('equal') 
+ax.set_title('77021 at 1.2 s, angle=1.9 rad')
+plt.savefig('./Script/Jellyfisch/77021/77021_120/backoff/figures/Jellyfisch_BO_Pert_mf_patch_C3.png', bbox_inches='tight', dpi=720)
+plt.show()
 
 
 #####zoomed
 
 
 
-ax.set_xlim(0.7, 1.0)
-ax.set_ylim(-0.6, -0.1)
-ax.set_xlabel(r"$R[m]$")
-ax.set_ylabel(r"$Z[m]$")
-ax.set_aspect('equal') 
-ax.set_title('77021 at 1.2 s, angle=1.9 rad')
-#plt.savefig('./Script/Jellyfisch/77021/77021_120/backoff/figures/Jellyfisch_BO_Pert_mf_Zoom.png', bbox_inches='tight', dpi=720)
-plt.show()
+# ax.set_xlim(0.7, 1.0)
+# ax.set_ylim(-0.6, -0.1)
+# ax.set_xlabel(r"$R[m]$")
+# ax.set_ylabel(r"$Z[m]$")
+# ax.set_aspect('equal') 
+# ax.set_title('77021 at 1.2 s, angle=1.9 rad')
+# plt.savefig('./Script/Jellyfisch/77021/77021_120/backoff/figures/Jellyfisch_BO_Pert_mf_patch_C3_Zoom.png', bbox_inches='tight', dpi=720)
+# plt.show()
 
 
 

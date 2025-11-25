@@ -8,7 +8,7 @@ from scipy.io import loadmat
 from matplotlib.tri import Triangulation
 
 fig, ax = plt.subplots(1, 1, figsize=(6, 6.6))
-
+#fig,ax = plt.subplots(1,1, figsize=(5,8))
 plt.rcParams.update(
     {
         "text.usetex": False,
@@ -18,9 +18,14 @@ plt.rcParams.update(
 )
 logging.basicConfig(level=logging.DEBUG)
 
-JFField = AxisymmetricCylindricalGridField.from_matlab_file('./Script/Standard/backoff/Standard_11.mat', with_perturbation=True)
+repository_path = './Script/Standard/backoff/'
+pert_mat_file = 'Standard_11.mat'
+patch_mat_file = 'Standard_patch_11_C3.mat'
+
+JFField = AxisymmetricCylindricalGridField.from_matlab_file(f"{repository_path}{pert_mat_file}", with_perturbation=True)
 
 section = CylindricalBfieldSection(JFField,phi0=1.9,R0=0.88, Z0=0)
+
 
 
 top_o = FixedPoint(section)
@@ -52,7 +57,7 @@ x_point1.plot(ax=ax, marker='x', color="xkcd:crimson")
 
 
 
-data = loadmat('./Script/Standard/backoff/Standard_patch_11_C3.mat', squeeze_me=True, struct_as_record=False)
+data = loadmat(f"{repository_path}{patch_mat_file}", squeeze_me=True, struct_as_record=False)
 
 inv_grid=data['inv_grid']
 
@@ -83,7 +88,7 @@ tri = Triangulation(tri_x, tri_y, triangles)
 
 
 tpc=ax.tripcolor(tri, emi, shading='flat', edgecolors='none', vmin=0, vmax=3.e20)
-fig.colorbar(tpc, ax=ax, label='Émission')
+#fig.colorbar(tpc, ax=ax, label='Émission')
    
 
 
@@ -101,7 +106,7 @@ fig.colorbar(tpc, ax=ax, label='Émission')
 # manifold_1T = Manifold(section, x_point1, x_point1,-x_point1_coord+top_o_coord, -x_point1_coord+top_o_coord)
 # manifold_1T.compute(
 #    eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=12, neps_s=80, neps_u=240) #8 14 240
-# manifold_1T.save('./Script/Standard/backoff/manifolds_P/mf_1T.pkl')
+# manifold_1T.save(f"{repository_path}/manifolds_P/mf_1T.pkl")
 
 
 # # #####top fp bottom mf#########
@@ -110,15 +115,15 @@ fig.colorbar(tpc, ax=ax, label='Émission')
 # manifold_1B = Manifold(section, x_point1, x_point1,x_point1_coord-top_o_coord, x_point1_coord-top_o_coord)
 # manifold_1B.compute(
 #       eps_s=9e-6, eps_u=8e-6, nint_s=10, nint_u=12, neps_s=80, neps_u=80)
-# manifold_1B.save('./Script/Standard/backoff/manifolds_P/mf_1B.pkl')
+# manifold_1B.save(f"{repository_path}/manifolds_P/mf_1B.pkl")
 
 
 
 ### loading and plotting  ###
 
 
-manifold_1T  = Manifold.load("./Script/Standard/backoff/manifolds_P/mf_1T.pkl")
-manifold_1B  = Manifold.load("./Script/Standard/backoff/manifolds_P/mf_1B.pkl")
+manifold_1T  = Manifold.load(f"{repository_path}/manifolds_P/mf_1T.pkl")
+manifold_1B  = Manifold.load(f"{repository_path}/manifolds_P/mf_1B.pkl")
 
 
 manifold_1T.plot(stepsize_limit=0.3, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
@@ -141,7 +146,7 @@ ratio=2.8158
 # ax.set_ylabel(r"$Z[m]$")
 # ax.set_aspect('equal') 
 # ax.set_title('80064 at 1.1 s, angle=1.9 rad')
-# plt.savefig('./Script/Standard/backoff/figures/Standard_Pert_mf_patch.png', bbox_inches='tight', dpi=720)
+# plt.savefig(f"{repository_path}/figures/Standard_Pert_mf_patch.png", bbox_inches='tight', dpi=720)
 # plt.show()
 
 
@@ -155,7 +160,7 @@ ax.set_xlabel(r"$R[m]$")
 ax.set_ylabel(r"$Z[m]$")
 ax.set_aspect('equal') 
 ax.set_title('80064 at 1.1 s, angle=1.9 rad')
-plt.savefig('./Script/Standard/backoff/figures/Standard_Pert_mf_patch_zoom.png', bbox_inches='tight', dpi=720)
+plt.savefig(f"{repository_path}/figures/Standard_Pert_mf_patch_zoom.png", bbox_inches='tight', dpi=720)
 plt.show()
 
 

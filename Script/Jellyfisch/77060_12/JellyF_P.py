@@ -106,7 +106,7 @@ tri = Triangulation(tri_x, tri_y, triangles)
 
     
 tpc=ax.tripcolor(tri, emi, shading='flat', edgecolors='none', vmin=0, vmax=6e20)
-fig.colorbar(tpc, ax=ax, label='Émission')
+#fig.colorbar(tpc, ax=ax, label='Émission')
    
 
 

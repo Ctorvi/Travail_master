@@ -7,7 +7,8 @@ import logging
 from scipy.io import loadmat
 from matplotlib.tri import Triangulation
 
-fig, ax = plt.subplots(1, 1, figsize=(5, 8))
+#fig, ax = plt.subplots(1, 1, figsize=(5, 8))
+fig, ax = plt.subplots(1, 1, figsize=(6, 6.6))
 
 plt.rcParams.update(
     {
@@ -18,7 +19,12 @@ plt.rcParams.update(
 )
 logging.basicConfig(level=logging.DEBUG)
 
-JFField = AxisymmetricCylindricalGridField.from_matlab_file('./Script/Snowflake/backoff/Snowflake_09_Backoff.mat', with_perturbation=True)
+repository_path = './Script/Snowflake/backoff/'
+pert_mat_file = 'Snowflake_09_Backoff.mat'
+patch_mat_file = 'JF_patch_70620_09_C3.mat'
+
+
+JFField = AxisymmetricCylindricalGridField.from_matlab_file(f"{repository_path}{pert_mat_file}", with_perturbation=True)
 
 
 
@@ -61,7 +67,7 @@ x_point2.plot(ax=ax, marker='x', color="xkcd:crimson")
 
 
 
-data = loadmat('./Script/Snowflake/JF_patch_70620_09_C3.mat', squeeze_me=True, struct_as_record=False)
+data = loadmat(f"{repository_path}{patch_mat_file}", squeeze_me=True, struct_as_record=False)
 
 inv_grid=data['inv_grid']
 
@@ -95,7 +101,7 @@ tri = Triangulation(tri_x, tri_y, triangles)
 
 
 tpc=ax.tripcolor(tri, emi, shading='flat', edgecolors='none', vmin=0, vmax=1.e9)
-fig.colorbar(tpc, ax=ax, label='Émission')
+#fig.colorbar(tpc, ax=ax, label='Émission')
    
 
 
@@ -113,7 +119,7 @@ fig.colorbar(tpc, ax=ax, label='Émission')
 # manifold_1T = Manifold(section, x_point1, x_point1,-x_point1_coord+top_o_coord, -x_point1_coord+top_o_coord)
 # manifold_1T.compute(
 #    eps_s=9e-6, eps_u=8e-6, nint_s=10, nint_u=8, neps_s=160, neps_u=320) #8 14 240
-# manifold_1T.save('./Script/Snowflake/backoff/manifolds_P/mf_1T.pkl')
+# manifold_1T.save(f"{repository_path}/manifolds_P/mf_1T.pkl")
 
 
 
@@ -125,7 +131,7 @@ fig.colorbar(tpc, ax=ax, label='Émission')
 # manifold_1B = Manifold(section, x_point1, x_point1,x_point1_coord-top_o_coord, x_point1_coord-top_o_coord)
 # manifold_1B.compute(
 #       eps_s=9e-6, eps_u=8e-6, nint_s=10, nint_u=12, neps_s=80, neps_u=80)
-# manifold_1B.save('./Script/Snowflake/backoff/manifolds_P/mf_1B.pkl')
+# manifold_1B.save(f"{repository_path}/manifolds_P/mf_1B.pkl")
 
 
 
@@ -139,7 +145,7 @@ fig.colorbar(tpc, ax=ax, label='Émission')
 # manifold_2T = Manifold(section, x_point2, x_point2,-x_point2_coord+x_point1_coord, -x_point2_coord+x_point1_coord)
 # manifold_2T.compute(
 #      eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=15, neps_s=80, neps_u=80)
-# manifold_2T.save('./Script/Snowflake/backoff/manifolds_P/mf_2T.pkl')
+# manifold_2T.save(f"{repository_path}/manifolds_P/mf_2T.pkl")
 
 
 
@@ -151,7 +157,7 @@ fig.colorbar(tpc, ax=ax, label='Émission')
 # manifold_2B = Manifold(section, x_point2, x_point2,x_point2_coord-x_point1_coord, x_point2_coord-x_point1_coord)
 # manifold_2B.compute(
 #      eps_s=9e-6, eps_u=8e-6, nint_s=40, nint_u=40, neps_s=80, neps_u=80)
-# manifold_2B.save('./Script/Snowflake/backoff/manifolds_P/mf_2B.pkl')
+# manifold_2B.save(f"{repository_path}/manifolds_P/mf_2B.pkl")
 
 
 
@@ -164,10 +170,10 @@ fig.colorbar(tpc, ax=ax, label='Émission')
 ### loading and plotting  ###
 
 
-manifold_1T  = Manifold.load("./Script/Snowflake/backoff/manifolds_P/mf_1T.pkl")
-manifold_1B  = Manifold.load("./Script/Snowflake/backoff/manifolds_P/mf_1B.pkl")
-manifold_2T  = Manifold.load("./Script/Snowflake/backoff/manifolds_P/mf_2T.pkl")
-manifold_2B  = Manifold.load("./Script/Snowflake/backoff/manifolds_P/mf_2B.pkl")
+manifold_1T  = Manifold.load(f"{repository_path}/manifolds_P/mf_1T.pkl")
+manifold_1B  = Manifold.load(f"{repository_path}/manifolds_P/mf_1B.pkl")
+manifold_2T  = Manifold.load(f"{repository_path}/manifolds_P/mf_2T.pkl")
+manifold_2B  = Manifold.load(f"{repository_path}/manifolds_P/mf_2B.pkl")
 
 
 
@@ -176,10 +182,10 @@ manifold_2B  = Manifold.load("./Script/Snowflake/backoff/manifolds_P/mf_2B.pkl")
 
 
 
-manifold_1T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_1B.plot(stepsize_limit=0.3, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_2T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_2B.plot(stepsize_limit=0.3, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
+manifold_1T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["magenta", "xkcd:red"])
+manifold_1B.plot(stepsize_limit=0.3, ax=ax, markersize=0, lw=0.7,colors=["magenta", "xkcd:red"])
+manifold_2T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["magenta", "xkcd:red"])
+manifold_2B.plot(stepsize_limit=0.3, ax=ax, markersize=0, lw=0.7,colors=["magenta", "xkcd:red"])
 
 
 
@@ -199,26 +205,26 @@ ratio=2.8158
 
 ###figure 
 
-ax.set_xlim(0.62, 1.15)
-ax.set_ylim(-0.75, 0.75)
-ax.set_xlabel(r"$R[m]$")
-ax.set_ylabel(r"$Z[m]$")
-ax.set_aspect('equal') 
-ax.set_title('70620 at 0.9 s, angle=1.9 rad')
-plt.savefig('./Script/Snowflake/backoff/figures/Snowflake_Pert_mf_patch.png', bbox_inches='tight', dpi=720)
-plt.show()
-
-
-### zoomed
-
-# ax.set_xlim(0.7, 1.0)
-# ax.set_ylim(-0.6, -0.1)
+# ax.set_xlim(0.62, 1.15)
+# ax.set_ylim(-0.75, 0.75)
 # ax.set_xlabel(r"$R[m]$")
 # ax.set_ylabel(r"$Z[m]$")
 # ax.set_aspect('equal') 
 # ax.set_title('70620 at 0.9 s, angle=1.9 rad')
-# plt.savefig('./Script/Snowflake/backoff/figures/Snowflake_Pert_mf_patch_Zoom.png', bbox_inches='tight', dpi=720)
+# plt.savefig(f"{repository_path}/figures/Snowflake_Pert_mf_patch.png", bbox_inches='tight', dpi=720)
 # plt.show()
+
+
+### zoomed
+
+ax.set_xlim(0.7, 1.0)
+ax.set_ylim(-0.6, -0.1)
+ax.set_xlabel(r"$R[m]$")
+ax.set_ylabel(r"$Z[m]$")
+ax.set_aspect('equal') 
+ax.set_title('70620 at 0.9 s, angle=1.9 rad')
+plt.savefig(f"{repository_path}/figures/Snowflake_Pert_mf_patch_Zoom.png", bbox_inches='tight', dpi=720)
+plt.show()
 
 
 

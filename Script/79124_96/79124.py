@@ -10,8 +10,8 @@ from matplotlib.tri import Triangulation
 
 
 
-fig, ax = plt.subplots(1, 1, figsize=(5, 8))
-#fig, ax = plt.subplots(1, 1, figsize=(6, 6.6))
+#fig, ax = plt.subplots(1, 1, figsize=(5, 8))
+fig, ax = plt.subplots(1, 1, figsize=(6, 6.6))
 
 
 plt.rcParams.update(
@@ -30,7 +30,6 @@ pert_mat_file = '79124_96.mat'
 patch_mat_file = '79124_patch_96_C3.mat'
 
 JFField = AxisymmetricCylindricalGridField.from_matlab_file(f"{repository_path}{pert_mat_file}", with_perturbation=True)
-
 
 section = CylindricalBfieldSection(JFField,phi0=1.9,R0=0.88, Z0=0)
 
@@ -147,10 +146,10 @@ manifold_2B  = Manifold.load(f"{repository_path}manifolds_P/mf_2B.pkl")
 
 
 
-manifold_1T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_1B.plot(stepsize_limit=0.3,ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_2T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_2B.plot(stepsize_limit=0.3, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
+manifold_1T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["magenta", "xkcd:red"])
+manifold_1B.plot(stepsize_limit=0.3,ax=ax, markersize=0, lw=0.7,colors=["magenta", "xkcd:red"])
+manifold_2T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["magenta", "xkcd:red"])
+manifold_2B.plot(stepsize_limit=0.3, ax=ax, markersize=0, lw=0.7,colors=["magenta", "xkcd:red"])
 
 
 
