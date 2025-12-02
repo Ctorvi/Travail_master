@@ -7,7 +7,7 @@ import logging
 from scipy.io import loadmat
 from matplotlib.tri import Triangulation
 from scipy.special import ellipk, ellipe
-from field_utils import B_loop_cyl, B_sum_of_loops, BR_BZ_PSI,zero_near_curve
+from Script.function.field_utils import B_loop_cyl, B_sum_of_loops, BR_BZ_PSI,zero_near_curve
 
 
 

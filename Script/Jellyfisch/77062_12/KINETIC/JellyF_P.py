@@ -10,8 +10,8 @@ from matplotlib.tri import Triangulation
 
 
 
-#fig, ax = plt.subplots(1, 1, figsize=(5, 8))
-fig, ax = plt.subplots(1, 1, figsize=(6, 6.6))
+fig, ax = plt.subplots(1, 1, figsize=(5, 8))
+#fig, ax = plt.subplots(1, 1, figsize=(6, 6.6))
 
 
 plt.rcParams.update(
@@ -23,7 +23,7 @@ plt.rcParams.update(
 )
 
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 repository_path = './Script/Jellyfisch/77062_12/KINETIC/'
 pert_mat_file = '77062_12_KINETIC.mat'
@@ -186,23 +186,23 @@ manifold_4B  = Manifold.load(f"{repository_path}manifolds_P/mf_4B.pkl")
 
 #manifold_NK.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["grey", "xkcd:blue"])
 
-manifold_1T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_1B.plot(stepsize_limit=0.3,ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_2T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_2B.plot(stepsize_limit=0.3, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_3L.plot(stepsize_limit=0.1,ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_3R.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_4T.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_4B.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
+manifold_1T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=['stable MF','unstable MF'])
+manifold_1B.plot(stepsize_limit=0.3,ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_2T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_2B.plot(stepsize_limit=0.3, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_3L.plot(stepsize_limit=0.1,ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_3R.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_4T.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_4B.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
 
 
 
 
-top_o.plot(ax=ax, marker='o', color="xkcd:white")
-x_point1.plot(ax=ax, marker='x', color="xkcd:white")
-x_point2.plot(ax=ax, marker='x', color="xkcd:white")
-x_point3.plot(ax=ax, marker='x', color="xkcd:white")
-x_point4.plot(ax=ax, marker='x', color="xkcd:white")
+top_o.plot(ax=ax, marker='o', color="xkcd:white",label=None)
+x_point1.plot(ax=ax, marker='x', color="xkcd:white",label='X-points')
+x_point2.plot(ax=ax, marker='x', color="xkcd:white",label=None)
+x_point3.plot(ax=ax, marker='x', color="xkcd:white",label=None)
+x_point4.plot(ax=ax, marker='x', color="xkcd:white",label=None)
 ratio=2.8158
 
 #Hits=np.load('./Script/Jellyfisch/77021_120/poincare_hits/jellyfisch_Pert_test.npy')
@@ -226,13 +226,14 @@ ratio=2.8158
 
 
 ax.set_xlim(0.7, 1.0)
-ax.set_ylim(-0.6, -0.1)
+ax.set_ylim(-0.58, -0.08)
 ax.set_xlabel(r"$R[m]$")
 ax.set_ylabel(r"$Z[m]$")
 ax.set_aspect('equal') 
-ax.set_title('KINETIC 77062 at 1.2s, at 1.9 rad')
-plt.savefig(f"{repository_path}figures/Jellyfisch_77062_KINETIC_BO_Pert_mf_patch_zoom.png", bbox_inches='tight', dpi=720)
-plt.show()
+ax.legend(loc='upper center', bbox_to_anchor=(0.5, 0.99), ncol=1, fontsize=9)
+ax.set_title('KINETIC (77062 / 1.2s / 1.9 rad)')
+plt.savefig(f"{repository_path}figures/Jellyfisch_77062_KINETIC_BO_Pert_mf_patch_zoom.png", dpi=150, bbox_inches=None, facecolor=fig.get_facecolor())
+#plt.show()
 
 
 

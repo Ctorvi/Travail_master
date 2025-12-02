@@ -23,11 +23,11 @@ plt.rcParams.update(
 )
 
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 repository_path = './Script/Jellyfisch/77062_12/normal/'
 pert_mat_file = 'JF_77062_12.mat'
-patch_mat_file = 'JF_77062_patch_12_C3.mat'
+patch_mat_file = './Script/Jellyfisch/77062_12/JF_77062_patch_12_C3.mat'
 
 JFField = AxisymmetricCylindricalGridField.from_matlab_file(f"{repository_path}{pert_mat_file}", with_perturbation=True)
 
@@ -74,7 +74,7 @@ x_point4_coord = x_point4.coords[0]
 
 
 
-data = loadmat(f"{repository_path}{patch_mat_file}", squeeze_me=True, struct_as_record=False)
+data = loadmat(f"{patch_mat_file}", squeeze_me=True, struct_as_record=False)
 
 inv_grid=data['inv_grid']
 
@@ -175,64 +175,62 @@ tpc=ax.tripcolor(tri, emi, shading='flat', edgecolors='none', vmin=0, vmax=8e20)
 
 
 
-# manifold_1T  = Manifold.load(f"{repository_path}manifolds_P/mf_1T.pkl")
-# manifold_1B  = Manifold.load(f"{repository_path}manifolds_P/mf_1B.pkl")
-# manifold_2T  = Manifold.load(f"{repository_path}manifolds_P/mf_2T.pkl")
-# manifold_2B  = Manifold.load(f"{repository_path}manifolds_P/mf_2B.pkl")
-# manifold_3L = Manifold.load(f"{repository_path}manifolds_P/mf_3L.pkl")
-# manifold_3R  = Manifold.load(f"{repository_path}manifolds_P/mf_3R.pkl")
-# manifold_4T = Manifold.load(f"{repository_path}manifolds_P/mf_4T.pkl")
-# manifold_4B  = Manifold.load(f"{repository_path}manifolds_P/mf_4B.pkl")
-
-
-manifold_1T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-# manifold_1B.plot(stepsize_limit=0.3,ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-# manifold_2T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-# manifold_2B.plot(stepsize_limit=0.3, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-# manifold_3L.plot(stepsize_limit=0.1,ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-# manifold_3R.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-# manifold_4T.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-# manifold_4B.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
+manifold_1T  = Manifold.load(f"{repository_path}manifolds_P/mf_1T.pkl")
+manifold_1B  = Manifold.load(f"{repository_path}manifolds_P/mf_1B.pkl")
+manifold_2T  = Manifold.load(f"{repository_path}manifolds_P/mf_2T.pkl")
+manifold_2B  = Manifold.load(f"{repository_path}manifolds_P/mf_2B.pkl")
+manifold_3L = Manifold.load(f"{repository_path}manifolds_P/mf_3L.pkl")
+manifold_3R  = Manifold.load(f"{repository_path}manifolds_P/mf_3R.pkl")
+manifold_4T = Manifold.load(f"{repository_path}manifolds_P/mf_4T.pkl")
+manifold_4B  = Manifold.load(f"{repository_path}manifolds_P/mf_4B.pkl")
 
 
 
+manifold_1T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=['stable MF','unstable MF'])
+manifold_1B.plot(stepsize_limit=0.3,ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_2T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_2B.plot(stepsize_limit=0.3, ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_3L.plot(stepsize_limit=0.1,ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_3R.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_4T.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_4B.plot(ax=ax, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
 
-top_o.plot(ax=ax, marker='o', color="xkcd:white")
-x_point1.plot(ax=ax, marker='x', color="xkcd:white")
-x_point2.plot(ax=ax, marker='x', color="xkcd:white")
-x_point3.plot(ax=ax, marker='x', color="xkcd:white")
-x_point4.plot(ax=ax, marker='x', color="xkcd:white")
+
+
+
+top_o.plot(ax=ax, marker='o', color="xkcd:white",label=None)
+x_point1.plot(ax=ax, marker='x', color="xkcd:white",label='X-points')
+x_point2.plot(ax=ax, marker='x', color="xkcd:white",label=None)
+x_point3.plot(ax=ax, marker='x', color="xkcd:white",label=None)
+x_point4.plot(ax=ax, marker='x', color="xkcd:white",label=None)
 ratio=2.8158
 
-#Hits=np.load('./Script/Jellyfisch/77021_120/poincare_hits/jellyfisch_Pert_test.npy')
-# ax.scatter(Hits[:,:, 0], Hits[:,:, 1], color="xkcd:dark grey", s=1.4, linewidths=0)
 
 #####figure
 
 
-ax.set_xlim(0.62, 1.15)
-ax.set_ylim(-0.75, 0.75)
-ax.set_xlabel(r"$R[m]$")
-ax.set_ylabel(r"$Z[m]$")
-ax.set_aspect('equal') 
-ax.set_title('77062 at 1.2s, at 1.9 rad')
-#plt.savefig(f"{repository_path}figures/Jellyfisch_77062_BO_Pert_mf_patch.png", bbox_inches='tight', dpi=720)
-plt.show()
+# ax.set_xlim(0.62, 1.15)
+# ax.set_ylim(-0.75, 0.75)
+# ax.set_xlabel(r"$R[m]$")
+# ax.set_ylabel(r"$Z[m]$")
+# ax.set_aspect('equal') 
+# ax.set_title('77062 / 1.2s /1.9 rad')
+# #plt.savefig(f"{repository_path}figures/Jellyfisch_77062_BO_Pert_mf_patch.png", bbox_inches='tight', dpi=720)
+# plt.show()
 
 
 #####zoomed
 
 
-
-# ax.set_xlim(0.7, 1.0)
-# ax.set_ylim(-0.6, -0.1)
-# ax.set_xlabel(r"$R[m]$")
-# ax.set_ylabel(r"$Z[m]$")
-# ax.set_aspect('equal') 
-# ax.set_title('77062 at 1.2s, at 1.9 rad')
-# plt.savefig(f"{repository_path}figures/Jellyfisch_77062_BO_Pert_mf_patch_zoom.png", bbox_inches='tight', dpi=720)
-# plt.show()
-
+ax.set_xlim(0.7, 1.0)
+ax.set_ylim(-0.58, -0.08)
+ax.set_xlabel(r"$R[m]$")
+ax.set_ylabel(r"$Z[m]$")
+ax.set_aspect('equal') 
+ax.legend(loc='upper center', bbox_to_anchor=(0.5, 0.99), ncol=1, fontsize=9)
+ax.set_title('(77062 / 1.2s / 1.9 rad)')
+plt.savefig(f"{repository_path}figures/Jellyfisch_77062_BO_Pert_mf_patch_zoom.png", dpi=150, bbox_inches=None, facecolor=fig.get_facecolor())
+#plt.show()
 
 
 
