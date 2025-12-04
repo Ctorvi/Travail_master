@@ -108,9 +108,9 @@ tpc=ax.tripcolor(tri, emi, shading='flat', edgecolors='none', vmin=0, vmax=2.25e
 
 # manifold_1T = Manifold(section, x_point1, x_point1,-x_point1_coord+top_o_coord, -x_point1_coord+top_o_coord)
 # manifold_1T.compute(
-#    eps_s=9e-6, eps_u=8e-6, nint_s=30, nint_u=25, neps_s=80, neps_u=240) #8 14 240
+#    eps_s=9e-6, eps_u=8e-6, nint_s=30, nint_u=21, neps_s=80, neps_u=240) #8 14 240
 
-# manifold_1T.save(f"{repository_path}manifolds_P/mf_1T.pkl")
+# manifold_1T.save(f"{repository_path}manifolds_P/mf_1T_new.pkl")
 
 # #####top fp bottom mf#########
 
@@ -175,7 +175,7 @@ tpc=ax.tripcolor(tri, emi, shading='flat', edgecolors='none', vmin=0, vmax=2.25e
 
 
 
-manifold_1T  = Manifold.load(f"{repository_path}manifolds_P/mf_1T.pkl")
+manifold_1T  = Manifold.load(f"{repository_path}manifolds_P/mf_1T_less_iter.pkl")
 manifold_1B  = Manifold.load(f"{repository_path}manifolds_P/mf_1B.pkl")
 manifold_2T  = Manifold.load(f"{repository_path}manifolds_P/mf_2T.pkl")
 manifold_2B  = Manifold.load(f"{repository_path}manifolds_P/mf_2B.pkl")
@@ -230,7 +230,7 @@ ax.set_ylabel(r"$Z[m]$")
 ax.set_aspect('equal') 
 ax.legend(loc='upper center', bbox_to_anchor=(0.5, 0.99), ncol=1, fontsize=9)
 ax.set_title('(75979 / 1.2s / 1.9 rad)')
-plt.savefig(f"{repository_path}figures/Jellyfisch_75979_BO_Pert_mf_patch_zoom.png", dpi=150, bbox_inches=None, facecolor=fig.get_facecolor())
+#plt.savefig(f"{repository_path}figures/Jellyfisch_75979_BO_Pert_mf_patch_zoom.png", dpi=150, bbox_inches=None, facecolor=fig.get_facecolor())
 plt.show()
 
 

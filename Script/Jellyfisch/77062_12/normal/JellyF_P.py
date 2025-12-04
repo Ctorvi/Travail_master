@@ -25,9 +25,9 @@ plt.rcParams.update(
 
 logging.basicConfig(level=logging.INFO)
 
-repository_path = './Script/Jellyfisch/77062_12/normal/'
-pert_mat_file = 'JF_77062_12.mat'
-patch_mat_file = './Script/Jellyfisch/77062_12/JF_77062_patch_12_C3.mat'
+repository_path = './script/jellyfisch/77062_12/normal/'
+pert_mat_file = 'JF_77062_120.mat'
+patch_mat_file = './script/jellyfisch/77062_12/JF_77062_patch_120_C3.mat'
 
 JFField = AxisymmetricCylindricalGridField.from_matlab_file(f"{repository_path}{pert_mat_file}", with_perturbation=True)
 
@@ -104,13 +104,13 @@ tpc=ax.tripcolor(tri, emi, shading='flat', edgecolors='none', vmin=0, vmax=8e20)
 ###########################. fixed point  #########################
 
 
-#####top fp top mf#########
+# ####top fp top mf#########
 
 # manifold_1T = Manifold(section, x_point1, x_point1,-x_point1_coord+top_o_coord, -x_point1_coord+top_o_coord)
 # manifold_1T.compute(
 #    eps_s=9e-6, eps_u=8e-6, nint_s=10, nint_u=14, neps_s=80, neps_u=240) #8 14 240
 
-# manifold_1T.save(f"{repository_path}manifolds_P/mf_1T_add.pkl")
+# manifold_1T.save(f"{repository_path}manifolds_P/mf_1T.pkl")
 
 # #####top fp bottom mf#########
 
@@ -120,7 +120,7 @@ tpc=ax.tripcolor(tri, emi, shading='flat', edgecolors='none', vmin=0, vmax=8e20)
 # manifold_1B.save(f"{repository_path}manifolds_P/mf_1B.pkl")
 
 
-##### bottom fp top mf
+# #### bottom fp top mf
 
 
 # manifold_2T = Manifold(section, x_point2, x_point2,-x_point2_coord+top_o_coord, -x_point2_coord+top_o_coord)
@@ -128,15 +128,15 @@ tpc=ax.tripcolor(tri, emi, shading='flat', edgecolors='none', vmin=0, vmax=8e20)
 #       eps_s=9e-6, eps_u=8e-6, nint_s=32, nint_u=30, neps_s=80, neps_u=80)
 # manifold_2T.save(f"{repository_path}manifolds_P/mf_2T.pkl")
 
-##### bottom fp bottom mf
+#### bottom fp bottom mf
 
 
-# manifold_2B = Manifold(section, x_point2, x_point2,x_point2_coord-top_o_coord, x_point2_coord-top_o_coord)
-# manifold_2B.compute(
-#       eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=8, neps_s=80, neps_u=80)
-# manifold_2B.save(f"{repository_path}manifolds_P/mf_2B.pkl")
+manifold_2B = Manifold(section, x_point2, x_point2,x_point2_coord-top_o_coord, x_point2_coord-top_o_coord)
+manifold_2B.compute(
+      eps_s=9e-6, eps_u=8e-6, nint_s=32, nint_u=32, neps_s=80, neps_u=80)
+manifold_2B.save(f"{repository_path}manifolds_P/mf_2B.pkl")
 
-##### right fp left mf
+# #### right fp left mf
 
 # manifold_3L = Manifold(section, x_point3, x_point3,-x_point3_coord+top_o_coord, -x_point3_coord+top_o_coord)
 # manifold_3L.compute(
@@ -150,7 +150,7 @@ tpc=ax.tripcolor(tri, emi, shading='flat', edgecolors='none', vmin=0, vmax=8e20)
 #       eps_s=9e-6, eps_u=8e-6, nint_s=20, nint_u=20, neps_s=80, neps_u=80)
 # manifold_3R.save(f"{repository_path}manifolds_P/mf_3R.pkl")
 
-### top fp top mf 
+# ## top fp top mf 
 
 # manifold_4T = Manifold(section, x_point4, x_point4,x_point4_coord-top_o_coord, x_point4_coord-top_o_coord)
 # manifold_4T.compute(
@@ -178,7 +178,7 @@ tpc=ax.tripcolor(tri, emi, shading='flat', edgecolors='none', vmin=0, vmax=8e20)
 manifold_1T  = Manifold.load(f"{repository_path}manifolds_P/mf_1T.pkl")
 manifold_1B  = Manifold.load(f"{repository_path}manifolds_P/mf_1B.pkl")
 manifold_2T  = Manifold.load(f"{repository_path}manifolds_P/mf_2T.pkl")
-manifold_2B  = Manifold.load(f"{repository_path}manifolds_P/mf_2B.pkl")
+# manifold_2B  = Manifold.load(f"{repository_path}manifolds_P/mf_2B.pkl")
 manifold_3L = Manifold.load(f"{repository_path}manifolds_P/mf_3L.pkl")
 manifold_3R  = Manifold.load(f"{repository_path}manifolds_P/mf_3R.pkl")
 manifold_4T = Manifold.load(f"{repository_path}manifolds_P/mf_4T.pkl")

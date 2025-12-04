@@ -59,7 +59,8 @@ def line_curve_intersections(p0, p1, curves, tol=1e-9, ax=None, plot_kwargs=None
             if ax is not None:
                 ax.plot(pt[0], pt[1], **plot_kwargs)
                 ax.plot([P[0], Q[0]], [P[1], Q[1]], color='black', linestyle='--', linewidth=0.8, alpha=0.5)
-                ax.scatter(P[0], P[1], color='black', s=10,marker='x')
+                ax.scatter(P[0], P[1], color='black', s=10,marker='s')
+                ax.scatter(Q[0], Q[1], color='black', s=10,marker='s')
 
     if len(hits) == 0:
         return np.empty((0,2)), np.empty((0,)), np.empty((0,))
@@ -112,7 +113,7 @@ def line_curve_MF_intersections(p0, p1, manifolds, unstable=True, tol=1e-9, ax1=
 # ...existing code...
 
 
-def sample_emi_along_line(p0, p1, tri, emi, n_samples=300, limit_find_peaks=0.2,ax=None, plot_kwargs=None):# plot_profile=True):
+def sample_emi_along_line(p0, p1, tri, emi, n_samples=300, limit_find_peaks=0.2,sig=5.0,ax=None, plot_kwargs=None):# plot_profile=True):
     """
     Échantillonne l'émissivité `emi` le long de la droite p0->p1.
     - p0, p1 : (R,Z)
@@ -141,7 +142,7 @@ def sample_emi_along_line(p0, p1, tri, emi, n_samples=300, limit_find_peaks=0.2,
          emi_vals[mask] = emi[tri_idx[mask]]
 
     
-    y_gauss = gaussian_filter1d(emi_vals, sigma=5.0)
+    y_gauss = gaussian_filter1d(emi_vals, sigma=sig)
          
     if ax is not None:
         # safe use of plot_kwargs

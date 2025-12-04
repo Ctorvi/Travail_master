@@ -93,7 +93,12 @@ def BR_BZ_PSI(R_grid, Z_grid, B_R_tot, B_Z_tot, x_p, r_cut=0.05):
     return B_R_tot, B_Z_tot, psi
 
 
-
+def add_constant_Bz(R_grid, Bz_const):
+    B_z_added = np.zeros_like(R_grid)
+    B_r_added = np.zeros_like(R_grid)
+    psi_added = np.zeros_like(R_grid)
+    psi_added[:, :] = 1 / 2 * Bz_const * R_grid[:, :] ** 2
+    return B_r_added, B_z_added, psi_added
 
 
 
