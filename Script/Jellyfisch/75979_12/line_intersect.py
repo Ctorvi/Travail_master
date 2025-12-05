@@ -126,6 +126,7 @@ ax1.set_title('(75979 / 1.20 s / 1.9 rad)')
 #####zoomed
 
 p0 = np.array([0.88, -0.33])
+#p0=np.array([0.88, -0.3])
 p1 = np.array([0.79, -0.505])
 
 
@@ -160,7 +161,7 @@ ax2.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
 
 ax2.legend()
 
-#plt.savefig(f"{repository_path}figures/Jellyfisch_75979_120_periodicity.png", dpi=150, bbox_inches=None, facecolor=fig.get_facecolor())
+plt.savefig(f"{repository_path}figures/Jellyfisch_75979_120_periodicity.png", dpi=150, bbox_inches=None, facecolor=fig.get_facecolor())
 plt.show()
 print(f"Bz mismatch is {perio_MF/perio_MANTIS}")
 

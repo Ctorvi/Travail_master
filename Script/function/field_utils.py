@@ -1,6 +1,8 @@
 import numpy as np
 from scipy.special import ellipk, ellipe
 from scipy.spatial import cKDTree
+from scipy.io import loadmat
+from matplotlib.tri import Triangulation
 
 mu0 = 4e-7 * np.pi
 def mask_within_distance_to_curve(R_grid, Z_grid, curve_points, r_cut):
@@ -101,7 +103,33 @@ def add_constant_Bz(R_grid, Bz_const):
     return B_r_added, B_z_added, psi_added
 
 
+def plot_tomographic(path,ax,emi_vmin=0, emi_vmax=3.e20):
+    
+    data = loadmat(path, squeeze_me=True, struct_as_record=False)
 
+    inv_grid=data['inv_grid']
+
+    tri_x = inv_grid.tri_x
+    tri_y = inv_grid.tri_y
+    tri_nodes = inv_grid.tri_nodes
+    R_values = inv_grid.R_values
+    Z_values = inv_grid.Z_values
+    R_mean = inv_grid.R_mean
+    Z_mean = inv_grid.Z_mean
+    Area = inv_grid.Area
+
+    emi = data['emi']
+    t = data['t']
+    time = data['time']
+    time_vec = np.asarray(time)
+    t_idx = np.argmin(np.abs(time_vec - t))
+    emi = emi[:, t_idx]
+    triangles = tri_nodes.astype(int)  # tri_nodes doit être zéro-indexé
+    tri = Triangulation(tri_x, tri_y, triangles)
+
+    tpc = ax.tripcolor(tri, emi, shading='flat', edgecolors='none', vmin=emi_vmin, vmax=emi_vmax)
+    
+    return tpc
 
 # psi = np.zeros_like(R_grid)
 
