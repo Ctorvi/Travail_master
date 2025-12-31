@@ -12,7 +12,7 @@ from matplotlib.tri import Triangulation
 
 #fig, ax = plt.subplots(2, 1, figsize=(5, 8))
 #fig, ax = plt.subplots(1, 1, figsize=(6, 6.6))
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 8), gridspec_kw={'width_ratios': [1, 1]})
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7, 6), gridspec_kw={'width_ratios': [1, 1]})
 
 plt.rcParams.update(
     {
@@ -31,7 +31,7 @@ pert_mat_file_dec = 'JF_77062_120_Bm_Ip_dec_5.mat'
 pert_mat_file_inc = 'JF_77062_120_Bm_Ip_inc_5.mat'
 
 
-patch_mat_file = './script/jellyfisch/77062_12/JF_77062_patch_12_C3.mat'
+patch_mat_file = './script/jellyfisch/77062_12/JF_77062_patch_120_C3.mat'
 
 JFField_dec = AxisymmetricCylindricalGridField.from_matlab_file(f"{repository_path}{pert_mat_file_dec}", with_perturbation=True)
 JFField_inc = AxisymmetricCylindricalGridField.from_matlab_file(f"{repository_path}{pert_mat_file_inc}", with_perturbation=True)
@@ -44,7 +44,7 @@ section_inc = CylindricalBfieldSection(JFField_inc,phi0=1.9,R0=0.88, Z0=0)
 
 
 
-JFField = AxisymmetricCylindricalGridField.from_matlab_file('./script/jellyfisch/77062_12/normal/JF_77062_12.mat', with_perturbation=True)
+JFField = AxisymmetricCylindricalGridField.from_matlab_file('./script/jellyfisch/77062_12/normal/JF_77062_120_BO78_OS.mat', with_perturbation=True)
 
 
 section = CylindricalBfieldSection(JFField,phi0=1.9,R0=0.88, Z0=0)
@@ -80,24 +80,24 @@ x_point4_coord = x_point4.coords[0]
 
 top_o_d = FixedPoint(section_dec)
 top_o_d.find(1, [0.9,0.18], method='scipy.root')
-#top_o_coord = top_o.coords[0]
+top_o_d_coord = top_o_d.coords[0]
  
 
 x_point1_d= FixedPoint(section_dec)
 x_point1_d.find(1, [0.8,-0.27], method='scipy.root')
-#x_point1_coord = x_point1.coords[0]
+x_point1_d_coord = x_point1_d.coords[0]
 
 x_point2_d= FixedPoint(section_dec)
 x_point2_d.find(1, [0.8,-0.57], method='scipy.root')
-#x_point2_coord = x_point2.coords[0]
+x_point2_d_coord = x_point2_d.coords[0]
 
 x_point3_d= FixedPoint(section_dec)
 x_point3_d.find(1, [1.05,-0.58], method='scipy.root')
-#x_point3_coord = x_point3.coords[0]
+x_point3_d_coord = x_point3_d.coords[0]
 
 x_point4_d= FixedPoint(section_dec)
 x_point4_d.find(1, [0.75,0.65], method='scipy.root')
-#x_point4_coord = x_point4.coords[0]
+x_point4_d_coord = x_point4_d.coords[0]
 
 
 
@@ -108,23 +108,23 @@ x_point4_d.find(1, [0.75,0.65], method='scipy.root')
 
 top_o_i = FixedPoint(section_inc)
 top_o_i.find(1, [0.9,0.18], method='scipy.root')
-#top_o_coord = top_o_i.coords[0]
+top_o_i_coord = top_o_i.coords[0]
 
 x_point1_i= FixedPoint(section_inc)
 x_point1_i.find(1, [0.8,-0.27], method='scipy.root')
-#x_point1_coord = x_point1_i.coords[0]
+x_point1_i_coord = x_point1_i.coords[0]
 
 x_point2_i= FixedPoint(section_inc)
 x_point2_i.find(1, [0.8,-0.57], method='scipy.root')
-#x_point2_coord = x_point2_i.coords[0]
+x_point2_i_coord = x_point2_i.coords[0]
 
 x_point3_i= FixedPoint(section_inc)
 x_point3_i.find(1, [1.05,-0.58], method='scipy.root')
-#x_point3_coord = x_point3_i.coords[0]
+x_point3_i_coord = x_point3_i.coords[0]
 
 x_point4_i= FixedPoint(section_inc)
 x_point4_i.find(1, [0.75,0.65], method='scipy.root')
-#x_point4_coord = x_point4_i.coords[0]
+x_point4_i_coord = x_point4_i.coords[0]
 
 
 
@@ -165,9 +165,9 @@ x_point4_i.find(1, [0.75,0.65], method='scipy.root')
 ###########################. fixed point  #########################
 
 
-# ####top fp top mf#########
+# ###top fp top mf#########
 
-# manifold_1T = Manifold(section, x_point1, x_point1,-x_point1_coord+top_o_coord, -x_point1_coord+top_o_coord)
+# manifold_1T = Manifold(section_dec, x_point1_d, x_point1_d,-x_point1_d_coord+top_o_d_coord, -x_point1_d_coord+top_o_d_coord)
 # manifold_1T.compute(
 #    eps_s=9e-6, eps_u=8e-6, nint_s=10, nint_u=14, neps_s=80, neps_u=240) #8 14 240
 
@@ -175,7 +175,7 @@ x_point4_i.find(1, [0.75,0.65], method='scipy.root')
 
 # #####top fp bottom mf#########
 
-# manifold_1B = Manifold(section, x_point1, x_point1)
+# manifold_1B = Manifold(section_dec, x_point1_d, x_point1_d)
 # manifold_1B.compute(
 #        eps_s=9e-6, eps_u=8e-6, nint_s=10, nint_u=25, neps_s=80, neps_u=80)
 # manifold_1B.save(f"{repository_path}manifolds_dec/mf_1B.pkl")
@@ -184,36 +184,36 @@ x_point4_i.find(1, [0.75,0.65], method='scipy.root')
 # ##### bottom fp top mf
 
 
-# manifold_2T = Manifold(section, x_point2, x_point2,-x_point2_coord+top_o_coord, -x_point2_coord+top_o_coord)
+# manifold_2T = Manifold(section_dec, x_point2_d, x_point2_d,-x_point2_d_coord+top_o_d_coord, -x_point2_d_coord+top_o_d_coord)
 # manifold_2T.compute(
 #       eps_s=9e-6, eps_u=8e-6, nint_s=32, nint_u=30, neps_s=80, neps_u=80)
 # manifold_2T.save(f"{repository_path}manifolds_dec/mf_2T.pkl")
 
-#### bottom fp bottom mf
+# ### bottom fp bottom mf
 
 
-# manifold_2B = Manifold(section_inc, x_point2_i, x_point2_i,x_point2_coord-top_o_coord, x_point2_coord-top_o_coord)
+# manifold_2B = Manifold(section_inc, x_point2_i, x_point2_i,x_point2_i_coord-top_o_i_coord, x_point2_i_coord-top_o_i_coord)
 # manifold_2B.compute(
 #       eps_s=9e-6, eps_u=8e-6, nint_s=32, nint_u=32, neps_s=80, neps_u=80)
 # manifold_2B.save(f"{repository_path}manifolds_inc/mf_2B.pkl")
 
 # #### right fp left mf
 
-# manifold_3L = Manifold(section, x_point3, x_point3,-x_point3_coord+top_o_coord, -x_point3_coord+top_o_coord)
+# manifold_3L = Manifold(section_dec, x_point3_d, x_point3_d,-x_point3_d_coord+top_o_d_coord, -x_point3_d_coord+top_o_d_coord)
 # manifold_3L.compute(
 #       eps_s=9e-6, eps_u=8e-6, nint_s=33, nint_u=30, neps_s=80, neps_u=80)
 # manifold_3L.save(f"{repository_path}manifolds_dec/mf_3L.pkl")
 
 # # ##### right fp right mf
 
-# manifold_3R = Manifold(section, x_point3, x_point3,x_point3_coord-top_o_coord, x_point3_coord-top_o_coord)
+# manifold_3R = Manifold(section_dec, x_point3_d, x_point3_d,x_point3_d_coord-top_o_d_coord, x_point3_d_coord-top_o_d_coord)
 # manifold_3R.compute(
 #       eps_s=9e-6, eps_u=8e-6, nint_s=20, nint_u=20, neps_s=80, neps_u=80)
 # manifold_3R.save(f"{repository_path}manifolds_dec/mf_3R.pkl")
 
 # ## top fp top mf 
 
-# manifold_4T = Manifold(section, x_point4, x_point4,x_point4_coord-top_o_coord, x_point4_coord-top_o_coord)
+# manifold_4T = Manifold(section_dec, x_point4_d, x_point4_d,x_point4_d_coord-top_o_d_coord, x_point4_d_coord-top_o_d_coord)
 # manifold_4T.compute(
 #      eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=8, neps_s=80, neps_u=80)
 # manifold_4T.save(f"{repository_path}manifolds_dec/mf_4T.pkl")
@@ -221,7 +221,7 @@ x_point4_i.find(1, [0.75,0.65], method='scipy.root')
 # # # # ##### over the top fp bottom mf
 
 
-# manifold_4B = Manifold(section, x_point4, x_point4,-x_point4_coord+top_o_coord, -x_point4_coord+top_o_coord)
+# manifold_4B = Manifold(section_dec, x_point4_d, x_point4_d,-x_point4_d_coord+top_o_d_coord, -x_point4_d_coord+top_o_d_coord)
 # manifold_4B.compute(
 #      eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=30, neps_s=80, neps_u=80)
 # manifold_4B.save(f"{repository_path}manifolds_dec/mf_4B.pkl")
@@ -278,14 +278,14 @@ manifold_4B_d.plot(ax=ax2, markersize=0, lw=0.7,colors=["xkcd:lightblue", "xkcd:
 ####################################### normal ###################################
 
 
-manifold_1T  = Manifold.load('./script/jellyfisch/77062_12/normal/manifolds_P/mf_1T.pkl')
-manifold_1B  = Manifold.load('./script/jellyfisch/77062_12/normal/manifolds_P/mf_1B.pkl')
-manifold_2T  = Manifold.load('./script/jellyfisch/77062_12/normal/manifolds_P/mf_2T.pkl')
-manifold_2B  = Manifold.load('./script/jellyfisch/77062_12/normal/manifolds_P/mf_2B.pkl')
-manifold_3L = Manifold.load('./script/jellyfisch/77062_12/normal/manifolds_P/mf_3L.pkl')
-manifold_3R  = Manifold.load('./script/jellyfisch/77062_12/normal/manifolds_P/mf_3R.pkl')
-manifold_4T = Manifold.load('./script/jellyfisch/77062_12/normal/manifolds_P/mf_4T.pkl')
-manifold_4B  = Manifold.load('./script/jellyfisch/77062_12/normal/manifolds_P/mf_4B.pkl')
+manifold_1T  = Manifold.load('./script/jellyfisch/77062_12/normal/manifolds_P/OS_BO78/mf_1T_nu14.pkl')
+manifold_1B  = Manifold.load('./script/jellyfisch/77062_12/normal/manifolds_P/OS_BO78/mf_1B.pkl')
+manifold_2T  = Manifold.load('./script/jellyfisch/77062_12/normal/manifolds_P/OS_BO78/mf_2T.pkl')
+manifold_2B  = Manifold.load('./script/jellyfisch/77062_12/normal/manifolds_P/OS_BO78/mf_2B.pkl')
+manifold_3L = Manifold.load('./script/jellyfisch/77062_12/normal/manifolds_P/OS_BO78/mf_3L.pkl')
+manifold_3R  = Manifold.load('./script/jellyfisch/77062_12/normal/manifolds_P/OS_BO78/mf_3R.pkl')
+manifold_4T = Manifold.load('./script/jellyfisch/77062_12/normal/manifolds_P/OS_BO78/mf_4T.pkl')
+manifold_4B  = Manifold.load('./script/jellyfisch/77062_12/normal/manifolds_P/OS_BO78/mf_4B.pkl')
 
 
 
@@ -368,7 +368,7 @@ ax1.set_ylim(-0.6, -0.1)
 ax1.set_xlabel(r"$R[m]$")
 ax1.set_ylabel(r"$Z[m]$")
 ax1.set_aspect('equal') 
-ax1.legend(loc='center right', bbox_to_anchor=(1.03, 0.5), ncol=1, fontsize=9)
+ax1.legend(loc='center right', bbox_to_anchor=(1.05, 0.5), ncol=1, fontsize=7)
 ax1.set_title('Ip/Bm increase vs normal')
 
 ax2.set_xlim(0.7, 1.0)
@@ -376,7 +376,7 @@ ax2.set_ylim(-0.6, -0.1)
 ax2.set_xlabel(r"$R[m]$")
 #ax2.set_ylabel(r"$Z[m]$")
 ax2.set_aspect('equal') 
-ax2.legend(loc='center right', bbox_to_anchor=(1., 0.5), ncol=1, fontsize=9)
+ax2.legend(loc='center right', bbox_to_anchor=(1.05, 0.5), ncol=1, fontsize=7)
 ax2.set_title('Ip/Bm decrease vs normal')
 
 

@@ -98,8 +98,8 @@ def line_curve_MF_intersections(p0, p1, manifolds, unstable=True, tol=1e-9, ax1=
     middle_zone_MF=[]
     if ax2 is not None:
              for i, (a, b) in enumerate(zip(dists[::2], dists[1::2])):
-                    lbl = 'Leg zone (MF intersection)' if i == 0 else None
-                    lbl2= 'Half width of leg zone' if i == 0 else None
+                    lbl = 'leg zone (MF inter)' if i == 0 else None
+                    lbl2= 'half leg zone' if i == 0 else None
 
                     ax2.axvspan(a, b, color='lightgrey', alpha=0.3, label=lbl)
                     ax2.axvline(0.5*(a + b), color='red', linestyle='--', linewidth=0.8, alpha=0.8, label=lbl2)
@@ -147,11 +147,11 @@ def sample_emi_along_line(p0, p1, tri, emi, n_samples=300, limit_find_peaks=0.2,
     if ax is not None:
         # safe use of plot_kwargs
         if isinstance(plot_kwargs, dict):
-            ax.plot(dist, emi_vals, label='Emissivity along line', **plot_kwargs)
+            ax.plot(dist, emi_vals, label='line emi.', **plot_kwargs)
             ax.plot(dist, y_gauss, color='green', linewidth=1)#label='Gaussian smoothed',
 
         else:
-            ax.plot(dist, emi_vals,color='royalblue', label='Emissivity along line')
+            ax.plot(dist, emi_vals,color='royalblue', label='line emi.')
             ax.plot(dist, y_gauss, color='royalblue', alpha=0.5, linewidth=1)#label='Gaussian smoothed',
 
     idx_end=np.argmin(np.abs(dist - limit_find_peaks))
@@ -164,7 +164,7 @@ def sample_emi_along_line(p0, p1, tri, emi, n_samples=300, limit_find_peaks=0.2,
     ax.scatter(max_dist, y_gauss_end[max_idx], color='blue', zorder=10)
 
     for x in np.atleast_1d(max_dist):
-        lbl = 'peak emissivity' if x == np.atleast_1d(max_dist)[0] else None
+        lbl = 'peak emi.' if x == np.atleast_1d(max_dist)[0] else None
         ax.axvline(float(x), color='blue', linestyle='--', linewidth=0.8, alpha=0.8,label=lbl)
 
 
