@@ -16,9 +16,9 @@ from matplotlib.tri import Triangulation , LinearTriInterpolator
 from script.function.line_intersect import line_curve_MF_intersections as MF_inter
 from script.function.line_intersect import sample_emi_along_line
 from script.function.line_intersect import line_curve_intersections as line_intersections
+from script.function.field_utils import plot_tomographic as tomo
 
-
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5), gridspec_kw={'width_ratios': [1, 1]})
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(6, 4), gridspec_kw={'width_ratios': [1, 1]})
 
 plt.rcParams.update(
     {
@@ -30,8 +30,8 @@ plt.rcParams.update(
 logging.basicConfig(level=logging.DEBUG)
 
 repository_path = './script/jellyfisch/75979_12/'
-pert_mat_file = 'JF_75979_120.mat'
-patch_mat_file = './script/jellyfisch/75979_12/JF_75979_patch_120_He2.mat'
+pert_mat_file = 'mat_files/JF_75979_120.mat'
+patch_mat_file = './script/jellyfisch/75979_12/mat_files/JF_75979_patch_120_He2.mat'
 
 JFField = AxisymmetricCylindricalGridField.from_matlab_file(f"{repository_path}{pert_mat_file}", with_perturbation=True)
 
@@ -57,41 +57,18 @@ x_point2_coord = x_point2.coords[0]
 # x_point4.find(1, [0.75,0.65], method='scipy.root')
 # x_point4_coord = x_point4.coords[0]
 
+
+
 ###########################  tomographic reconstruction  #########################
 
-data = loadmat(f"{patch_mat_file}", squeeze_me=True, struct_as_record=False)
+tpc,tri,emi= tomo(f"{patch_mat_file}",ax=ax1,emi_vmin=0, emi_vmax=2.25e19)
 
-inv_grid=data['inv_grid']
+###########################. computation #########################
 
-tri_x = inv_grid.tri_x
-tri_y = inv_grid.tri_y
-tri_nodes = inv_grid.tri_nodes
-R_values = inv_grid.R_values
-Z_values = inv_grid.Z_values
-R_mean = inv_grid.R_mean
-Z_mean = inv_grid.Z_mean
-Area= inv_grid.Area
-
-emi=data['emi']
-t=data['t']
-time=data['time']
-
-time_vec = np.asarray(time)
-# Find index of closest time
-t_idx = np.argmin(np.abs(time_vec - t))
-emi = emi[:, t_idx]
-    
-triangles = tri_nodes.astype(int)  # tri_nodes doit être zéro-indexé
-
-tri = Triangulation(tri_x, tri_y, triangles)
-
-tpc=ax1.tripcolor(tri, emi, shading='flat', edgecolors='none', vmin=0, vmax=2.e19)
-# #fig.colorbar(tpc, ax=ax, label='Émission')
-
-manifold_1T  = Manifold.load(f"{repository_path}manifolds_P/mf_1T_less_iter.pkl")
-manifold_1B  = Manifold.load(f"{repository_path}manifolds_P/mf_1B.pkl")
-manifold_2T  = Manifold.load(f"{repository_path}manifolds_P/mf_2T.pkl")
-manifold_2B  = Manifold.load(f"{repository_path}manifolds_P/mf_2B.pkl")
+manifold_1T  = Manifold.load(f"{repository_path}manifolds_P/OS_BO78/mf_1T_nu22.pkl")
+manifold_1B  = Manifold.load(f"{repository_path}manifolds_P/OS_BO78/mf_1B.pkl")
+manifold_2T  = Manifold.load(f"{repository_path}manifolds_P/OS_BO78/mf_2T.pkl")
+manifold_2B  = Manifold.load(f"{repository_path}manifolds_P/OS_BO78/mf_2B.pkl")
 
 
 manifold_1T.plot(stepsize_limit=0.2,ax=ax1, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
@@ -134,7 +111,7 @@ p1 = np.array([0.79, -0.505])
 
 pts, emi_vals,dist,perio_MANTIS,std_perio_MANTIS= sample_emi_along_line(p0, p1, tri, emi, n_samples=400,sig=7,ax=ax2)
 
-intersections_1, dist1,perio_MF,std_perio_MF=MF_inter(p0, p1, manifold_1T,ax1=ax1,ax2=ax2)
+intersections_1, dist1 , perio_MF , std_perio_MF=MF_inter(p0, p1, manifold_1T,ax1=ax1,ax2=ax2)
 
 ax2.set_ylim(0, np.nanmax(emi_vals)*1.2)
 ax2.set_xlim(min(dist), 0.19)
@@ -143,8 +120,8 @@ ax2.set_ylabel("Relative Emissivity")
 
 
 txt = (
-    f"MANTIS (avg peak distance): {perio_MANTIS:.4f} ± {std_perio_MANTIS:.4f} [m]\n"
-    f"MF (avg peak distance): {perio_MF:.4f} ± {std_perio_MF:.4f} [m]"
+    f"MANTIS (avg $\Delta d$): {perio_MANTIS:.4f} ± {std_perio_MANTIS:.4f} [m]\n"
+    f"MF (avg $\Delta d$): {perio_MF:.4f} ± {std_perio_MF:.4f} [m]"
 )
 
 # ajouter en haut à droite de l'axe de profil
