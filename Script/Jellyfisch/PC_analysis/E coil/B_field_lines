@@ -1,0 +1,61 @@
+import os, sys
+proj_root = os.path.abspath(os.path.join(os.path.dirname(__file__),'..','..','..','..'))  # remonte jusqu'à "Travail master"
+if proj_root not in sys.path:
+    sys.path.insert(0, proj_root)
+from script.function.field_utils import plot_tomographic as tomo
+from script.function.field_utils import plot_Br_Bz
+from script.function.field_utils import plot_LIUQE as LIUQE
+
+from pyoculus.fields import AxisymmetricCylindricalGridField
+from pyoculus.maps import CylindricalBfieldSection
+from pyoculus.solvers import FixedPoint, Manifold, PoincarePlot
+import numpy as np
+from matplotlib import pyplot as plt
+import logging
+from scipy.io import loadmat
+from matplotlib.tri import Triangulation
+
+
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(5, 8))
+
+
+fig, (ax3, ax4) = plt.subplots(1, 2, figsize=(5, 8))
+list_ax = [ax1, ax2, ax3, ax4]
+
+plt.rcParams.update(
+    {
+        "text.usetex": False,
+        "font.family": "serif",
+        "font.size": 9,
+    }
+)
+
+logging.basicConfig(level=logging.DEBUG)
+
+repository_path = './script/jellyfisch/PC_analysis/E coil/'
+
+JFField1 = AxisymmetricCylindricalGridField.from_matlab_file(f"{repository_path}pert_files/E_DX_plus.mat", with_perturbation=True)
+
+JFField2 = AxisymmetricCylindricalGridField.from_matlab_file(f"{repository_path}pert_files/E_OY_tilt.mat", with_perturbation=True)
+
+LIUQE_mat_file = './script/jellyfisch/77021/1_20/Liuqe_JF_120.mat'
+
+for i in range(4):
+    data_LIUQE, lgd1,lgd2= LIUQE(f"{LIUQE_mat_file}",n_levels=15,ax=list_ax[i],colors=["grey", "grey", "grey"],linestyles=['-','-','-'])
+   
+
+data_vessel = loadmat('./script/jellyfisch/75979_12/mat_files/Liuqe_JF_75979_120_with_V.mat', squeeze_me=True, struct_as_record=False)
+
+vessel=data_vessel['vessel']
+
+plot_Br_Bz(JFField1, n_levels=8, ax_pair=(ax1, ax2),vessel=vessel)
+
+#ax1.get_figure().savefig(f"{repository_path}B_field_E_DX_plus.png", dpi=300, bbox_inches="tight", pad_inches=0)
+
+
+plot_Br_Bz(JFField2, n_levels=8, ax_pair=(ax3, ax4),vessel=vessel)
+
+#ax3.get_figure().savefig(f"{repository_path}B_field_E_OY_tilt.png", dpi=300, bbox_inches="tight", pad_inches=0)
+
+plt.show()
