@@ -1,0 +1,170 @@
+import os, sys
+from pyoculus.fields import AxisymmetricCylindricalGridField
+from pyoculus.maps import CylindricalBfieldSection
+from pyoculus.solvers import FixedPoint, Manifold, PoincarePlot
+proj_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..','..'))  # remonte jusqu'à "Travail master"
+if proj_root not in sys.path:
+    sys.path.insert(0, proj_root)
+import numpy as np
+from matplotlib import pyplot as plt
+import logging
+from matplotlib.gridspec import GridSpec
+from scipy.io import loadmat
+from matplotlib.tri import Triangulation
+from script.function.field_utils import plot_tomographic as tomo
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+from matplotlib.patches import Circle
+
+repository_path = './script/jellyfisch/77021/1_20/backoff/'
+
+file_manifolds = 'manifolds_P/OS_BO78/'
+
+pert_mat_file = 'JF_77021_120_BO78_OS.mat'
+
+JFField = AxisymmetricCylindricalGridField.from_matlab_file(f"{repository_path}{pert_mat_file}", with_perturbation=True)
+
+mf_list = ['mf_1T_n20', 'mf_1B', 'mf_2T', 'mf_2B', 'mf_3L', 'mf_3R', 'mf_4T', 'mf_4B']
+
+titles=['(JF 77021 / C-III)', '(JF 77021 / He-I)']
+
+section = CylindricalBfieldSection(JFField,phi0=1.9,R0=0.88, Z0=0)
+
+top_o = FixedPoint(section)
+top_o.find(1, [0.9,0.18], method='scipy.root')
+top_o_coord = top_o.coords[0]
+
+x_point1= FixedPoint(section)
+x_point1.find(1, [0.8,-0.27], method='scipy.root')
+x_point1_coord = x_point1.coords[0]
+
+x_point2= FixedPoint(section)
+x_point2.find(1, [0.8,-0.57], method='scipy.root')
+x_point2_coord = x_point2.coords[0]
+
+x_point3= FixedPoint(section)
+x_point3.find(1, [1.05,-0.58], method='scipy.root')
+x_point3_coord = x_point3.coords[0]
+
+x_point4= FixedPoint(section)
+x_point4.find(1, [0.75,0.65], method='scipy.root')
+x_point4_coord = x_point4.coords[0]
+
+
+
+fig = plt.figure(figsize=(6, 3), constrained_layout=True)
+gs = GridSpec(1, 3, figure=fig, width_ratios=[1, 1, 1], wspace=0.12, hspace=0.02)
+
+ax1 = fig.add_subplot(gs[0, 0])
+ax2 = fig.add_subplot(gs[0, 1], sharey=ax1)   
+ax3 = fig.add_subplot(gs[0, 2], sharey=ax1)
+
+
+plt.setp(ax2.get_yticklabels(), visible=False)
+plt.setp(ax3.get_yticklabels(), visible=False)
+
+
+tpc,tri,emi= tomo('./script/jellyfisch/77021/1_20/JF_patch_77021_120_C3.mat',ax=ax1,emi_vmin=0, emi_vmax=3.8e20)
+tpc,tri,emi= tomo('./script/jellyfisch/77021/1_20/JF_patch_77021_120_D32.mat',ax=ax2,emi_vmin=0, emi_vmax=6.5e20)
+tpc,tri,emi= tomo('./script/jellyfisch/77021/1_20/JF_patch_77021_120_HeI.mat',ax=ax3,emi_vmin=0, emi_vmax=2.6e19)
+
+
+ax1.annotate(
+    "", 
+    xy=(0.81, -0.425),      # pointe de la flèche
+    xytext=(0.65, -0.425),  # début
+    arrowprops=dict(arrowstyle="->", color='white', lw=0.7),
+    zorder=20   # clé importante
+)
+
+
+for i in range(3):
+    ax = fig.axes[i]
+    ax.set_aspect('equal')
+    ax.set_xlim(0.62, 1.0)
+    ax.set_ylim(-0.58, -0.08)
+    ax.set_xlabel(r"$R[m]$")  
+    #top_o.plot(ax=ax, marker='o', color="xkcd:white",label='O-point')
+    x_point1.plot(ax=ax, marker='x', color="xkcd:white",label='X-point')
+    x_point2.plot(ax=ax, marker='x', color="xkcd:white",label=None)
+    x_point3.plot(ax=ax, marker='x', color="xkcd:white",label=None)
+    x_point4.plot(ax=ax, marker='x', color="xkcd:white",label=None)
+
+ax1.set_ylabel(r"$Z[m]$")
+ax1.set_title('C-III 465 nm')
+ax2.set_title('D-III 656 nm')
+ax3.set_title('He-I 667 nm')
+ax1.legend(loc='upper right', fontsize=6)
+
+circle1 = Circle((0.52, 0.57), 0.15,   transform=ax1.transAxes,  facecolor='none', edgecolor='red', linewidth=0.5, zorder=20)
+circle2 = Circle((0.52, 0.57), 0.15,   transform=ax2.transAxes,  facecolor='none', edgecolor='red', linewidth=0.5, zorder=20)
+circle3 = Circle((0.52, 0.57), 0.15,   transform=ax3.transAxes,  facecolor='none', edgecolor='red', linewidth=0.5, zorder=20)
+
+circle1_2 = Circle((0.1, 0.26), 0.15,   transform=ax2.transAxes,  facecolor='none', edgecolor='white', linewidth=0.5, zorder=20)
+
+ax2.add_patch(circle1_2)
+ax1.add_patch(circle1)
+ax2.add_patch(circle2)
+ax3.add_patch(circle3)
+plt.savefig('./figures/Spec_line_comp_77021.png', dpi=150, bbox_inches=None, facecolor=fig.get_facecolor())
+plt.show()
+
+
+# ############## plot HeI vs C3 #############
+
+# fig = plt.figure(figsize=(8, 7), constrained_layout=True)
+# gs = GridSpec(1, 2, figure=fig, width_ratios=[1, 1], wspace=0.12, hspace=0.02)
+
+# ax1_1 = fig.add_subplot(gs[0, 0])
+# ax1_2 = fig.add_subplot(gs[0, 1])
+
+
+
+# ###########################  tomographic reconstruction  #########################
+
+
+# tpc,tri,emi= tomo('./script/jellyfisch/77021/1_20/JF_patch_77021_120_C3.mat',ax=ax1_1,emi_vmin=0, emi_vmax=3.8e20)
+# tpc,tri,emi= tomo('./script/jellyfisch/77021/1_20/JF_patch_77021_120_HeI.mat',ax=ax1_2,emi_vmin=0, emi_vmax=2.6e19)
+
+# ###########################  plotting  #########################
+
+
+# manifs = {name: {name} for name in mf_list}
+
+# for i in mf_list:
+#      manifs[i] = Manifold.load(f"{repository_path}{file_manifolds}{i}.pkl")
+#      manifs[i].plot(stepsize_limit=0.05, ax=ax1_1, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=['stable MF','unstable MF'] if i=='mf_1T' else [None,None])
+#      manifs[i].plot(stepsize_limit=0.05, ax=ax1_2, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
+
+
+# for i in range(2):
+#     ax = fig.axes[i]
+#     ax.set_aspect('equal')
+#     ax.set_xlim(0.7, 1.0)
+#     ax.set_ylim(-0.58, -0.08)
+#     ax.set_xlabel(r"$R[m]$")
+#     ax.set_title(titles[i])
+#     top_o.plot(ax=ax, marker='o', color="xkcd:white",label='O-point')
+#     x_point1.plot(ax=ax, marker='x', color="xkcd:white",label='X-point')
+#     x_point2.plot(ax=ax, marker='x', color="xkcd:white",label=None)
+#     x_point3.plot(ax=ax, marker='x', color="xkcd:white",label=None)
+#     x_point4.plot(ax=ax, marker='x', color="xkcd:white",label=None)
+
+
+# #####zoomed
+
+# ax1_1.set_ylabel(r"$Z[m]$")
+
+# plt.savefig('./figures/JF_77021_120_C3_vs_HeI_Zoom.png', bbox_inches='tight', dpi=720)
+# plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
