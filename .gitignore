@@ -15,3 +15,6 @@ Script/Jellyfisch/75979_12/mat_files/JF_75979_patch_120_He2.mat
 
 script/jellyfisch/78801_12/78801_patch_120_HeI_667.mat
 
+
+# Large MATLAB files
+*.mat
