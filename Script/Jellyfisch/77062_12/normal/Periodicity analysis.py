@@ -19,7 +19,7 @@ from script.function.line_intersect import sample_emi_along_line
 from script.function.line_intersect import line_curve_intersections as line_intersections
 from script.function.field_utils import plot_tomographic as tomo
 
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(6, 4), gridspec_kw={'width_ratios': [1, 1]})
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.5, 5), gridspec_kw={'width_ratios': [1, 1]})
 
 plt.rcParams.update(
     {
@@ -32,7 +32,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 repository_path = './script/jellyfisch/77062_12/normal/'
 pert_mat_file = 'JF_77062_120.mat'
-patch_mat_file = './script/jellyfisch/77062_12/JF_77062_patch_120_C3.mat'
+patch_mat_file = './script/jellyfisch/77062_12/JF_77062_patch_120_HeI_706.mat'
 
 JFField = AxisymmetricCylindricalGridField.from_matlab_file(f"{repository_path}{pert_mat_file}", with_perturbation=True)
 
@@ -60,7 +60,7 @@ x_point2_coord = x_point2.coords[0]
 
 ###########################  tomographic reconstruction  #########################
 
-tpc,tri,emi= tomo(f"{patch_mat_file}",ax=ax1,emi_vmin=0, emi_vmax=9e20)
+tpc,tri,emi= tomo(f"{patch_mat_file}",ax=ax1,emi_vmin=0, emi_vmax=4.5e18)
 
 ###########################. computation #########################
 manifold_1T  = Manifold.load(f"{repository_path}manifolds_P/OS_BO78/mf_1T_nu14.pkl")
@@ -69,15 +69,15 @@ manifold_2T  = Manifold.load(f"{repository_path}manifolds_P/OS_BO78/mf_2T.pkl")
 manifold_2B  = Manifold.load(f"{repository_path}manifolds_P/OS_BO78/mf_2B.pkl")
 
 
-manifold_1T.plot(stepsize_limit=0.2,ax=ax1, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_1B.plot(ax=ax1, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_2T.plot(stepsize_limit=0.3, ax=ax1, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_2B.plot(stepsize_limit=0.3, ax=ax1, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
+manifold_1T.plot(stepsize_limit=0.2,ax=ax1, markersize=0, lw=0.6,colors=["rosybrown", "xkcd:red"])
+manifold_1B.plot(ax=ax1, markersize=0, lw=0.6,colors=["rosybrown", "xkcd:red"])
+manifold_2T.plot(stepsize_limit=0.3, ax=ax1, markersize=0, lw=0.6,colors=["rosybrown", "xkcd:red"])
+manifold_2B.plot(stepsize_limit=0.3, ax=ax1, markersize=0, lw=0.6,colors=["rosybrown", "xkcd:red"])
 
 
 top_o.plot(ax=ax1, marker='o', color="xkcd:white")
-x_point1.plot(ax=ax1, marker='x', color="xkcd:white")
-x_point2.plot(ax=ax1, marker='x', color="xkcd:white")
+x_point1.plot(ax=ax1, marker='x', color="xkcd:white",zorder=10)
+x_point2.plot(ax=ax1, marker='x', color="xkcd:white",zorder=10)
 
 ratio=2.8158
 
@@ -100,15 +100,19 @@ ax1.set_title('(77062 / 1.20 s / 1.9 rad)')
 
 #####zoomed
 
-p0 = np.array([0.87, -0.33])
-p1 = np.array([0.87, -0.5])  #x_point2.coords[0]
+# p0 = np.array([0.87, -0.33])
+# p1 = np.array([0.87, -0.5])  #x_point2.coords[0]
+
+
+p0 = np.array([0.85, -0.3])
+p1 = np.array([0.85, -0.475])  #x_point2.coords[0]
 
 pts, emi_vals,dist,perio_MANTIS,std_perio_MANTIS= sample_emi_along_line(p0, p1, tri, emi, n_samples=400,sig=7.0,ax=ax2)
 
 intersections_1, dist1,perio_MF,std_perio_MF=MF_inter(p0, p1, manifold_1T,ax1=ax1,ax2=ax2)
 
 ax2.set_ylim(0, np.nanmax(emi_vals)*1.2)
-ax2.set_xlim(min(dist), 0.17)
+ax2.set_xlim(min(dist), 0.175)
 ax2.set_xlabel("distance along the line [m]")
 ax2.set_ylabel("Relative Emissivity")
 
@@ -133,7 +137,7 @@ ax2.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
 
 ax2.legend(loc='lower left', bbox_to_anchor=(0.01, 0.01), ncol=1, fontsize=9)
 
-plt.savefig(f"{repository_path}figures/JF_77062_periodicity.png", dpi=150, bbox_inches=None, facecolor=fig.get_facecolor())
+plt.savefig(f"{repository_path}figures/JF_77062_periodicity_with_HeI.png", dpi=700, bbox_inches=None, pad_inches=0.0, facecolor=fig.get_facecolor())
 plt.show()
 
 print(f"Bz mismatch is {perio_MF/perio_MANTIS}")    

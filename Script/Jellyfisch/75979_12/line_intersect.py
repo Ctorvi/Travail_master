@@ -18,7 +18,7 @@ from script.function.line_intersect import sample_emi_along_line
 from script.function.line_intersect import line_curve_intersections as line_intersections
 from script.function.field_utils import plot_tomographic as tomo
 
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(6, 4), gridspec_kw={'width_ratios': [1, 1]})
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.5, 5), gridspec_kw={'width_ratios': [1, 1]})
 
 plt.rcParams.update(
     {
@@ -71,15 +71,15 @@ manifold_2T  = Manifold.load(f"{repository_path}manifolds_P/OS_BO78/mf_2T.pkl")
 manifold_2B  = Manifold.load(f"{repository_path}manifolds_P/OS_BO78/mf_2B.pkl")
 
 
-manifold_1T.plot(stepsize_limit=0.2,ax=ax1, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_1B.plot(ax=ax1, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_2T.plot(stepsize_limit=0.3, ax=ax1, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
-manifold_2B.plot(stepsize_limit=0.3, ax=ax1, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"])
+manifold_1T.plot(stepsize_limit=0.2,ax=ax1, markersize=0, lw=0.6,colors=["rosybrown", "xkcd:red"])
+manifold_1B.plot(ax=ax1, markersize=0, lw=0.6,colors=["rosybrown", "xkcd:red"])
+manifold_2T.plot(stepsize_limit=0.3, ax=ax1, markersize=0, lw=0.6,colors=["rosybrown", "xkcd:red"])
+manifold_2B.plot(stepsize_limit=0.3, ax=ax1, markersize=0, lw=0.6,colors=["rosybrown", "xkcd:red"])
 
 
-top_o.plot(ax=ax1, marker='o', color="xkcd:white")
-x_point1.plot(ax=ax1, marker='x', color="xkcd:white")
-x_point2.plot(ax=ax1, marker='x', color="xkcd:white")
+top_o.plot(ax=ax1, marker='o', color="xkcd:white",zorder=10)
+x_point1.plot(ax=ax1, marker='x', color="xkcd:white",zorder=10)
+x_point2.plot(ax=ax1, marker='x', color="xkcd:white",zorder=10)
 
 ratio=2.8158
 
@@ -138,7 +138,7 @@ ax2.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
 
 ax2.legend()
 
-plt.savefig(f"{repository_path}figures/Jellyfisch_75979_120_periodicity.png", dpi=150, bbox_inches=None, facecolor=fig.get_facecolor())
+plt.savefig(f"{repository_path}figures/Jellyfisch_75979_120_periodicity_v2.png", dpi=600, bbox_inches=None, pad_inches=0.0, facecolor=fig.get_facecolor())
 plt.show()
 print(f"Bz mismatch is {perio_MF/perio_MANTIS}")
 

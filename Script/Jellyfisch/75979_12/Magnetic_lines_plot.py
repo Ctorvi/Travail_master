@@ -162,7 +162,7 @@ cs = ax2.contour(R_grid2, Z_grid2, BZ, levels=levels, colors='k', linewidths=1.5
 #ax2.clabel(cs, fmt=lambda v: f"{v*1e3:.1f}", inline=True, fontsize=12)
 ax2.clabel(cs, fmt='%.1f', inline=True, fontsize=12)
 
-cf = ax2.contourf(R_grid2, Z_grid2, BZ, levels=levels, cmap='viridis', alpha=0.6)
+cf = ax2.contourf(R_grid2, Z_grid2, BZ, levels=levels, cmap='viridis', alpha=0.4)
 # cbar = plt.colorbar(cf, ax=ax2, pad=0.02, orientation='vertical')
 # cbar.ax.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
 # cbar.ax.yaxis.get_offset_text().set_visible(False)
@@ -198,7 +198,7 @@ else:
 cs = ax1.contour(R_grid2, Z_grid2, BR, levels=levels, colors='k', linewidths=1.5,linestyles='--')
 ax1.clabel(cs,fmt='%.1f', inline=True, fontsize=12)
 
-cf = ax1.contourf(R_grid2, Z_grid2, BR, levels=levels, cmap='viridis', alpha=0.6)
+cf = ax1.contourf(R_grid2, Z_grid2, BR, levels=levels, cmap='viridis', alpha=0.4)
 
 divider = make_axes_locatable(ax1)
 cax = divider.append_axes("right", size="4%", pad=0.06)
@@ -261,6 +261,6 @@ for ax in (ax1, ax2):
 
 
 
-#plt.savefig("./figures/Field_lines_n1_field_v1_0.png", dpi=150, bbox_inches=None, facecolor=fig.get_facecolor())
+plt.savefig("./figures/Field_lines_n1_field_v1_0.png", dpi=600, bbox_inches=None, pad_inches=0.0, facecolor=fig.get_facecolor())
 plt.show()
 print(Rt,Zt)

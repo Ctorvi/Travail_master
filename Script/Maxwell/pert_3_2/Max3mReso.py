@@ -66,7 +66,6 @@ ResoManifoldDown = Manifold(perturbedmap, xpointL, xpointT, opointTcoords-xpoint
 ResoManifoldUp = Manifold(perturbedmap, xpointT, xpointL, opointTcoords-xpointTcoords, opointTcoords-xpointLcoords)
 
 
-
 REZO3=ResonnanceZone(ResoManifoldDown,ResoManifoldUp)
 contour_points=REZO3.contour()
 
@@ -93,7 +92,7 @@ ax.set_aspect('equal')
 
 ax.plot(contour_points[:,0], contour_points[:,1], color='black', linewidth=0.8)
 
-plt.savefig('Doublet_Top_island.png', bbox_inches='tight', dpi=720)
+#plt.savefig('Doublet_Top_island.png', bbox_inches='tight', dpi=720)
 plt.show()
 
 

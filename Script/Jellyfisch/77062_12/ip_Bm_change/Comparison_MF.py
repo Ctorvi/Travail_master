@@ -12,7 +12,7 @@ from matplotlib.tri import Triangulation
 
 #fig, ax = plt.subplots(2, 1, figsize=(5, 8))
 #fig, ax = plt.subplots(1, 1, figsize=(6, 6.6))
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7, 6), gridspec_kw={'width_ratios': [1, 1]})
+fig, (ax0,ax1, ax2) = plt.subplots(1, 3, figsize=(10, 8), gridspec_kw={'width_ratios': [1, 1, 1]})
 
 plt.rcParams.update(
     {
@@ -29,15 +29,21 @@ repository_path = './script/jellyfisch/77062_12/ip_Bm_change/'
 
 pert_mat_file_dec = 'JF_77062_120_Bm_Ip_dec_5.mat'
 pert_mat_file_inc = 'JF_77062_120_Bm_Ip_inc_5.mat'
-
+pert_mat_file_KIN = './script/jellyfisch/77062_12/kinetic/JF_77062_120_KINETIC.mat'
 
 patch_mat_file = './script/jellyfisch/77062_12/JF_77062_patch_120_C3.mat'
 
 JFField_dec = AxisymmetricCylindricalGridField.from_matlab_file(f"{repository_path}{pert_mat_file_dec}", with_perturbation=True)
 JFField_inc = AxisymmetricCylindricalGridField.from_matlab_file(f"{repository_path}{pert_mat_file_inc}", with_perturbation=True)
+JFField_KIN = AxisymmetricCylindricalGridField.from_matlab_file(f"{pert_mat_file_KIN}", with_perturbation=True)
 
 section_dec = CylindricalBfieldSection(JFField_dec,phi0=1.9,R0=0.88, Z0=0)
 section_inc = CylindricalBfieldSection(JFField_inc,phi0=1.9,R0=0.88, Z0=0)
+section_KIN = CylindricalBfieldSection(JFField_KIN,phi0=1.9,R0=0.88, Z0=0)
+
+
+
+
 
 
 ############ fp normal ##############
@@ -127,106 +133,27 @@ x_point4_i.find(1, [0.75,0.65], method='scipy.root')
 x_point4_i_coord = x_point4_i.coords[0]
 
 
+############ fp KINETIC #######################
 
+top_o_K = FixedPoint(section_KIN)
+top_o_K.find(1, [0.9,0.18], method='scipy.root')
+#top_o_coord = top_o_i.coords[0]
 
-###########################  tomographic reconstruction  #########################
+x_point1_K= FixedPoint(section_KIN)
+x_point1_K.find(1, [0.8,-0.27], method='scipy.root')
+#x_point1_coord = x_point1_i.coords[0]
 
+x_point2_K= FixedPoint(section_KIN)
+x_point2_K.find(1, [0.8,-0.57], method='scipy.root')
+#x_point2_coord = x_point2_i.coords[0]
 
+x_point3_K= FixedPoint(section_KIN)
+x_point3_K.find(1, [1.05,-0.58], method='scipy.root')
+#x_point3_coord = x_point3_i.coords[0]
 
-
-
-# data = loadmat(f"{patch_mat_file}", squeeze_me=True, struct_as_record=False)
-
-# inv_grid=data['inv_grid']
-
-# tri_x = inv_grid.tri_x
-# tri_y = inv_grid.tri_y
-# tri_nodes = inv_grid.tri_nodes
-# R_values = inv_grid.R_values
-# Z_values = inv_grid.Z_values
-# R_mean = inv_grid.R_mean
-# Z_mean = inv_grid.Z_mean
-# Area= inv_grid.Area
-
-# emi=data['emi']
-# t=data['t']
-# time=data['time']
-# time_vec = np.asarray(time)
-
-# # Find index of closest time
-# t_idx = np.argmin(np.abs(time_vec - t))
-# emi = emi[:, t_idx]
-# triangles = tri_nodes.astype(int)  # tri_nodes doit être zéro-indexé
-# tri = Triangulation(tri_x, tri_y, triangles)
-# tpc=ax.tripcolor(tri, emi, shading='flat', edgecolors='none', vmin=0, vmax=8e20)
-# fig.colorbar(tpc, ax=ax, label='Émission')
-   
-
-###########################. fixed point  #########################
-
-
-# ###top fp top mf#########
-
-# manifold_1T = Manifold(section_dec, x_point1_d, x_point1_d,-x_point1_d_coord+top_o_d_coord, -x_point1_d_coord+top_o_d_coord)
-# manifold_1T.compute(
-#    eps_s=9e-6, eps_u=8e-6, nint_s=10, nint_u=14, neps_s=80, neps_u=240) #8 14 240
-
-# manifold_1T.save(f"{repository_path}manifolds_dec/mf_1T.pkl")
-
-# #####top fp bottom mf#########
-
-# manifold_1B = Manifold(section_dec, x_point1_d, x_point1_d)
-# manifold_1B.compute(
-#        eps_s=9e-6, eps_u=8e-6, nint_s=10, nint_u=25, neps_s=80, neps_u=80)
-# manifold_1B.save(f"{repository_path}manifolds_dec/mf_1B.pkl")
-
-
-# ##### bottom fp top mf
-
-
-# manifold_2T = Manifold(section_dec, x_point2_d, x_point2_d,-x_point2_d_coord+top_o_d_coord, -x_point2_d_coord+top_o_d_coord)
-# manifold_2T.compute(
-#       eps_s=9e-6, eps_u=8e-6, nint_s=32, nint_u=30, neps_s=80, neps_u=80)
-# manifold_2T.save(f"{repository_path}manifolds_dec/mf_2T.pkl")
-
-# ### bottom fp bottom mf
-
-
-# manifold_2B = Manifold(section_inc, x_point2_i, x_point2_i,x_point2_i_coord-top_o_i_coord, x_point2_i_coord-top_o_i_coord)
-# manifold_2B.compute(
-#       eps_s=9e-6, eps_u=8e-6, nint_s=32, nint_u=32, neps_s=80, neps_u=80)
-# manifold_2B.save(f"{repository_path}manifolds_inc/mf_2B.pkl")
-
-# #### right fp left mf
-
-# manifold_3L = Manifold(section_dec, x_point3_d, x_point3_d,-x_point3_d_coord+top_o_d_coord, -x_point3_d_coord+top_o_d_coord)
-# manifold_3L.compute(
-#       eps_s=9e-6, eps_u=8e-6, nint_s=33, nint_u=30, neps_s=80, neps_u=80)
-# manifold_3L.save(f"{repository_path}manifolds_dec/mf_3L.pkl")
-
-# # ##### right fp right mf
-
-# manifold_3R = Manifold(section_dec, x_point3_d, x_point3_d,x_point3_d_coord-top_o_d_coord, x_point3_d_coord-top_o_d_coord)
-# manifold_3R.compute(
-#       eps_s=9e-6, eps_u=8e-6, nint_s=20, nint_u=20, neps_s=80, neps_u=80)
-# manifold_3R.save(f"{repository_path}manifolds_dec/mf_3R.pkl")
-
-# ## top fp top mf 
-
-# manifold_4T = Manifold(section_dec, x_point4_d, x_point4_d,x_point4_d_coord-top_o_d_coord, x_point4_d_coord-top_o_d_coord)
-# manifold_4T.compute(
-#      eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=8, neps_s=80, neps_u=80)
-# manifold_4T.save(f"{repository_path}manifolds_dec/mf_4T.pkl")
-
-# # # # ##### over the top fp bottom mf
-
-
-# manifold_4B = Manifold(section_dec, x_point4_d, x_point4_d,-x_point4_d_coord+top_o_d_coord, -x_point4_d_coord+top_o_d_coord)
-# manifold_4B.compute(
-#      eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=30, neps_s=80, neps_u=80)
-# manifold_4B.save(f"{repository_path}manifolds_dec/mf_4B.pkl")
-
-
+x_point4_K= FixedPoint(section_KIN)
+x_point4_K.find(1, [0.75,0.65], method='scipy.root')
+#x_point4_coord = x_point4_i.coords[0]
 
 
 
@@ -310,6 +237,44 @@ manifold_4T.plot(ax=ax2, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],l
 manifold_4B.plot(ax=ax2, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
 
 
+manifold_1T.plot(stepsize_limit=0.1, ax=ax0, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=['stable','unstable'])
+manifold_1B.plot(stepsize_limit=0.3,ax=ax0, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_2T.plot(stepsize_limit=0.1, ax=ax0, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_2B.plot(stepsize_limit=0.3, ax=ax0, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_3L.plot(stepsize_limit=0.1,ax=ax0, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_3R.plot(ax=ax0, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_4T.plot(ax=ax0, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+manifold_4B.plot(ax=ax0, markersize=0, lw=0.7,colors=["rosybrown", "xkcd:red"],labels=[None,None])
+
+
+
+manifold_1T_K  = Manifold.load('./script/jellyfisch/77062_12/kinetic/manifolds_P/mf_1T_add.pkl')
+manifold_1B_K  = Manifold.load('./script/jellyfisch/77062_12/kinetic/manifolds_P/mf_1B.pkl')
+manifold_2T_K  = Manifold.load('./script/jellyfisch/77062_12/kinetic/manifolds_P/mf_2T.pkl')
+manifold_2B_K  = Manifold.load('./script/jellyfisch/77062_12/kinetic/manifolds_P/mf_2B.pkl')
+manifold_3L_K  = Manifold.load('./script/jellyfisch/77062_12/kinetic/manifolds_P/mf_3L.pkl')
+manifold_3R_K  = Manifold.load('./script/jellyfisch/77062_12/kinetic/manifolds_P/mf_3R.pkl')
+manifold_4T_K  = Manifold.load('./script/jellyfisch/77062_12/kinetic/manifolds_P/mf_4T.pkl')
+manifold_4B_K  = Manifold.load('./script/jellyfisch/77062_12/kinetic/manifolds_P/mf_4B.pkl')
+
+manifold_1T_K.plot(stepsize_limit=0.1, ax=ax0, markersize=0, lw=0.7,colors=["xkcd:lightblue", "xkcd:blue"],labels=['kin stable','kin unstable'])
+manifold_1B_K.plot(stepsize_limit=0.3,ax=ax0, markersize=0, lw=0.7,colors=["xkcd:lightblue", "xkcd:blue"],labels=[None,None])
+manifold_2T_K.plot(stepsize_limit=0.1, ax=ax0, markersize=0, lw=0.7,colors=["xkcd:lightblue", "xkcd:blue"],labels=[None,None])
+manifold_2B_K.plot(stepsize_limit=0.3, ax=ax0, markersize=0, lw=0.7,colors=["xkcd:lightblue", "xkcd:blue"],labels=[None,None])
+manifold_3L_K.plot(stepsize_limit=0.1,ax=ax0, markersize=0, lw=0.7,colors=["xkcd:lightblue", "xkcd:blue"],labels=[None,None])
+manifold_3R_K.plot(ax=ax0, markersize=0, lw=0.7,colors=["xkcd:lightblue", "xkcd:blue"],labels=[None,None])
+manifold_4T_K.plot(ax=ax0, markersize=0, lw=0.7,colors=["xkcd:lightblue", "xkcd:blue"],labels=[None,None])
+manifold_4B_K.plot(ax=ax0, markersize=0, lw=0.7,colors=["xkcd:lightblue", "xkcd:blue"],labels=[None,None])
+
+
+
+top_o.plot(ax=ax0, marker='o', color="xkcd:black",label=None,zorder=10)
+x_point1.plot(ax=ax0, marker='x', color="xkcd:black",label='X-p',zorder=10)
+x_point2.plot(ax=ax0, marker='x', color="xkcd:black",label=None,zorder=10)
+x_point3.plot(ax=ax0, marker='x', color="xkcd:black",label=None,zorder=10)
+x_point4.plot(ax=ax0, marker='x', color="xkcd:black",label=None,zorder=10)
+
+
 
 top_o.plot(ax=ax1, marker='o', color="xkcd:black",label=None,zorder=10)
 x_point1.plot(ax=ax1, marker='x', color="xkcd:black",label='X-p',zorder=10)
@@ -327,6 +292,72 @@ x_point4.plot(ax=ax2, marker='x', color="xkcd:black",label=None,zorder=10)
 # manifold_NK= Manifold.load('./script/jellyfisch/77062_12/normal/manifolds_P/mf_1T.pkl')
 
 # manifold_NK.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["xkcd:grey", "xkcd:black"],labels=['stable','unstable'])
+
+
+
+
+############ fp KINETIC #######################
+
+
+
+
+top_o_K = FixedPoint(section_KIN)
+top_o_K.find(1, [0.9,0.18], method='scipy.root')
+#top_o_coord = top_o_i.coords[0]
+
+x_point1_K= FixedPoint(section_KIN)
+x_point1_K.find(1, [0.8,-0.27], method='scipy.root')
+#x_point1_coord = x_point1_i.coords[0]
+
+x_point2_K= FixedPoint(section_KIN)
+x_point2_K.find(1, [0.8,-0.57], method='scipy.root')
+#x_point2_coord = x_point2_i.coords[0]
+
+x_point3_K= FixedPoint(section_KIN)
+x_point3_K.find(1, [1.05,-0.58], method='scipy.root')
+#x_point3_coord = x_point3_i.coords[0]
+
+x_point4_K= FixedPoint(section_KIN)
+x_point4_K.find(1, [0.75,0.65], method='scipy.root')
+#x_point4_coord = x_point4_i.coords[0]
+
+
+
+
+################
+
+
+list_ax = [ax0, ax1, ax2]
+subscripts = ['(a)', '(b)', '(c)']
+text_color = 'black'
+
+
+for ax, lab in zip(list_ax, subscripts):
+    ax.text(
+        0.05, 0.9, lab,
+        transform=ax.transAxes,
+        fontsize=12,
+        fontweight='bold',
+        ha='left',
+        va='top',
+        color=text_color,
+        #bbox=dict(facecolor=bbox_face, edgecolor='none', pad=2, alpha=0.8),
+        zorder=200
+    )
+
+
+
+top_o_K.plot(ax=ax0, marker='o', color="xkcd:black",label=None,zorder=10)
+x_point1_K.plot(ax=ax0, marker='s', color="xkcd:black",label='X-p kin',zorder=10)
+x_point2_K.plot(ax=ax0, marker='s', color="xkcd:black",label=None,zorder=10)
+x_point3_K.plot(ax=ax0, marker='s', color="xkcd:black",label=None,zorder=10)
+x_point4_K.plot(ax=ax0, marker='s', color="xkcd:black",label=None,zorder=10)
+
+
+
+#ax1.set_title('kinetic vs standard LIUQE')
+
+
 
 
 
@@ -366,7 +397,7 @@ x_point4_i.plot(ax=ax1, marker='s', color="xkcd:black",label=None,zorder=10)
 ax1.set_xlim(0.7, 1.0)
 ax1.set_ylim(-0.6, -0.1)
 ax1.set_xlabel(r"$R[m]$")
-ax1.set_ylabel(r"$Z[m]$")
+#ax1.set_ylabel(r"$Z[m]$")
 ax1.set_aspect('equal') 
 ax1.legend(loc='center right', bbox_to_anchor=(1.05, 0.5), ncol=1, fontsize=7)
 ax1.set_title('Ip/Bm increase vs normal')
@@ -380,9 +411,15 @@ ax2.legend(loc='center right', bbox_to_anchor=(1.05, 0.5), ncol=1, fontsize=7)
 ax2.set_title('Ip/Bm decrease vs normal')
 
 
+ax0.set_xlim(0.7, 1.0)
+ax0.set_ylim(-0.6, -0.1)
+ax0.set_xlabel(r"$R[m]$")
+ax0.set_ylabel(r"$Z[m]$")
+ax0.set_aspect('equal') 
+ax0.set_title('Kinetic vs normal')
+ax0.legend(loc='center right', bbox_to_anchor=(1.05, 0.5), ncol=1, fontsize=7)
 
-
-plt.savefig(f"{repository_path}figures/comparison_inc_dec.png", bbox_inches='tight', dpi=720)
+plt.savefig(f"{repository_path}figures/comparison_inc_dec_kin.png", bbox_inches="tight",dpi=720, pad_inches=0, facecolor=fig.get_facecolor())
 plt.show()
 
 

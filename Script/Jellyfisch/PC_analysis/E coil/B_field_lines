@@ -27,7 +27,7 @@ plt.rcParams.update(
     {
         "text.usetex": False,
         "font.family": "serif",
-        "font.size": 9,
+        "font.size": 11,
     }
 )
 
@@ -49,13 +49,13 @@ data_vessel = loadmat('./script/jellyfisch/75979_12/mat_files/Liuqe_JF_75979_120
 
 vessel=data_vessel['vessel']
 
-plot_Br_Bz(JFField1, n_levels=8, ax_pair=(ax1, ax2),vessel=vessel)
+plot_Br_Bz(JFField1, n_levels=8, ax_pair=(ax1, ax2),vessel=vessel,alpha_map=0.5)
 
-#ax1.get_figure().savefig(f"{repository_path}B_field_E_DX_plus.png", dpi=300, bbox_inches="tight", pad_inches=0)
+ax1.get_figure().savefig(f"{repository_path}B_field_E_DX_plus.png", dpi=600, bbox_inches="tight", pad_inches=0)
 
 
-plot_Br_Bz(JFField2, n_levels=8, ax_pair=(ax3, ax4),vessel=vessel)
+plot_Br_Bz(JFField2, n_levels=8, ax_pair=(ax3, ax4),vessel=vessel,alpha_map=0.5)
 
-#ax3.get_figure().savefig(f"{repository_path}B_field_E_OY_tilt.png", dpi=300, bbox_inches="tight", pad_inches=0)
+ax3.get_figure().savefig(f"{repository_path}B_field_E_OY_tilt.png", dpi=600, bbox_inches="tight", pad_inches=0)
 
 plt.show()

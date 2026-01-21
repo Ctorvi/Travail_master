@@ -14,6 +14,8 @@ plt.rcParams.update(
 )
 logging.basicConfig(level=logging.DEBUG)
 
+repository_path = './script/maxwell/pert_3_2/'
+
 POINCARE_ITS = 500
 SHEAR =  0.4
 SF = 0.8875
@@ -38,13 +40,6 @@ perturbedfield = AnalyticCylindricalBfield.with_new_axis(
 perturbedmap = CylindricalBfieldSection.without_axis(perturbedfield, guess=[6., 0])
 axiscoords = np.array((perturbedmap.R0, perturbedmap.Z0))
 
-
-opoint1 = FixedPoint(perturbedmap)
-opoint1.find(t=1, guess=[6.4, -1])
-opointcoords1 = opoint1.coords[0]
-
-
-
 pplot = PoincarePlot.with_linspace(
     perturbedmap,
     [6.0, 0],
@@ -52,8 +47,121 @@ pplot = PoincarePlot.with_linspace(
     30
    )
 
-pplot.compute(POINCARE_ITS)
-pplot.plot(ax=ax, color="xkcd:dark grey", s=1.4, linewidths=0)
+# pplot.compute(POINCARE_ITS)
+# pplot.plot(ax=ax, color="xkcd:dark grey", s=1.4, linewidths=0)
+
+# np.save(f"{repository_path}hits_max_3_2_P.npy", pplot._hits)
+
+
+Hits=np.load(f"{repository_path}hits_max_3_2_P.npy")
+ax.scatter(Hits[:,:, 0], Hits[:,:, 1], color="xkcd:dark grey", s=0.5, linewidths=0,zorder=10)
+
+
+
+
+
+
+opoint1 = FixedPoint(perturbedmap)
+opoint1.find(t=1, guess=[6.4, -1])
+opointcoords1 = opoint1.coords[0]
+
+opointT = FixedPoint(perturbedmap)
+opointT.find(t=3, guess=[4.3, 1.3], method='scipy.root')
+opointT.plot(ax=ax, marker='o', color="xkcd:green")
+opointTcoords = opointT.coords[0]
+
+opointR= FixedPoint(perturbedmap)
+opointR.find(t=3, guess=[7.7, 0.], method='scipy.root')
+#opointR.plot(ax=ax, marker='x', color="xkcd:green")
+opointRcoords = opointR.coords[0]
+
+opointL= FixedPoint(perturbedmap)
+opointL.find(t=3, guess=[4.5, -1.3], method='scipy.root')
+#opointL.plot(ax=ax, marker='x', color="xkcd:green")
+opointLcoords = opointL.coords[0]
+
+
+
+xpointB = FixedPoint(perturbedmap)
+xpointB.find(t=3, guess=[6.4, -1.6], method='scipy.root')
+xpointB.plot(ax=ax, marker='x', color="xkcd:green")
+xpointBcoords = xpointB.coords[0]
+
+xpointT = FixedPoint(perturbedmap)
+xpointT.find(t=3, guess=[6.4, 1.6], method='scipy.root')
+xpointT.plot(ax=ax, marker='x', color="xkcd:green")
+xpointTcoords = xpointT.coords[0]
+
+
+xpointL = FixedPoint(perturbedmap)
+xpointL.find(t=3, guess=[4.5, 0.], method='scipy.root')
+xpointL.plot(ax=ax, marker='x', color="xkcd:green")
+xpointLcoords = xpointL.coords[0]
+
+
+
+# MF_RT = Manifold(perturbedmap, xpointB, xpointT, opointRcoords-xpointBcoords, opointRcoords-xpointBcoords)
+# MF_RT.compute(eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=8, neps_s=80, neps_u=80) #8 14 240
+# MF_RT.find_clinics(first_guess_eps_s=9e-6, first_guess_eps_u=8e-6)
+# MF_RT.save(f"{repository_path}MF_RT.pkl")
+
+
+# MF_RB = Manifold(perturbedmap, xpointT, xpointB, opointRcoords-xpointBcoords, opointRcoords-xpointBcoords)
+# MF_RB.compute(eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=8, neps_s=80, neps_u=80) #8 14 240
+# MF_RB.find_clinics(first_guess_eps_s=9e-6, first_guess_eps_u=8e-6)
+# MF_RB.save(f"{repository_path}MF_RB.pkl")
+
+
+# MF_TT = Manifold(perturbedmap, xpointL, xpointT, opointTcoords - xpointLcoords , opointTcoords - xpointTcoords)
+# MF_TT.compute(eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=8, neps_s=80, neps_u=80) #8 14 240
+# MF_TT.find_clinics(first_guess_eps_s=8e-6, first_guess_eps_u=8e-6)
+# MF_TT.save(f"{repository_path}MF_TT.pkl")
+
+# MF_TB = Manifold(perturbedmap, xpointT, xpointL, opointTcoords - xpointTcoords , opointTcoords - xpointLcoords)
+# MF_TB.compute(eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=8, neps_s=80, neps_u=80) #8 14 240
+# MF_TB.find_clinics(first_guess_eps_s=9e-6, first_guess_eps_u=8e-6)
+# MF_TB.save(f"{repository_path}MF_TB.pkl")
+
+
+# MF_BT= Manifold(perturbedmap, xpointL, xpointB, opointLcoords - xpointLcoords , opointLcoords - xpointBcoords)
+# MF_BT.compute(eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=8, neps_s=80, neps_u=80) #8 14 240
+# MF_BT.find_clinics(first_guess_eps_s=9e-6, first_guess_eps_u=8e-6)
+# MF_BT.save(f"{repository_path}MF_BT.pkl")
+
+# MF_BB = Manifold(perturbedmap, xpointB, xpointL, opointLcoords - xpointBcoords , opointLcoords - xpointLcoords)
+# MF_BB.compute(eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=8, neps_s=80, neps_u=80) #8 14 240
+# MF_BB.find_clinics(first_guess_eps_s=9e-6, first_guess_eps_u=8e-6)
+# MF_BB.save(f"{repository_path}MF_BB.pkl")
+
+
+MF_RB = Manifold.load(f"{repository_path}MF_RB.pkl")
+MF_RT = Manifold.load(f"{repository_path}MF_RT.pkl")
+MF_BT = Manifold.load(f"{repository_path}MF_BT.pkl")
+MF_BB = Manifold.load(f"{repository_path}MF_BB.pkl")
+MF_TT = Manifold.load(f"{repository_path}MF_TT.pkl")
+MF_TB = Manifold.load(f"{repository_path}MF_TB.pkl")
+
+
+MF_RB.plot(ax=ax, markersize=0, lw=1.)
+MF_RT.plot(ax=ax, markersize=0, lw=1.)
+MF_BT.plot(ax=ax, markersize=0, lw=1.)
+MF_BB.plot(ax=ax, markersize=0, lw=1.)
+MF_TT.plot(ax=ax, markersize=0, lw=1.)
+MF_TB.plot(ax=ax, markersize=0, lw=1.)
+
+
+
+fig, ax=MF_TT.plot_clinics(ax=ax, s=20)
+fig,ax=MF_TB.plot_clinics(ax=ax, s=20)
+fig,ax=MF_RB.plot_clinics(ax=ax, s=20)
+fig,ax=MF_RT.plot_clinics(ax=ax, s=20)
+fig,ax=MF_BB.plot_clinics(ax=ax, s=20)
+fig,ax=MF_BT.plot_clinics(ax=ax, s=20)
+
+
+
+
 ax.set_xlabel(r"$R[m]$")
 ax.set_ylabel(r"$Z[m]$")
-plt.savefig('ppMax3m.png', bbox_inches='tight', dpi=720)
+plt.show()
+#plt.savefig('ppMax3m.png', bbox_inches='tight', dpi=720)

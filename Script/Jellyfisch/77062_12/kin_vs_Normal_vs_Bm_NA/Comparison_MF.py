@@ -100,7 +100,10 @@ x_point4_coord = x_point4.coords[0]
 
 ############ fp inc #######################
 
+section_KIN = CylindricalBfieldSection(JFField_KIN,phi0=1.9,R0=0.88, Z0=0)
 
+JFField_KIN = AxisymmetricCylindricalGridField.from_matlab_file(f"{pert_mat_file_KIN}", with_perturbation=True)
+pert_mat_file_KIN = './script/jellyfisch/77062_12/kinetic/JF_77062_120_KINETIC.mat'
 
 top_o_K = FixedPoint(section_KIN)
 top_o_K.find(1, [0.9,0.18], method='scipy.root')
@@ -122,8 +125,40 @@ x_point4_K= FixedPoint(section_KIN)
 x_point4_K.find(1, [0.75,0.65], method='scipy.root')
 #x_point4_coord = x_point4_i.coords[0]
 
+manifold_1T_K  = Manifold.load('./script/jellyfisch/77062_12/kinetic/manifolds_P/mf_1T_add.pkl')
+manifold_1B_K  = Manifold.load('./script/jellyfisch/77062_12/kinetic/manifolds_P/mf_1B.pkl')
+manifold_2T_K  = Manifold.load('./script/jellyfisch/77062_12/kinetic/manifolds_P/mf_2T.pkl')
+manifold_2B_K  = Manifold.load('./script/jellyfisch/77062_12/kinetic/manifolds_P/mf_2B.pkl')
+manifold_3L_K  = Manifold.load('./script/jellyfisch/77062_12/kinetic/manifolds_P/mf_3L.pkl')
+manifold_3R_K  = Manifold.load('./script/jellyfisch/77062_12/kinetic/manifolds_P/mf_3R.pkl')
+manifold_4T_K  = Manifold.load('./script/jellyfisch/77062_12/kinetic/manifolds_P/mf_4T.pkl')
+manifold_4B_K  = Manifold.load('./script/jellyfisch/77062_12/kinetic/manifolds_P/mf_4B.pkl')
+
+manifold_1T_K.plot(stepsize_limit=0.1, ax=ax1, markersize=0, lw=0.7,colors=["xkcd:lightblue", "xkcd:blue"],labels=['kin stable','kin unstable'])
+manifold_1B_K.plot(stepsize_limit=0.3,ax=ax1, markersize=0, lw=0.7,colors=["xkcd:lightblue", "xkcd:blue"],labels=[None,None])
+manifold_2T_K.plot(stepsize_limit=0.1, ax=ax1, markersize=0, lw=0.7,colors=["xkcd:lightblue", "xkcd:blue"],labels=[None,None])
+manifold_2B_K.plot(stepsize_limit=0.3, ax=ax1, markersize=0, lw=0.7,colors=["xkcd:lightblue", "xkcd:blue"],labels=[None,None])
+manifold_3L_K.plot(stepsize_limit=0.1,ax=ax1, markersize=0, lw=0.7,colors=["xkcd:lightblue", "xkcd:blue"],labels=[None,None])
+manifold_3R_K.plot(ax=ax1, markersize=0, lw=0.7,colors=["xkcd:lightblue", "xkcd:blue"],labels=[None,None])
+manifold_4T_K.plot(ax=ax1, markersize=0, lw=0.7,colors=["xkcd:lightblue", "xkcd:blue"],labels=[None,None])
+manifold_4B_K.plot(ax=ax1, markersize=0, lw=0.7,colors=["xkcd:lightblue", "xkcd:blue"],labels=[None,None])
 
 
+
+top_o_K.plot(ax=ax1, marker='o', color="xkcd:black",label=None,zorder=10)
+x_point1_K.plot(ax=ax1, marker='s', color="xkcd:black",label='X-p kin',zorder=10)
+x_point2_K.plot(ax=ax1, marker='s', color="xkcd:black",label=None,zorder=10)
+x_point3_K.plot(ax=ax1, marker='s', color="xkcd:black",label=None,zorder=10)
+x_point4_K.plot(ax=ax1, marker='s', color="xkcd:black",label=None,zorder=10)
+
+
+ax1.set_xlim(0.7, 1.0)
+ax1.set_ylim(-0.6, -0.1)
+ax1.set_xlabel(r"$R[m]$")
+ax1.set_ylabel(r"$Z[m]$")
+ax1.set_aspect('equal') 
+ax1.legend(loc='center right', bbox_to_anchor=(1.05, 0.5), ncol=1, fontsize=7)
+#ax1.set_title('kinetic vs standard LIUQE')
 
 ###########################  tomographic reconstruction  #########################
 
@@ -261,12 +296,6 @@ x_point4.plot(ax=ax2, marker='x', color="xkcd:white",label=None,zorder=10)
 # manifold_NK.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["xkcd:grey", "xkcd:black"],labels=['stable','unstable'])
 
 
-
-top_o_K.plot(ax=ax1, marker='o', color="xkcd:black",label=None,zorder=10)
-x_point1_K.plot(ax=ax1, marker='s', color="xkcd:black",label='X-p kin',zorder=10)
-x_point2_K.plot(ax=ax1, marker='s', color="xkcd:black",label=None,zorder=10)
-x_point3_K.plot(ax=ax1, marker='s', color="xkcd:black",label=None,zorder=10)
-x_point4_K.plot(ax=ax1, marker='s', color="xkcd:black",label=None,zorder=10)
 
 
 # top_o_B.plot(ax=ax2, marker='o', color="xkcd:black",label=None,zorder=10)
