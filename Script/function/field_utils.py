@@ -451,7 +451,7 @@ def plot_LIUQE(path,n_levels=15,**kwargs):
 
 
 def plot_Br_Bz(JFField, n_levels=8, ax_pair=None, R_count=56, Z_count=130, phi=0,
-               vessel=None, Rt=None, Zt=None, cmap='viridis'):
+               vessel=None, Rt=None, Zt=None, cmap='viridis', alpha_map=0.7):
     """
     Trace B_R et B_Z (en mT) côte à côte pour un AxisymmetricCylindricalGridField.
     Args:
@@ -555,7 +555,7 @@ def plot_Br_Bz(JFField, n_levels=8, ax_pair=None, R_count=56, Z_count=130, phi=0
 
    
     # plotting helper
-    def _plot_field(ax, data):# title):
+    def _plot_field(ax, data, alpha=alpha_map):# title):
         bz_min, bz_max = np.nanmin(data), np.nanmax(data)
         if np.isfinite(bz_min) and np.isfinite(bz_max) and bz_max > bz_min:
             levels = np.linspace(bz_min, bz_max, n_levels)
@@ -564,28 +564,28 @@ def plot_Br_Bz(JFField, n_levels=8, ax_pair=None, R_count=56, Z_count=130, phi=0
 
         cs = ax.contour(R_grid2, Z_grid2, data, levels=levels, colors='k',
                         linewidths=1.2, linestyles='--')
-        ax.clabel(cs, fmt='%.1f', inline=True, fontsize=10)
-        cf = ax.contourf(R_grid2, Z_grid2, data, levels=levels, cmap=cmap, alpha=0.7)
+        ax.clabel(cs, fmt='%.1f', inline=True, fontsize=12)
+        cf = ax.contourf(R_grid2, Z_grid2, data, levels=levels, cmap=cmap, alpha=alpha_map)
 
         # colorbar on the right
-        divider = make_axes_locatable(ax)
-        cax = divider.append_axes("right", size="4%", pad=0.06)
-        ticks = np.linspace(levels[0], levels[-1], len(levels))
-        cbar = fig.colorbar(cf, cax=cax, orientation='vertical', ticks=ticks)
-        cbar.ax.set_yticklabels([f"{t:.1f}" for t in ticks])
-        cbar.ax.yaxis.get_offset_text().set_visible(False)
+        #divider = make_axes_locatable(ax)
+        #cax = divider.append_axes("right", size="3%", pad=0.06)
+        #ticks = np.linspace(levels[0], levels[-1], len(levels))
+        #cbar = fig.colorbar(cf, cax=cax, orientation='vertical', ticks=ticks)
+        #cbar.ax.set_yticklabels([f"{t:.0f}" for t in ticks])
+        #cbar.ax.yaxis.get_offset_text().set_visible(False)
         #cbar.set_label(f"{title} [mT]")
 
         ax.set_xlim(R_min, R_max)
         ax.set_ylim(Z_min, Z_max)
         ax.set_aspect('equal')
 
-    _plot_field(ax2, BZ)# None)
-    _plot_field(ax1, BR)# None)
+    _plot_field(ax2, BZ, alpha=alpha_map)# None)
+    _plot_field(ax1, BR, alpha=alpha_map)# None)
 
-    ax1.set_xlabel(r"$R\ [m]$"); ax1.set_ylabel(r"$Z\ [m]$")
-    ax2.set_xlabel(r"$R\ [m]$")
-    ax1.set_title("$B_R$[mT]"); ax2.set_title("$B_Z$[mT]")
+    ax1.set_xlabel(r"$R\ [m]$",fontsize=11); ax1.set_ylabel(r"$Z\ [m]$",fontsize=11)
+    ax2.set_xlabel(r"$R\ [m]$",fontsize=11)
+    ax1.set_title("$B_R$[mT]",fontsize=11); ax2.set_title("$B_Z$[mT]",fontsize=11)
 
     fig.tight_layout()
     return fig, (ax1, ax2), (BR, BZ)
@@ -750,3 +750,22 @@ def plot_B_parallel_along_line(JFField, p0, p1, n=100, phi=1.9, ax=None, plot=Tr
     return None
 # ...existing code...
     
+
+
+def plot_vessel(ax):
+        data_vessel = loadmat('./script/jellyfisch/75979_12/mat_files/Liuqe_JF_75979_120_with_V.mat', squeeze_me=True, struct_as_record=False)
+
+        vessel=data_vessel['vessel']
+        R_in = np.asarray(vessel.R_in).ravel()
+        Z_in = np.asarray(vessel.Z_in).ravel()
+        Rt = np.asarray(vessel.Rt).ravel()
+        Zt = np.asarray(vessel.Zt).ravel()
+
+        R_in_anti=R_in[::-1]
+        Z_in_anti=Z_in[::-1]
+
+        fill_between_polygons_shapely(ax, R_in_anti, Z_in_anti,Rt,Zt) 
+        line = ax.plot(Rt, Zt, color='k', label='_nolegend_')[0]
+        line.set_picker(False)
+        line.set_zorder(2)
+        

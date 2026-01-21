@@ -77,6 +77,7 @@ j_par=-5*(10**4) #A/m2 low est.
 I_surface=j_par*Aire_traj  #A
 I_loop_low=I_surface/np.size(T,0)  #A
 
+
 #### current 2 ######
 
 Aire_traj_high=0.03*length #high est

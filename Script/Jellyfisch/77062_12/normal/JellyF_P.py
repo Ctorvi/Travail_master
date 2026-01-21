@@ -36,7 +36,7 @@ repository_path = './script/jellyfisch/77062_12/normal/'
 
 pert_mat_file = 'JF_77062_120_BO78_OS.mat'
 
-patch_mat_file = './script/jellyfisch/77062_12/JF_77062_patch_120_C3.mat'
+patch_mat_file = './script/jellyfisch/77062_12/JF_77062_patch_120_HeI_706.mat'
 
 mf_list = ['mf_1T', 'mf_1B', 'mf_2T', 'mf_2B', 'mf_3L', 'mf_3R', 'mf_4T', 'mf_4B']
 
@@ -50,17 +50,13 @@ top_o = FixedPoint(section)
 top_o.find(1, [0.9,0.18], method='scipy.root')
 top_o_coord = top_o.coords[0]
 
-
 x_point1= FixedPoint(section)
 x_point1.find(1, [0.8,-0.27], method='scipy.root')
 x_point1_coord = x_point1.coords[0]
 
-
 x_point2= FixedPoint(section)
 x_point2.find(1, [0.8,-0.57], method='scipy.root')
 x_point2_coord = x_point2.coords[0]
-
-
 
 x_point3= FixedPoint(section)
 x_point3.find(1, [1.05,-0.58], method='scipy.root')
@@ -74,9 +70,9 @@ x_point4_coord = x_point4.coords[0]
 
 ###################.  poincaré plot #####################
 
-pplot = PoincarePlot.with_linspace(section, top_o_coord, x_point1_coord,40)
-pplot.compute(400)
-np.save(f"{repository_path}JF_77062_pp_hits.npy", pplot._hits)
+# pplot = PoincarePlot.with_linspace(section, top_o_coord, x_point1_coord,40)
+# pplot.compute(400)
+# np.save(f"{repository_path}JF_77062_pp_hits.npy", pplot._hits)
 
 
 Hits=np.load(f"{repository_path}JF_77062_pp_hits.npy")
@@ -86,7 +82,7 @@ ax.scatter(Hits[:,:, 0], Hits[:,:, 1], color="xkcd:dark grey", s=1., linewidths=
 ###########################  tomographic reconstruction  #########################
 
 
-# tpc= tomo(f"{patch_mat_file}",ax,emi_vmin=0, emi_vmax=9e20)
+tpc= tomo(f"{patch_mat_file}",ax,emi_vmin=0, emi_vmax=5e18)
 
    
 ###########################. fixed point  #########################
@@ -154,11 +150,11 @@ ax.scatter(Hits[:,:, 0], Hits[:,:, 1], color="xkcd:dark grey", s=1., linewidths=
 
 ##### loading and plotting  ###
 
-manifs = {name: {name} for name in mf_list}
+# manifs = {name: {name} for name in mf_list}
 
-for i in mf_list:
-     manifs[i] = Manifold.load(f"{repository_path}{file_manifolds}{i}.pkl")
-     manifs[i].plot(stepsize_limit=0.05, ax=ax, markersize=0, lw=0.6,colors=["rosybrown", "xkcd:red"],labels=['stable MF','unstable MF'] if i=='mf_1T' else [None,None])
+# for i in mf_list:
+#      manifs[i] = Manifold.load(f"{repository_path}{file_manifolds}{i}.pkl")
+#      manifs[i].plot(stepsize_limit=0.05, ax=ax, markersize=0, lw=0.3,colors=["rosybrown", "xkcd:red"],labels=['stable MF','unstable MF'] if i=='mf_1T' else [None,None])
 
 
 

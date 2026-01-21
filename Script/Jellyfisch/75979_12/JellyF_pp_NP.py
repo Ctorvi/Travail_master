@@ -35,14 +35,14 @@ logging.basicConfig(level=logging.DEBUG)
 
 repository_path = './script/jellyfisch/75979_12/'
 
-pert_mat_file = 'JF_75979_120.mat'
+pert_mat_file = 'mat_files/JF_75979_120.mat'
 
 patch_mat_file = './script/jellyfisch/75979_12/JF_75979_patch_120_He2.mat'
 
 
 mf_list = ['mf_1T', 'mf_1B', 'mf_2T', 'mf_2B', 'mf_3L', 'mf_3R', 'mf_4T', 'mf_4B']
 
-LIUQE_mat_file = 'Liuqe_JF_75979_120.mat'
+LIUQE_mat_file = 'mat_files/Liuqe_JF_75979_120.mat'
 
 JFField = AxisymmetricCylindricalGridField.from_matlab_file(f"{repository_path}{pert_mat_file}", with_perturbation=False)
 
@@ -157,15 +157,17 @@ data_LIUQE, lgd1,lgd2= LIUQE(f"{repository_path}{LIUQE_mat_file}",n_levels=15,ax
 
 ##### loading and plotting  ###
 
-
-
 manifs = {name: {name} for name in mf_list}
 
 for i in mf_list:
     manifs[i] = Manifold.load(f"{repository_path}{file_manifolds}{i}.pkl")
    # manifs[i].plot(ax=ax2, markersize=0, lw=0.7,labels=[None,None] if i!=0 else ['stable MF','unstable MF'])
 
+    if i=='mf_1T':
+     trajectory = manifs[i].stable
+     Aire=manifs[i]._AdL_integral_points(trajectory)
     manifs[i].plot(stepsize_limit=0.05, ax=ax2, markersize=0, lw=0.5,colors=["xkcd:royal blue", "xkcd:red"],labels=['stable MF','unstable MF'] if i=='mf_1T' else [None,None])
+
 
 
 top_o.plot(ax=ax2, marker='o',s=40, color="xkcd:dark blue",label=None, zorder=10)
@@ -199,12 +201,10 @@ ax2.set_ylabel(r"$Z[m]$")
 ax2.set_aspect('equal') 
 ax2.set_title('Poincaré and LIUQE')
 
-plt.savefig(f"{repository_path}figures/JF_75979_NP_pp_LIU.png", bbox_inches='tight', dpi=720)
+#plt.savefig(f"{repository_path}figures/JF_75979_NP_pp_LIU.png", bbox_inches='tight', dpi=720)
 plt.show()
 
-
-
-
+print(Aire)
 #####zoomed
 
 

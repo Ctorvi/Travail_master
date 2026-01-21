@@ -86,10 +86,22 @@ tpc3,tri,emi= tomo(f"{patch_mat_file}",ax_br,emi_vmin=0, emi_vmax=2.25e19)
 manifs = {name: {name} for name in mf_list}
 
 for i in mf_list:
+       
+    if i == 'mf_1T':
+        lbls = ['stable MF', 'unstable MF']
+    elif i == 'mf_1B':
+        lbls = [None, 'divertor MF']   # troisième condition
+    else:
+        lbls = [None, None]
+
     manifs[i] = Manifold.load(f"{repository_path}{file_manifolds}{i}.pkl")
    # manifs[i].plot(ax=ax2, markersize=0, lw=0.7,labels=[None,None] if i!=0 else ['stable MF','unstable MF'])
-    manifs[i].plot(stepsize_limit=0.05, ax=ax_l, markersize=0, lw=0.5,colors=["rosybrown", "xkcd:red"],labels=['stable MF','unstable MF'] if i=='mf_1T' else [None,None])
-    manifs[i].plot(stepsize_limit=0.05, ax=ax_br, markersize=0, lw=0.5,colors=["rosybrown", "xkcd:red"])
+    manifs[i].plot(stepsize_limit=0.05, ax=ax_l, markersize=0, lw=1.3 if (i=='mf_1B') else 0.5,
+                       colors=["rosybrown","xkcd:white"] if (i=='mf_1B') else ["rosybrown", "xkcd:red"], 
+                       labels=lbls)
+    manifs[i].plot(stepsize_limit=0.05, ax=ax_tr, markersize=0, lw=1.3 if (i=='mf_1B') else 0.5,
+                       colors=["rosybrown","xkcd:white"] if (i=='mf_1B') else ["rosybrown", "xkcd:red"], 
+                       labels=lbls)
 
 
 top_o.plot(ax=ax_l, marker='o', s=40, color="xkcd:white",label='O-point', zorder=10)
@@ -98,13 +110,29 @@ x_point2.plot(ax=ax_l, marker='x', s=50, color="xkcd:white",label=None, zorder=1
 x_point3.plot(ax=ax_l, marker='x', s=50, color="xkcd:white",label=None, zorder=10)
 x_point4.plot(ax=ax_l, marker='x', s=50, color="xkcd:white",label=None, zorder=10)
 
-top_o.plot(ax=ax_br, marker='o', s=40, color="xkcd:white",label='O-point', zorder=10)
-x_point1.plot(ax=ax_br, marker='x', s=50, color="xkcd:white",label='X-points', zorder=10)
-x_point2.plot(ax=ax_br, marker='x', s=50, color="xkcd:white",label=None, zorder=10)
-x_point3.plot(ax=ax_br, marker='x', s=50, color="xkcd:white",label=None, zorder=10)
-x_point4.plot(ax=ax_br, marker='x', s=50, color="xkcd:white",label=None, zorder=10)
+top_o.plot(ax=ax_tr, marker='o', s=40, color="xkcd:white",label='O-point', zorder=10)
+x_point1.plot(ax=ax_tr, marker='x', s=50, color="xkcd:white",label='X-points', zorder=10)
+x_point2.plot(ax=ax_tr, marker='x', s=50, color="xkcd:white",label=None, zorder=10)
+x_point3.plot(ax=ax_tr, marker='x', s=50, color="xkcd:white",label=None, zorder=10)
+x_point4.plot(ax=ax_tr, marker='x', s=50, color="xkcd:white",label=None, zorder=10)
+
+list_ax = [ax_l, ax_tr, ax_br]
+subscripts = ['(a)', '(b)', '(c)']
+text_color = 'white'
 
 
+for ax, lab in zip(list_ax, subscripts):
+    ax.text(
+        0.05, 0.9, lab,
+        transform=ax.transAxes,
+        fontsize=12,
+        fontweight='bold',
+        ha='left',
+        va='top',
+        color=text_color,
+        #bbox=dict(facecolor=bbox_face, edgecolor='none', pad=2, alpha=0.8),
+        zorder=200
+    )
 
 # ax_ll.set_xlim(0.62, 1.15)
 # ax_ll.set_ylim(-0.75, 0.75)
@@ -159,6 +187,7 @@ for ax in (ax_tr, ax_br):
 
 
 
+#
 plt.savefig(f"{repository_path}figures/JF_plot_MANTIS_chapter.png", dpi=150, bbox_inches="tight", pad_inches=0, facecolor=fig.get_facecolor())
 
 plt.show()
