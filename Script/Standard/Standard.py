@@ -167,71 +167,70 @@ ax.scatter(Hits[:,:, 0], Hits[:,:, 1], color="xkcd:dark grey", s=1., linewidths=
 
 ##### figure oral
 
-manifold_1T.plot(stepsize_limit=0.3,which='stable', ax=ax, markersize=0, lw=2,colors=['blue','red'], labels=[None, None])
-manifold_1B.plot(stepsize_limit=0.3, which='stable', ax=ax, markersize=0, lw=2,colors=['blue','red'], labels=[None, None])
+# manifold_1T.plot(stepsize_limit=0.3,which='stable', ax=ax, markersize=0, lw=2,colors=['blue','red'], labels=[None, None])
+# manifold_1B.plot(stepsize_limit=0.3, which='stable', ax=ax, markersize=0, lw=2,colors=['blue','red'], labels=[None, None])
 
-arrow = FancyArrowPatch(
-    posA=(0.795,-0.11),posB=(0.755,-0.127),
-    arrowstyle='-|>',               # simple head
-    mutation_scale=25,              # head size (adjust)
-    linewidth=0,                    # hide shaft line
-    color='blue',
-    zorder=50,
-    shrinkA=0, shrinkB=0
-)
-ax.add_patch(arrow)
+# arrow = FancyArrowPatch(
+#     posA=(0.795,-0.11),posB=(0.755,-0.127),
+#     arrowstyle='-|>',               # simple head
+#     mutation_scale=25,              # head size (adjust)
+#     linewidth=0,                    # hide shaft line
+#     color='blue',
+#     zorder=50,
+#     shrinkA=0, shrinkB=0
+# )
+# ax.add_patch(arrow)
 
-arrow2 = FancyArrowPatch(
-    posA=(0.6567,-0.1365),posB=(0.6667,-0.1358),
-    arrowstyle='-|>',               # simple head
-    mutation_scale=25,              # head size (adjust)
-    linewidth=0,                    # hide shaft line
-    color='blue',
-    zorder=50,
-    shrinkA=0, shrinkB=0
-)
-ax.add_patch(arrow2)
+# arrow2 = FancyArrowPatch(
+#     posA=(0.6567,-0.1365),posB=(0.6667,-0.1358),
+#     arrowstyle='-|>',               # simple head
+#     mutation_scale=25,              # head size (adjust)
+#     linewidth=0,                    # hide shaft line
+#     color='blue',
+#     zorder=50,
+#     shrinkA=0, shrinkB=0
+# )
+# ax.add_patch(arrow2)
 
 # ##### figure oral unstable
 
-manifold_1T.plot(stepsize_limit=0.3,which='unstable', ax=ax, markersize=0, lw=2,colors=['blue','red'], labels=[None, None])
-manifold_1B.plot(stepsize_limit=0.3, which='unstable', ax=ax, markersize=0, lw=2,colors=['blue','red'], labels=[None, None])
+# manifold_1T.plot(stepsize_limit=0.3,which='unstable', ax=ax, markersize=0, lw=2,colors=['blue','red'], labels=[None, None])
+# manifold_1B.plot(stepsize_limit=0.3, which='unstable', ax=ax, markersize=0, lw=2,colors=['blue','red'], labels=[None, None])
 
-arrow = FancyArrowPatch(
-    posA=(0.6991,-0.0655),posB=(0.6967,-0.0516),
-    arrowstyle='-|>',               # simple head
-    mutation_scale=25,              # head size (adjust)
-    linewidth=0,                    # hide shaft line
-    color='red',
-    zorder=50,
-    shrinkA=0, shrinkB=0
-)
-ax.add_patch(arrow)
+# arrow = FancyArrowPatch(
+#     posA=(0.6991,-0.0655),posB=(0.6967,-0.0516),
+#     arrowstyle='-|>',               # simple head
+#     mutation_scale=25,              # head size (adjust)
+#     linewidth=0,                    # hide shaft line
+#     color='red',
+#     zorder=50,
+#     shrinkA=0, shrinkB=0
+# )
+# ax.add_patch(arrow)
 
-arrow2 = FancyArrowPatch(
-    posA=(0.7184,-0.206),posB=(0.7195,-0.2209),
-    arrowstyle='-|>',               # simple head
-    mutation_scale=25,              # head size (adjust)
-    linewidth=0,                    # hide shaft line
-    color='red',
-    zorder=50,
-    shrinkA=0, shrinkB=0
-)
-ax.add_patch(arrow2)
-
+# arrow2 = FancyArrowPatch(
+#     posA=(0.7184,-0.206),posB=(0.7195,-0.2209),
+#     arrowstyle='-|>',               # simple head
+#     mutation_scale=25,              # head size (adjust)
+#     linewidth=0,                    # hide shaft line
+#     color='red',
+#     zorder=50,
+#     shrinkA=0, shrinkB=0
+# )
+# ax.add_patch(arrow2)
 
 
 
 
 top_o.plot(ax=ax, marker='o',s=160,facecolor='cyan',edgecolor='black',linewidth=1.5,label='O-points', zorder=10)
-# #x_point1.plot(ax=ax, marker='+', s=220, facecolor='cyan', edgecolor='black', linewidth=1.5, label='X-points', zorder=10)
+# # #x_point1.plot(ax=ax, marker='+', s=220, facecolor='cyan', edgecolor='black', linewidth=1.5, label='X-points', zorder=10)
 
 
-ax.scatter([x_point1_coord[0]], [x_point1_coord[1]],
-           marker='x', s=180, color='black', linewidths=5, zorder=11)
-# 2) smaller colored cross on top (interior color)
-ax.scatter([x_point1_coord[0]], [x_point1_coord[1]],
-           marker='x', s=150, color='cyan', linewidths=3, zorder=12, label='X-points')
+# ax.scatter([x_point1_coord[0]], [x_point1_coord[1]],
+#            marker='x', s=180, color='black', linewidths=5, zorder=11)
+# # 2) smaller colored cross on top (interior color)
+# ax.scatter([x_point1_coord[0]], [x_point1_coord[1]],
+#            marker='x', s=150, color='cyan', linewidths=3, zorder=12, label='X-points')
 
 
 
@@ -303,7 +302,7 @@ ax.set_xlabel(r"$R[m]$")
 ax.set_ylabel(r"$Z[m]$")
 ax.set_aspect('equal') 
 # ax.set_title('(80064 / 1.1s.)')
-#plt.savefig(f"{repository_path}/figures/oral_presentation/oral_ST_dir_both_v2.png",  dpi=720,bbox_inches="tight", pad_inches=0, facecolor=fig.get_facecolor())
+plt.savefig(f"{repository_path}/figures/oral_presentation/oral_ST_dir_stable.png",  dpi=720,bbox_inches="tight", pad_inches=0, facecolor=fig.get_facecolor())
 plt.show()
 
 
