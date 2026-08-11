@@ -1,5 +1,4 @@
-This is the repository for my Master's thesis "Error-field induced magnetic tangles in TCV". \
-Reference: [Read my Master’s thesis (PDF)](V_Despland_master_project_compressed.pdf) 
+# This is the repository for my Master's thesis "[Error-field induced magnetic tangles in TCV (PDF)](V_Despland_master_project_compressed.pdf)".
 
 
 
