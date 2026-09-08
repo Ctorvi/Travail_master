@@ -2,4 +2,4 @@
 
 
 
-![Poincaré](figures/MANTIS_MF_new_he_both.png)
+![Poincaré](figures/MANTIS_MF_He.png)
