@@ -54,12 +54,12 @@ POINCARE_ITS = 500
 SHEAR = 1.2
 SF = 1.16
 
-fig, (ax2, ax) = plt.subplots(1, 2, figsize=(8, 7), width_ratios=[1,1], constrained_layout=False,sharex=True,sharey=True)
+#fig, (ax2, ax) = plt.subplots(1, 2, figsize=(8, 7), width_ratios=[1,1], constrained_layout=False,sharex=True,sharey=True)
 
 
-# fig, ax = plt.subplots(1, 1, figsize=(6, 6.5))
+fig, ax = plt.subplots(1, 1, figsize=(6, 6.5))
 
-# fig2, ax2 = plt.subplots(1, 1, figsize=(6, 6.5))
+fig2, ax2 = plt.subplots(1, 1, figsize=(6, 6.5))
 
 separatrix = {"type": "circular-current-loop", "amplitude": -10, "R": 6, "Z": -5.5}
 
@@ -83,15 +83,23 @@ xpoint = FixedPoint(perturbedmap)
 xpoint.find(t=1, guess=xpointguess)
 xpoint.m = 1
 xpointcoords = xpoint.coords[0]
-xpoint.plot(ax=ax, s=100,marker='x', color="xkcd:crimson",zorder=20,label='X-point')
-xpoint.plot(ax=ax2, s=100,marker='x', color="xkcd:crimson",zorder=20,label='X-point')
+# xpoint.plot(ax=ax, s=100,marker='x', color="xkcd:crimson",zorder=20,label='X-point')
+# xpoint.plot(ax=ax2, s=100,marker='x', color="xkcd:crimson",zorder=20,label='X-point')
 
 
 opoint = FixedPoint(perturbedmap)
 opoint.find(t=1, guess=[6., 0.])
 opointcoords = opoint.coords[0]
-opoint.plot(ax=ax, s=70,marker='o', color="xkcd:crimson",zorder=20,label='O-point')
-opoint.plot(ax=ax2, s=70,marker='o', color="xkcd:crimson",zorder=20,label='O-point')
+# opoint.plot(ax=ax, s=70,marker='o', color="xkcd:crimson",zorder=20,label='O-point')
+# opoint.plot(ax=ax2, s=70,marker='o', color="xkcd:crimson",zorder=20,label='O-point')
+
+
+xpoint.plot(ax=ax, s=100,marker='x', color="xkcd:darkgreen",zorder=20,label='X-point')
+xpoint.plot(ax=ax2, s=100,marker='x', color="xkcd:darkgreen",zorder=20,label='X-point')
+
+opoint.plot(ax=ax, s=70,marker='o', color="xkcd:darkgreen",zorder=20,label='O-point')
+opoint.plot(ax=ax2, s=70,marker='o', color="xkcd:darkgreen",zorder=20,label='O-point')
+
 
 separatrixcoords = np.array([6.0, -5.4])
 
@@ -136,8 +144,8 @@ mf_E  = Manifold.load(f"{repository_path}mf_nu_9.pkl")
 mf_I  = Manifold.load(f"{repository_path}mf_ns_9.pkl")
 
 
-fig, ax=mf_E.plot_clinics(ax=ax,label='homoclinics')
-fig2, ax2=mf_I.plot_clinics(ax=ax2,label='homoclinics')
+fig, ax=mf_E.plot_clinics(ax=ax,s=20,label='homoclinics')
+fig2, ax2=mf_I.plot_clinics(ax=ax2,s=20,label='homoclinics')
 
 mf_E.plot(ax=ax, markersize=0, lw=1.)
 mf_I.plot(ax=ax2, markersize=0, lw=1.)
@@ -175,8 +183,12 @@ text2=[r'$f^{-4}(I)$',r'$f^{-3}(I)$', r'$f^{-2}(I)$', r'$f^{-1}(I)$',r'$I$', r'$
 dx=[0.06,0.15,-0.05,-0.2,-0.08,-0.11,-0.2]
 dy=[+0.01,0.06,0.15,0,-0.1,-0.06,-0.15]
 
-dx2=[0.08,0.09,0.07,-0.1,-0.07,-0.04,-0.1]
+# dx2=[0.08,0.09,0.07,-0.1,-0.07,-0.04,-0.1]
+# dy2=[-0.12,0,0.06,0.04,-0.04,-0.08,-0.04]
+
+dx2=[0.08,0.09,-0.1,-0.1,-0.07,-0.04,-0.1] #3eme 0.07
 dy2=[-0.12,0,0.06,0.04,-0.04,-0.08,-0.04]
+
 
 a=mf_E.clinics[0].trajectory
 
@@ -184,8 +196,8 @@ b=mf_I.clinics[1].trajectory
 
 for i in range(len(text1)):
 
-    mf_E.plot_filled_lobe(ax=ax, lobe_number=i+3,neps=500,alpha=0.7,color=color1[i])
-    mf_I.plot_filled_lobe(ax=ax2, lobe_number=i+2,neps=300,which_section=2,alpha=0.7,color=color2[i])
+    mf_E.plot_filled_lobe(ax=ax, lobe_number=i+3,neps=10 if i!=6 else 500,alpha=0.7,color=color1[i])
+    mf_I.plot_filled_lobe(ax=ax2, lobe_number=i+2,neps=10 if i!=0 else 500,which_section=2,alpha=0.7,color=color2[i])
 
     _place_coord_label(ax, a[i+3,0], a[i+3,1], fmt=text1[i], dx_frac=dx[i], dy_frac=dy[i],color=color1[i])#color="darkred"
     _place_coord_label(ax2, b[i+2,0], b[i+2,1], fmt=text2[i], dx_frac=dx2[i], dy_frac=dy2[i],color=color2[i])#color="darkblue"
@@ -211,25 +223,31 @@ ax2.text(7.3, 0.3, r'$f$',
             ha="left", va="center",
             zorder=120)
 
-ax.text( 0.05, 0.96, 
-   '(b)', transform=ax.transAxes,fontsize=12,fontweight='bold',ha='left',va='top',color='black', zorder=200)
+# ax.text( 0.05, 0.96, 
+#    '(b)', transform=ax.transAxes,fontsize=12,fontweight='bold',ha='left',va='top',color='black', zorder=200)
 
-ax2.text( 0.05, 0.96, 
-   '(a)', transform=ax2.transAxes,fontsize=12,fontweight='bold',ha='left',va='top',color='black', zorder=200)
+# ax2.text( 0.05, 0.96, 
+#    '(a)', transform=ax2.transAxes,fontsize=12,fontweight='bold',ha='left',va='top',color='black', zorder=200)
 
 #perturbedmanifold.compute_turnstile_areas()
 
 #ax2.legend(loc='lower left', bbox_to_anchor=(0.0, 0.0),fontsize=7)
-ax2.legend(loc='lower left', bbox_to_anchor=(-0.02, -0.01), fontsize=7, frameon=False)
+#ax2.legend(loc='lower left', bbox_to_anchor=(-0.02, -0.01), fontsize=7, frameon=False)
 #ax2.legend(loc='lower right', fontsize=8)
 
 #texte=f"Turnstile flux: $\phi = ${perturbedmanifold.turnstile_areas[0]:.3e}"
 
 #ax.text(2, 3, texte, fontsize=12, color='blue')
 
-plt.savefig(f"{repository_path}figure_turnstile_both.png",  bbox_inches='tight', pad_inches=0.0, dpi=720)
-# fig.savefig(f"{repository_path}turnstile_exit_set_v3.png", bbox_inches='tight', pad_inches=0.0, dpi=720)
-# fig2.savefig(f"{repository_path}turnstile_entry_set_v3.png", bbox_inches='tight', pad_inches=0.0, dpi=720)
+ax.set_xlim(3.2, 9.4)
+ax.set_ylim(-6.2, 2.8) 
+
+ax2.set_xlim(3.2, 9.4)
+ax2.set_ylim(-6.2, 2.8)
+
+#plt.savefig(f"{repository_path}figure_turnstile_both.png",  bbox_inches='tight', pad_inches=0.0, dpi=720)
+fig.savefig(f"{repository_path}ORAL_turnstile_exit_set_v3.png", bbox_inches='tight', pad_inches=0.0, dpi=720)
+fig2.savefig(f"{repository_path}ORAL_turnstile_entry_set_v3.png", bbox_inches='tight', pad_inches=0.0, dpi=720)
 
 #print(perturbedmanifold.turnstile_areas)
 

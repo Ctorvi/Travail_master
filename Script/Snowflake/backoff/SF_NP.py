@@ -15,6 +15,8 @@ import logging
 from scipy.io import loadmat
 from matplotlib.tri import Triangulation
 
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+
 #fig, ax = plt.subplots(1, 1, figsize=(5, 8))
 fig, ax = plt.subplots(1, 1, figsize=(6, 6.6))
 
@@ -29,8 +31,10 @@ logging.basicConfig(level=logging.DEBUG)
 
 repository_path = './script/snowflake/backoff/'
 
-pert_mat_file = 'Snowflake_09_Backoff.mat'
+pert_mat_file = 'SF_70620_09_BO78_OS.mat'
 LIUQE_mat_file = 'Liuqe_SF_09.mat'
+
+patch_mat_file = './script/snowflake/backoff/70620_patch_09_HeI_706.mat'
 
 JFField = AxisymmetricCylindricalGridField.from_matlab_file(f"{repository_path}{pert_mat_file}", with_perturbation=False)
 
@@ -56,9 +60,22 @@ x_point2.plot(ax=ax, marker='x', color="xkcd:crimson")
 # pplot.compute(400)
 
 
+tpc,tri,emi= tomo(f"{patch_mat_file}",ax,emi_vmin=0, emi_vmax=1.6e18)
+
+
+
+cax = inset_axes(ax, width="4%", height="100%", loc='lower left',
+                 bbox_to_anchor=(1.0, 0.0, 1, 1), bbox_transform=ax.transAxes, borderpad=0)
+
+
+
+# create colorbar and hide the scientific offset text (e.g. "1e20")
+cbar = fig.colorbar(tpc, cax=cax, label='Relative emissivity He-I')
+# hide the offset text that matplotlib places (the "1e20" above/beside the bar)
+cbar.ax.yaxis.get_offset_text().set_visible(False)
 ###########################. fixed point  #########################
 
-data_LIUQE, lgd1,lgd2= LIUQE(f"{repository_path}{LIUQE_mat_file}",n_levels=15,ax=ax,colors=["springgreen", "springgreen", "black"])##,lw=[0.5,0.5,2])
+# data_LIUQE, lgd1,lgd2= LIUQE(f"{repository_path}{LIUQE_mat_file}",n_levels=15,ax=ax,colors=["springgreen", "springgreen", "black"])##,lw=[0.5,0.5,2])
 
 #####top fp top mf#########
 # 
@@ -98,38 +115,43 @@ manifold_1B  = Manifold.load(f"{repository_path}/manifolds_NP/mf_1B.pkl")
 manifold_2T  = Manifold.load(f"{repository_path}/manifolds_NP/mf_2T.pkl")
 manifold_2B  = Manifold.load(f"{repository_path}/manifolds_NP/mf_2B.pkl")
 
-manifold_1T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["xkcd:royal blue", "xkcd:red"],labels=["Stable MF 1T","Unstable MF 1T"])
-manifold_1B.plot(stepsize_limit=0.3, ax=ax, markersize=0, lw=0.7,colors=["xkcd:royal blue", "xkcd:red"],labels=[None,None])
-manifold_2T.plot(stepsize_limit=0.1, ax=ax, markersize=0, lw=0.7,colors=["xkcd:royal blue", "xkcd:red"],labels=[None,None])
-manifold_2B.plot(stepsize_limit=0.3, ax=ax, markersize=0, lw=0.7,colors=["xkcd:royal blue", "xkcd:red"],labels=[None,None])
-
+manifold_1T.plot(stepsize_limit=0.05,ax=ax, markersize=0, lw=1.2,linestyle='--',
+                        colors=["xkcd:white","xkcd:white"])
+manifold_1B.plot(stepsize_limit=0.05,ax=ax, markersize=0, lw=1.2,linestyle='--',
+                        colors=["xkcd:white","xkcd:white"])
+manifold_2T.plot(stepsize_limit=0.05,ax=ax, markersize=0, lw=1.2,linestyle='--',
+                        colors=["xkcd:white","xkcd:white"])
+manifold_2B.plot(stepsize_limit=0.05,ax=ax, markersize=0, lw=1.2,linestyle='--',
+                        colors=["xkcd:white","xkcd:white"])
 
 top_o.plot(ax=ax, marker='o',s=40, color="xkcd:dark blue",label='O-points', zorder=10)
-x_point1.plot(ax=ax, marker='x', s=50, color="xkcd:dark blue",label='X-points', zorder=10)
-x_point2.plot(ax=ax, marker='x', s=50, color="xkcd:dark blue",label=None, zorder=10)
+x_point1.plot(ax=ax, marker='x', s=90, color="xkcd:dark blue",label='X-points', zorder=10)
+# x_point2.plot(ax=ax, marker='x', s=50, color="xkcd:dark blue",label=None, zorder=10)
 
-Hits=np.load(f"{repository_path}Snowflake_NoPert.npy")
-ax.scatter(Hits[:,:, 0], Hits[:,:, 1], color="xkcd:dark grey", s=0.5, linewidths=0)
+# Hits=np.load(f"{repository_path}Snowflake_NoPert.npy")
+# ax.scatter(Hits[:,:, 0], Hits[:,:, 1], color="xkcd:dark grey", s=0.5, linewidths=0)
  
 #vessel(ax)
 
 ###figure t
 
 handles, labels = ax.get_legend_handles_labels()
-handles.append(lgd1)
-handles.append(lgd2)
-labels.append("LCFS")
-labels.append("LIUQE")
+# handles.append(lgd1)
+# handles.append(lgd2)
+# labels.append("LCFS")
+# labels.append("LIUQE")
 #ax.legend(handles, labels,loc='lower right', bbox_to_anchor=(1.05, 0.0), ncol=1, fontsize=9)
 
 
-ax.set_xlim(0.62, 1.15)
-ax.set_ylim(-0.75, 0.75)
+# ax.set_xlim(0.62, 1.15)
+# ax.set_ylim(-0.75, 0.75)
+ax.set_xlim(0.7, 1.0)
+ax.set_ylim(-0.6, -0.1)
 ax.set_xlabel(r"$R[m]$")
 ax.set_ylabel(r"$Z[m]$")
 ax.set_aspect('equal') 
-ax.set_title('Snowflake 70620 at 0.9 s')
-plt.savefig(f"{repository_path}/figures/Snowflake_No_Pert_Liuqe.png", bbox_inches='tight', dpi=720)
+ax.set_title('Snowflake 70620')
+plt.savefig(f"{repository_path}/figures/Snowflake_No_Pert_Intro.png", bbox_inches='tight', dpi=720)
 plt.show()
 
 ### zoomed

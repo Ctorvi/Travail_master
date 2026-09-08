@@ -29,6 +29,8 @@ plt.rcParams.update(
 )
 
 
+#file_manifolds = 'manifolds_P/OS_BO78/'
+
 file_manifolds = 'manifolds_NP/'
 
 logging.basicConfig(level=logging.DEBUG)
@@ -71,26 +73,62 @@ x_point4_coord = x_point4.coords[0]
 
 
 ###################.  poincaré plot #####################
+# cmap = plt.get_cmap('plasma') 
 
-# pplot = PoincarePlot.with_linspace(section, top_o_coord, x_point1_coord,40)
-# pplot.compute(400)
-# np.save('./script/jellyfisch/75979_12/JF_75979_pp_hits_P.npy', pplot._hits)
+# n = 40
 
-Hits=np.load('./script/jellyfisch/75979_12/JF_75979_pp_hits_NP.npy')
-ax2.scatter(Hits[:,:, 0], Hits[:,:, 1], color="xkcd:dark grey", s=1., linewidths=0)
+# vals = np.linspace(0.0, 0.6, n) 
+ 
+#             # linear sampling from 0..1
+# color1 = cmap(vals)  
 
+
+ 
+
+
+
+# for i in range(n):
+#     # start = (0.995 - i * (0.01) / 40, -0.16 )
+#     # end = (0.97 - i * (0.02) / 40, -0.23)
+
+#     # pplot = PoincarePlot.with_linspace(section, start, end, 80)
+#     # pplot.compute(10)
+#     # np.save(f'./script/jellyfisch/75979_12/TRYOUT/JF_75979_pp_hits_TRYOUT_{i}.npy', pplot._hits)
+
+#     Hits=np.load(f'./script/jellyfisch/75979_12/TRYOUT/JF_75979_pp_hits_TRYOUT_{i}.npy')
+#     ax2.scatter(Hits[:,:, 0], Hits[:,:, 1], color=color1[i], s=0.3, linewidths=0)
+
+
+# cmap = plt.get_cmap('plasma') 
+
+# n = 80
+
+# vals = np.linspace(0.0, 1, n) 
+ 
+# #             # linear sampling from 0..1
+# color1 = cmap(vals)  
+
+
+
+Hits=np.load(f'./script/jellyfisch/75979_12/JF_75979_pp_hits_NP_n80.npy')
+# for i in range(n):
+#  ax2.scatter(Hits[i,:, 0], Hits[i,:, 1], color=color1[i], s=0.3, linewidths=0)
+
+
+ax2.scatter(Hits[:,:, 0], Hits[:,:, 1], color='xkcd:black', s=0.3, linewidths=0)
 
 ###########################  tomographic reconstruction  #########################
 
 
-#tpc= tomo(f"{patch_mat_file}",ax,emi_vmin=0, emi_vmax=2.25e19)
 
+#tpc= tomo(f"{patch_mat_file}",ax,emi_vmin=0, emi_vmax=2.25e19)
 
 ################# plot LIUQE ###################
 
-data_LIUQE, lgd1,lgd2= LIUQE(f"{repository_path}{LIUQE_mat_file}",n_levels=15,ax=ax2,colors=["springgreen", "springgreen", "black"])
+#data_LIUQE, lgd1,lgd2= LIUQE(f"{repository_path}{LIUQE_mat_file}",n_levels=15,ax=ax2,colors=["springgreen", "springgreen", "black"])
 
 #data_LIUQE, lgd1b,lgd2b= LIUQE(f"{repository_path}{LIUQE_mat_file}",n_levels=15,ax=ax1, colors=["black", "black", "black"],linestyles=['--', '--', '-'], lw=[0.5,0.5,2])
+
 
 
 
@@ -112,14 +150,12 @@ data_LIUQE, lgd1,lgd2= LIUQE(f"{repository_path}{LIUQE_mat_file}",n_levels=15,ax
 
 # #### bottom fp top mf
 
-
 # manifold_2T = Manifold(section, x_point2, x_point2,-x_point2_coord+top_o_coord, -x_point2_coord+top_o_coord)
 # manifold_2T.compute(
 #       eps_s=9e-6, eps_u=8e-6, nint_s=32, nint_u=30, neps_s=80, neps_u=80)
 # manifold_2T.save(f"{repository_path}{file_manifolds}mf_2T.pkl")
 
 # #### bottom fp bottom mf
-
 
 # manifold_2B = Manifold(section, x_point2, x_point2,x_point2_coord-top_o_coord, x_point2_coord-top_o_coord)
 # manifold_2B.compute(
@@ -149,7 +185,6 @@ data_LIUQE, lgd1,lgd2= LIUQE(f"{repository_path}{LIUQE_mat_file}",n_levels=15,ax
 
 # # # # ##### over the top fp bottom mf
 
-
 # manifold_4B = Manifold(section, x_point4, x_point4,-x_point4_coord+top_o_coord, -x_point4_coord+top_o_coord)
 # manifold_4B.compute(
 #      eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=30, neps_s=80, neps_u=80)
@@ -163,11 +198,11 @@ for i in mf_list:
     manifs[i] = Manifold.load(f"{repository_path}{file_manifolds}{i}.pkl")
    # manifs[i].plot(ax=ax2, markersize=0, lw=0.7,labels=[None,None] if i!=0 else ['stable MF','unstable MF'])
 
-    if i=='mf_1T':
-     trajectory = manifs[i].stable
-     Aire=manifs[i]._AdL_integral_points(trajectory)
-    manifs[i].plot(stepsize_limit=0.05, ax=ax2, markersize=0, lw=0.5,colors=["xkcd:royal blue", "xkcd:red"],labels=['stable MF','unstable MF'] if i=='mf_1T' else [None,None])
-
+    #if i=='mf_1T':
+    # trajectory = manifs[i].stable
+    # Aire=manifs[i]._AdL_integral_points(trajectory)
+    #manifs[i].plot(stepsize_limit=0.05, ax=ax2, markersize=0, lw=0.5,colors=["xkcd:royal blue", "xkcd:red"],labels=['stable MF','unstable MF'] if i=='mf_1T' else [None,None])
+    manifs[i].plot(stepsize_limit=0.05, ax=ax2, markersize=0, lw=0.5,colors=["xkcd:grey", "xkcd:grey"],labels=['stable MF','unstable MF'] if i=='mf_1T' else [None,None])
 
 
 top_o.plot(ax=ax2, marker='o',s=40, color="xkcd:dark blue",label=None, zorder=10)
@@ -184,29 +219,25 @@ ratio=2.8158
 # x_point4.plot(ax=ax2, marker='x', s=50, color="xkcd:green",label=None, zorder=10)
 # ratio=2.8158
 
-
-
-handles, labels = ax2.get_legend_handles_labels()
-handles.append(lgd1)
-handles.append(lgd2)
-labels.append("LCFS")
-labels.append("LIUQE")
-ax2.legend(handles, labels,loc='lower right', bbox_to_anchor=(1.05, 0.0), ncol=1, fontsize=9)
-
+#handles, labels = ax2.get_legend_handles_labels()
+# handles.append(lgd1)
+# handles.append(lgd2)
+# labels.append("LCFS")
+# labels.append("LIUQE")
+#ax2.legend(handles, labels,loc='lower right', bbox_to_anchor=(1.05, 0.0), ncol=1, fontsize=9)
 
 ax2.set_xlim(0.62, 1.15)
 ax2.set_ylim(-0.75, 0.75)
 ax2.set_xlabel(r"$R[m]$")
 ax2.set_ylabel(r"$Z[m]$")
 ax2.set_aspect('equal') 
-ax2.set_title('Poincaré and LIUQE')
+#ax2.set_title('Poincaré and LIUQE')
 
-#plt.savefig(f"{repository_path}figures/JF_75979_NP_pp_LIU.png", bbox_inches='tight', dpi=720)
+plt.savefig(f"{repository_path}figures/JF_75979_NP_n80_in_grey.png", bbox_inches='tight', dpi=720)
 plt.show()
 
-print(Aire)
+#print(Aire)
 #####zoomed
-
 
 # ax.set_xlim(0.7, 1.0)
 # ax.set_ylim(-0.58, -0.08)
@@ -217,7 +248,5 @@ print(Aire)
 # ax.set_title('(75979 / 1.2s / 1.9 rad)')
 # #plt.savefig(f"{repository_path}figures/Jellyfisch_75979_BO_Pert_mf_patch_zoom.png", dpi=150, bbox_inches=None, facecolor=fig.get_facecolor())
 # plt.show()
-
-
 
 

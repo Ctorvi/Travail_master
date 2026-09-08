@@ -132,10 +132,18 @@ Z_grid = np.tile(Z_vec[:, None], (1, R_vec.size))
 R_grid2, Z_grid2 = np.meshgrid(R_vec, Z_vec, indexing='xy')
 phi = 1.9
 
+# for i in range(R_vec.shape[0]):
+#     for j in range(Z_vec.shape[0]):
+#         BR[j,i] = JFField.pertfield.B_R([R_grid2[j,i], phi, Z_grid2[j,i]])
+#         BZ[j,i] = JFField.pertfield.B_Z([R_grid2[j,i], phi, Z_grid2[j,i]])
+
+
 for i in range(R_vec.shape[0]):
     for j in range(Z_vec.shape[0]):
-        BR[j,i] = JFField.pertfield.B_R([R_grid2[j,i], phi, Z_grid2[j,i]])
-        BZ[j,i] = JFField.pertfield.B_Z([R_grid2[j,i], phi, Z_grid2[j,i]])
+        BR[j,i] = JFField.B([R_grid2[j,i], phi, Z_grid2[j,i]])[1]
+        BZ[j,i] = JFField.B([R_grid2[j,i], phi, Z_grid2[j,i]])[2]
+
+
 
 BR=1000*BR
 BZ=1000*BZ
@@ -261,6 +269,6 @@ for ax in (ax1, ax2):
 
 
 
-plt.savefig("./figures/Field_lines_n1_field_v1_0.png", dpi=600, bbox_inches=None, pad_inches=0.0, facecolor=fig.get_facecolor())
+plt.savefig("./figures/Field_lines_JF_75979_with_phi.png", dpi=600, bbox_inches=None, pad_inches=0.0, facecolor=fig.get_facecolor())
 plt.show()
 print(Rt,Zt)

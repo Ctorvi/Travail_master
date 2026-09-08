@@ -163,7 +163,7 @@ ax.set_xlabel(r"$R[m]$")
 ax.set_ylabel(r"$Z[m]$")
 ax.set_aspect('equal') 
 ax.set_title('78801 at 1.2s, at 1.9 rad')
-# plt.savefig(f"{repository_path}figures/79124_BO_Pert_mf_patch_zoom.png", bbox_inches='tight', dpi=720)
+plt.savefig(f"{repository_path}figures/78801_BO_Pert_mf_patch_zoom.png", bbox_inches='tight', dpi=720)
 plt.show()
 
 

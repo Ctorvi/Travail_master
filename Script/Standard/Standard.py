@@ -302,7 +302,7 @@ ax.set_xlabel(r"$R[m]$")
 ax.set_ylabel(r"$Z[m]$")
 ax.set_aspect('equal') 
 # ax.set_title('(80064 / 1.1s.)')
-plt.savefig(f"{repository_path}/figures/oral_presentation/oral_ST_dir_stable.png",  dpi=720,bbox_inches="tight", pad_inches=0, facecolor=fig.get_facecolor())
+#plt.savefig(f"{repository_path}/figures/oral_presentation/oral_ST_dir_stable.png",  dpi=720,bbox_inches="tight", pad_inches=0, facecolor=fig.get_facecolor())
 plt.show()
 
 

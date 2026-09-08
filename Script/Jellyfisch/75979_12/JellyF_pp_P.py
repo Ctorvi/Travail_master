@@ -57,8 +57,8 @@ def IndexClosestPoint(traj, point):
 
 
 
-fig, ax2 = plt.subplots(1, 1, figsize=(4, 2.6))
-#fig, ax2 = plt.subplots(1, 1, figsize=(5, 5))
+#fig, ax2 = plt.subplots(1, 1, figsize=(4, 2.6))
+fig, ax2 = plt.subplots(1, 1, figsize=(4, 4))
 
 plt.rcParams.update(
     {
@@ -108,14 +108,14 @@ x_point4= FixedPoint(section)
 x_point4.find(1, [0.75,0.65], method='scipy.root')
 x_point4_coord = x_point4.coords[0]
 
-o_point_island= FixedPoint(section)
-o_point_island.find(1, [0.99,0.199], method='scipy.root')
-o_point_island_coord = o_point_island.coords[0]
+# o_point_island= FixedPoint(section)
+# o_point_island.find(1, [0.99,0.199], method='scipy.root')
+# o_point_island_coord = o_point_island.coords[0]
 
 
-x_point_island_n= FixedPoint(section)
-x_point_island_n.find(1, [0.79,0.18], method='scipy.root')
-x_point_island_n_coord = x_point_island_n.coords[0]
+# x_point_island_n= FixedPoint(section)
+# x_point_island_n.find(1, [0.79,0.18], method='scipy.root')
+# x_point_island_n_coord = x_point_island_n.coords[0]
 
 
 ###top fp top mf#########
@@ -182,9 +182,10 @@ x_point_island_n_coord = x_point_island_n.coords[0]
 
 ###################.  poincaré plot #####################
 
-# pplot = PoincarePlot.with_linspace(section, top_o_coord, x_point1_coord,40)
+# pplot = PoincarePlot.with_linspace(section, , ,80)
 # pplot.compute(400)
-# np.save('./script/jellyfisch/75979_12/JF_75979_pp_hits_P.npy', pplot._hits)
+# np.save('./script/jellyfisch/75979_12/JF_75979_Try_out.npy', pplot._hits)
+
 
 ################### tomographic plot #####################
 
@@ -194,10 +195,10 @@ x_point_island_n_coord = x_point_island_n.coords[0]
 ##########################
 
 
-Hits=np.load('./script/jellyfisch/75979_12/JF_75979_pp_hits_P.npy')
+Hits=np.load('./script/jellyfisch/75979_12/JF_75979_pp_hits_P_n80.npy')
 ax2.scatter(Hits[:,:, 0], Hits[:,:, 1], color="xkcd:dark grey", s=0.6, linewidths=0)
-eps_s1 = 8.2e-07
-eps_u1 = 7.4e-07
+# eps_s1 = 8.2e-07
+# eps_u1 = 7.4e-07
 
 
 manifs = {name: {name} for name in mf_list}
@@ -205,8 +206,8 @@ manifs = {name: {name} for name in mf_list}
 for i in mf_list:
      manifs[i] = Manifold.load(f"{repository_path}{file_manifolds}{i}.pkl")
     # manifs[i].plot(ax=ax2, markersize=0, lw=0.7,labels=[None,None] if i!=0 else ['stable MF','unstable MF'])
-    #  if i=='mf_1T':
-       
+    # if i=='mf_1T':
+    #   manifs[i].plot_clinics(ax=ax2)
     #    trajectory_s = manifs[i]._stable_trajectory
     #    trajectory_u = manifs[i]._unstable_trajectory
 
@@ -242,16 +243,16 @@ for i in mf_list:
 
     #    Aire=manifs[i]._AdL_integral_points(contour_points)
        #ax2.plot(contour_points[:,0], contour_points[:,1], 'xkcd:dark orange', lw=1.5)
-     manifs[i].plot(stepsize_limit=0.05, ax=ax2, markersize=0, lw=0.5,colors=["xkcd:royal blue", "xkcd:red"],labels=['stable MF','unstable MF'] if i=='mf_1T_e' else [None,None])
+     manifs[i].plot(stepsize_limit=0.05, ax=ax2, markersize=0, lw=0.5,colors=["xkcd:royal blue", "xkcd:red"],labels=['stable MF','unstable MF'] if i=='mf_1T' else [None,None])
 
 
-top_o.plot(ax=ax2, marker='o',s=40, color="xkcd:dark blue",label=None, zorder=10)
-x_point1.plot(ax=ax2, marker='x', s=50, color="xkcd:dark blue",label=None, zorder=10)
+top_o.plot(ax=ax2, marker='o',s=40, color="xkcd:dark blue",label='O-point', zorder=10)
+x_point1.plot(ax=ax2, marker='x', s=50, color="xkcd:dark blue",label='X-point', zorder=10)
 x_point2.plot(ax=ax2, marker='x', s=50, color="xkcd:dark blue",label=None, zorder=10)
 x_point3.plot(ax=ax2, marker='x', s=50, color="xkcd:dark blue",label=None, zorder=10)
 x_point4.plot(ax=ax2, marker='x', s=50, color="xkcd:dark blue",label=None, zorder=10)
-o_point_island.plot(ax=ax2, marker='o',s=40, color="xkcd:purple",label='New O-point', zorder=10)
-x_point_island_n.plot(ax=ax2, marker='x', s=50, color="xkcd:purple",label='New X-point', zorder=10)
+# o_point_island.plot(ax=ax2, marker='o',s=40, color="xkcd:purple",label='New O-point', zorder=10)
+# x_point_island_n.plot(ax=ax2, marker='x', s=50, color="xkcd:purple",label='New X-point', zorder=10)
 
 
 # top_o.plot(ax=ax2, marker='o', s=50, color="xkcd:green",label='O-point', zorder=10)
@@ -264,8 +265,8 @@ x_point_island_n.plot(ax=ax2, marker='x', s=50, color="xkcd:purple",label='New X
 
 
 ax2.set_xlim(0.62, 1.15)
-# ax2.set_ylim(-0.75, 0.75)
-ax2.set_ylim(0, 0.4)
+ax2.set_ylim(0.0, 0.55)
+#ax2.set_ylim(0, 0.4)
 
 ax2.set_xlabel(r"$R[m]$")
 ax2.set_ylabel(r"$Z[m]$")
@@ -280,9 +281,9 @@ ax2.legend(loc='upper right', bbox_to_anchor=(1., 1), ncol=1, fontsize=9)
 ax2.yaxis.set_major_locator(MaxNLocator(nbins=6, prune='both'))  # change nbins as needed
 
 
-plt.savefig(f"{repository_path}figures/JF_75979_croissant_v2.png",  bbox_inches="tight",dpi=720, pad_inches=0, facecolor=fig.get_facecolor())
+plt.savefig(f"{repository_path}figures/JF_75979_island_oral.png",  bbox_inches="tight",dpi=720, pad_inches=0, facecolor=fig.get_facecolor())
 plt.show()
-print(Aire)
+
 
 
 

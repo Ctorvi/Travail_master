@@ -38,7 +38,7 @@ pert_mat_file = 'JF_77062_120_BO78_OS.mat'
 
 patch_mat_file = './script/jellyfisch/77062_12/JF_77062_patch_120_HeI_706.mat'
 
-mf_list = ['mf_1T', 'mf_1B', 'mf_2T', 'mf_2B', 'mf_3L', 'mf_3R', 'mf_4T', 'mf_4B']
+mf_list = ['mf_1T_ns24', 'mf_1B', 'mf_2T', 'mf_2B', 'mf_3L', 'mf_3R', 'mf_4T', 'mf_4B']
 
 file_manifolds = 'manifolds_P/OS_BO78/'
 
@@ -82,7 +82,7 @@ ax.scatter(Hits[:,:, 0], Hits[:,:, 1], color="xkcd:dark grey", s=1., linewidths=
 ###########################  tomographic reconstruction  #########################
 
 
-tpc= tomo(f"{patch_mat_file}",ax,emi_vmin=0, emi_vmax=5e18)
+#tpc= tomo(f"{patch_mat_file}",ax,emi_vmin=0, emi_vmax=5e18)
 
    
 ###########################. fixed point  #########################
@@ -90,10 +90,10 @@ tpc= tomo(f"{patch_mat_file}",ax,emi_vmin=0, emi_vmax=5e18)
 
 # ####top fp top mf#########
 
-#manifold_1T = Manifold(section, x_point1, x_point1,-x_point1_coord+top_o_coord, -x_point1_coord+top_o_coord)
+# manifold_1T = Manifold(section, x_point1, x_point1,-x_point1_coord+top_o_coord, -x_point1_coord+top_o_coord)
 
-# # manifold_1T.compute( eps_s=9e-6, eps_u=8e-6, nint_s=20, nint_u=20, neps_s=80, neps_u=240) #8 14 240
-# # manifold_1T.save(f"{repository_path}{file_manifolds}/mf_1T.pkl")
+# manifold_1T.compute( eps_s=9e-6, eps_u=8e-6, nint_s=20, nint_u=24, neps_s=80, neps_u=240) #8 14 240
+# manifold_1T.save(f"{repository_path}{file_manifolds}/mf_1T_ns24.pkl")
 
 # manifold_1T.compute( eps_s=9e-6, eps_u=8e-6, nint_s=8, nint_u=13, neps_s=80, neps_u=240) #8 14 240
 # manifold_1T.save(f"{repository_path}{file_manifolds}/mf_1T_nu13.pkl")
@@ -150,30 +150,35 @@ tpc= tomo(f"{patch_mat_file}",ax,emi_vmin=0, emi_vmax=5e18)
 
 ##### loading and plotting  ###
 
-# manifs = {name: {name} for name in mf_list}
+manifs = {name: {name} for name in mf_list}
 
-# for i in mf_list:
-#      manifs[i] = Manifold.load(f"{repository_path}{file_manifolds}{i}.pkl")
-#      manifs[i].plot(stepsize_limit=0.05, ax=ax, markersize=0, lw=0.3,colors=["rosybrown", "xkcd:red"],labels=['stable MF','unstable MF'] if i=='mf_1T' else [None,None])
+for i in mf_list:
+     manifs[i] = Manifold.load(f"{repository_path}{file_manifolds}{i}.pkl")
+    #  manifs[i].plot(stepsize_limit=0.05, ax=ax, markersize=0, lw=0.6,colors=["rosybrown", "xkcd:red"],labels=['stable MF','unstable MF'] if i=='mf_1T' else [None,None])
+     manifs[i].plot(stepsize_limit=0.05, ax=ax, markersize=0, lw=0.6,colors=["rosybrown", "xkcd:red"],labels=['stable MF','unstable MF'] if i=='mf_1T_ns24' else [None,None])
 
 
 
 
-top_o.plot(ax=ax, marker='o', color="xkcd:white",label=None)
-x_point1.plot(ax=ax, marker='x', color="xkcd:white",label='X-points')
-x_point2.plot(ax=ax, marker='x', color="xkcd:white",label=None)
-x_point3.plot(ax=ax, marker='x', color="xkcd:white",label=None)
-x_point4.plot(ax=ax, marker='x', color="xkcd:white",label=None)
+top_o.plot(ax=ax, marker='o', s=80, color="xkcd:darkblue",label=None)
+x_point1.plot(ax=ax, marker='x', s=80, color="xkcd:darkblue",label='X-points')
+x_point2.plot(ax=ax, marker='x', s=80, color="xkcd:darkblue",label=None)
+x_point3.plot(ax=ax, marker='x', s=80, color="xkcd:darkblue",label=None)
+x_point4.plot(ax=ax, marker='x', s=80, color="xkcd:darkblue",label=None)
 ratio=2.8158
 
 
-ax.set_xlim(0.62, 1.15)
-ax.set_ylim(-0.75, 0.75)
+ax.set_xlim(0.7, 1.1)
+ax.set_ylim(-0.65, -0.1)
+ax.legend(loc='upper right', bbox_to_anchor=(1., 1), ncol=1, fontsize=9)
+
+# ax.set_xlim(0.62, 1.15)
+# ax.set_ylim(-0.75, 0.75)
 ax.set_xlabel(r"$R[m]$")
 ax.set_ylabel(r"$Z[m]$")
 ax.set_aspect('equal') 
-ax.set_title('77062 / 1.2s /1.9 rad')
-#plt.savefig(f"{repository_path}figures/Jellyfisch_77062_BO_Pert_mf_patch.png", bbox_inches='tight', dpi=720)
+#ax.set_title('77062 / 1.2s /1.9 rad')
+plt.savefig(f"{repository_path}figures/77062_toplogy.png", bbox_inches='tight', dpi=720)
 plt.show()
 
 

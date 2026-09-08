@@ -7,6 +7,9 @@ import logging
 import logging
 from scipy.io import loadmat
 
+
+
+
 plt.rcParams.update(
     {
         "text.usetex": False,
@@ -118,7 +121,7 @@ opoint.plot(ax=ax2, s=70,marker='o', color="xkcd:darkgreen",zorder=20,label='O-p
 
 
 NP_manifold  = Manifold.load(f"{repository_path}mf_NP.pkl")
-#NP_manifold.plot(ax=ax, markersize=0, lw=1.2)
+NP_manifold.plot(ax=ax, markersize=0, lw=1.2)
 
 P_manifold  = Manifold.load(f"{repository_path}mf.pkl")
 P_manifold.plot_clinics(ax=ax2, s=20,label='Homoclinics')
@@ -145,8 +148,8 @@ ax2.set_xlim(3.2, 9.4)
 ax2.set_ylim(-6.2, 2.8)
 
 
-#fig.savefig(f"{repository_path}oral_max6_1_axi.png", bbox_inches='tight', pad_inches=0.0, dpi=720)
-fig2.savefig(f"{repository_path}oral_max6_1_nonaxi_w_MF.png", bbox_inches='tight', pad_inches=0.0, dpi=720)
+fig.savefig(f"{repository_path}oral_max6_1_axi_w_MF.png", bbox_inches='tight', pad_inches=0.0, dpi=720)
+#fig2.savefig(f"{repository_path}oral_max6_1_nonaxi_w_MF.png", bbox_inches='tight', pad_inches=0.0, dpi=720)
 
 
 plt.show()
