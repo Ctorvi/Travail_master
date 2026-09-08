@@ -16,8 +16,8 @@ from scipy.io import loadmat
 from matplotlib.lines import Line2D
 from matplotlib.tri import Triangulation
 
-#fig, ax2 = plt.subplots(1, 1, figsize=(5, 8))
-fig, ax2 = plt.subplots(1, 1, figsize=(20, 20))
+fig, ax2 = plt.subplots(1, 1, figsize=(5, 8))
+#fig, ax2 = plt.subplots(1, 1, figsize=(20, 20))
 
 plt.rcParams.update(
     {
@@ -156,11 +156,11 @@ manifs = {name: {name} for name in mf_list}
 for i in mf_list:
      manifs[i] = Manifold.load(f"{repository_path}{file_manifolds}{i}.pkl")
     # manifs[i].plot(ax=ax2, markersize=0, lw=0.7,labels=[None,None] if i!=0 else ['stable MF','unstable MF'])
-    # if i=='mf_1T_high_RES':
+     if i=='mf_1T_high_RES':
           #manifs[i].find_clinics(first_guess_eps_s=eps_s1, first_guess_eps_u=eps_u1,n_points=2)
           #A=manifs[i].compute_turnstile_areas()
           
-          #fig, ax2=manifs[i].plot_clinics(ax=ax2,label='homoclinics',s=15,color='xkcd:dark blue')
+          fig, ax2=manifs[i].plot_clinics(ax=ax2,label='homoclinics',s=15,color='xkcd:dark blue')
           #manifs[i].plot_filled_lobe(ax=ax2, lobe_number=21,which_section=2,alpha=0.7,color='red')
           #manifs[i].plot_filled_lobe(ax=ax2, lobe_number=13,which_section=2,alpha=0.7,color='blue')
           #manifs[i].save(f"{repository_path}{file_manifolds}{i}.pkl")
@@ -184,10 +184,11 @@ x_point4.plot(ax=ax2, marker='x', s=50, color="xkcd:dark blue",label=None, zorde
 # ax2.set_xlim(0.62, 1.15)
 # ax2.set_ylim(-0.45, -0.0)
 
-ax2.set_xlim(0.62, 1.15)
-ax2.set_ylim(-0.75, 0.75)
+# ax2.set_xlim(0.62, 1.15)
+# ax2.set_ylim(-0.75, 0.75)
 
-
+ax2.set_xlim(0.8, 0.83)
+ax2.set_ylim(-0.3, -0.25)
 
 ax2.set_xlabel(r"$R[m]$")
 ax2.set_ylabel(r"$Z[m]$")
@@ -231,7 +232,7 @@ ax2.set_aspect('equal')
 
 # ax2.legend(loc='lower right', bbox_to_anchor=(1., 0.0), ncol=2, fontsize=9)
 
-plt.savefig(f"{repository_path}figures/JF_75979_turnstile_ORAL.png",  bbox_inches="tight",dpi=720, pad_inches=0, facecolor=fig.get_facecolor())
+plt.savefig(f"{repository_path}figures/ORAL_tangle.png",  bbox_inches="tight",dpi=720, pad_inches=0, facecolor=fig.get_facecolor())
 plt.show()
 # print(f"Turnstile area : {A} m^2")
 

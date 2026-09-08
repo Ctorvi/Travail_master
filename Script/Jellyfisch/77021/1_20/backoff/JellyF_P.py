@@ -28,8 +28,8 @@ logging.basicConfig(level=logging.DEBUG)
 
 repository_path = './script/jellyfisch/77021/1_20/backoff/'
 
-#patch_mat_file = './script/jellyfisch/77021/1_20/JF_patch_77021_120_C3.mat'
-patch_mat_file = './script/jellyfisch/77021/1_20/JF_patch_77021_120_HeI.mat'
+patch_mat_file = './script/jellyfisch/77021/1_20/JF_patch_77021_120_C3.mat'
+#patch_mat_file = './script/jellyfisch/77021/1_20/JF_patch_77021_120_HeI.mat'
 
 
 file_manifolds = 'manifolds_P/OS_BO78/'
@@ -72,15 +72,15 @@ x_point4_coord = x_point4.coords[0]
 # np.save(f"{repository_path}JF_77021_pp_hits.npy", pplot._hits)
 
 
-# Hits=np.load(f"{repository_path}JF_77021_pp_hits.npy")
-# ax.scatter(Hits[:,:, 0], Hits[:,:, 1], color="xkcd:dark grey", s=1., linewidths=0)
+Hits=np.load(f"{repository_path}JF_77021_pp_hits.npy")
+ax.scatter(Hits[:,:, 0], Hits[:,:, 1], color="xkcd:dark grey", s=1., linewidths=0)
 
 ###########################  tomographic reconstruction  #########################
 
 
 
 #tpc= tomo(f"{patch_mat_file}",ax,emi_vmin=0, emi_vmax=3.5e20)
-#tpc= tomo(f"{patch_mat_file}",ax,emi_vmin=0, emi_vmax=3.e19)
+#tpc= tomo(f"{patch_mat_file}",ax,emi_vmin=0, emi_vmax=2.5e19)
 
 
 ##########################
@@ -140,34 +140,40 @@ manifs = {name: {name} for name in mf_list}
 for i in mf_list:
      manifs[i] = Manifold.load(f"{repository_path}{file_manifolds}{i}.pkl")
      manifs[i].plot(stepsize_limit=0.05, ax=ax, markersize=0, lw=0.5,colors=["rosybrown", "xkcd:red"],labels=['stable MF','unstable MF'] if i=='mf_1T' else [None,None])
+    #  if i == 'mf_1B':
+    #      manifs[i].plot(stepsize_limit=0.05, which="unstable",ax=ax, markersize=0, lw=1.3,
+    #                     colors=["rosybrown","xkcd:white"] , 
+    #                     labels=['divertor MF', None])
 
-top_o.plot(ax=ax, marker='o', color="xkcd:white")
-x_point1.plot(ax=ax, marker='x', color="xkcd:white")
-x_point2.plot(ax=ax, marker='x', color="xkcd:white")
-x_point3.plot(ax=ax, marker='x', color="xkcd:white")
-x_point4.plot(ax=ax, marker='x', color="xkcd:white")
+
+top_o.plot(ax=ax, marker='o', color="xkcd:darkblue", label=None)
+x_point1.plot(ax=ax, marker='x',s=80, color="xkcd:darkblue", label='X-point')
+x_point2.plot(ax=ax, marker='x',s=80, color="xkcd:darkblue", label=None)
+x_point3.plot(ax=ax, marker='x',s=80, color="xkcd:darkblue", label=None)
+x_point4.plot(ax=ax, marker='x',s=80, color="xkcd:darkblue", label=None)
+ax.legend(loc='upper right', bbox_to_anchor=(1., 1), ncol=1, fontsize=9)
 
 # #####figure
 
-ax.set_xlim(0.62, 1.15)
-ax.set_ylim(-0.75, 0.75)
-ax.set_xlabel(r"$R[m]$")
-ax.set_ylabel(r"$Z[m]$")
-ax.set_aspect('equal') 
-ax.set_title('( 77021 / 1.2 s / 1.9 rad)')
-#plt.savefig('./script/jellyfisch/77021/1_20/backoff/figures/JF_77021_120_C3.png', bbox_inches='tight', dpi=720)
-plt.show()
-
-#####zoomed
-
-# ax.set_xlim(0.7, 1.0)
-# ax.set_ylim(-0.6, -0.1)
+# ax.set_xlim(0.62, 1.15)
+# ax.set_ylim(-0.75, 0.75)
 # ax.set_xlabel(r"$R[m]$")
 # ax.set_ylabel(r"$Z[m]$")
 # ax.set_aspect('equal') 
-# ax.set_title('77021 at 1.2 s, angle=1.9 rad')
-# #plt.savefig('./script/jellyfisch/77021/1_20/backoff/figures/JF_77021_120_C3_Zoom.png', bbox_inches='tight', dpi=720)
+# ax.set_title('( 77021 / 1.2 s / 1.9 rad)')
+# #plt.savefig('./script/jellyfisch/77021/1_20/backoff/figures/JF_77021_120_C3.png', bbox_inches='tight', dpi=720)
 # plt.show()
+
+# #####zoomed
+
+ax.set_xlim(0.7, 1.1)
+ax.set_ylim(-0.65, -0.1)
+ax.set_xlabel(r"$R[m]$")
+ax.set_ylabel(r"$Z[m]$")
+ax.set_aspect('equal') 
+#ax.set_title('77021 at 1.2 s, angle=1.9 rad')
+plt.savefig('./script/jellyfisch/77021/1_20/backoff/figures/oral_TOPOLOGY.png', bbox_inches='tight', dpi=720)
+plt.show()
 
 
 
