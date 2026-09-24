@@ -13,3 +13,8 @@ The resulting magnetic structures can be overlaid on tomographic reconstructions
 More detailed documentation of the numerical routine is available [here](https://gitlab.epfl.ch/spc/tcv/analysis/tokatangle).
 
 ![Poincaré](figures/MANTIS_MF_He.png)
+
+*Figure 1 — Error-field tangles for 4 Jellyfish shots and one standard shot. On top,
+poincaré plots with manifolds/ fixed-points. On the middle, MANTIS/ Manifold plot
+zoomed in the divertor region. On bottom, simple MANTIS diagnostic plots. The
+appearance and the spatial location of the tentacles seem to correlate with the manifolds*
