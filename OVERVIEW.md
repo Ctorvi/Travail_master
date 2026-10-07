@@ -40,7 +40,7 @@ Figure 3 compares the unperturbed and perturbed magnetic configurations for a â€
 
 <p align="center">
   <img src="Script/Jellyfisch/75979_12/figures/JF_75979_NP_n80_TRY.png" width="35%" alt="unperturbed axisymmetric configuration">
-  <img src="Script/Jellyfisch/75979_12/figures/JF_75979_P_n80_TRY.png" width="26.5%" alt="configuration including the estimated non-axisymmetric error fields">
+  <img src="Script/Jellyfisch/75979_12/figures/JF_75979_P_n80_TRY.png" width="25.95%" alt="configuration including the estimated non-axisymmetric error fields">
 </p>
 
 <p align="center">
