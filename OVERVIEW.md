@@ -39,8 +39,8 @@ To investigate the three-dimensional magnetic topology, magnetic field lines wer
 Figure 3 compares the unperturbed and perturbed magnetic configurations for a “jellyfish” discharge.
 
 <p align="center">
-  <img src="script/jellyfisch/75979_12/figures/JF_75979_NP_n80_TRY.png" width="35%" alt="unperturbed axisymmetric configuration">
-  <img src="script/jellyfisch/75979_12/figures/JF_75979_P_n80_TRY.png" width="26.5%" alt="configuration including the estimated non-axisymmetric error fields">
+  <img src="Script/Jellyfisch/75979_12/figures/JF_75979_NP_n80_TRY.png" width="35%" alt="unperturbed axisymmetric configuration">
+  <img src="Script/Jellyfisch/75979_12/figures/JF_75979_P_n80_TRY.png" width="26.5%" alt="configuration including the estimated non-axisymmetric error fields">
 </p>
 
 <p align="center">
