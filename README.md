@@ -1,20 +1,22 @@
-# Repository for my Master’s thesis: “[Error-field induced magnetic tangles in TCV (PDF)](V_Despland_master_project_compressed.pdf)”
+# Error-field-induced magnetic tangles in TCV
 
-This project focused on computing homoclinic tangles in the divertor region of the TCV tokamak at EPFL in Lausanne and comparing these calculations with MANTIS observations of anomalous light emission in this region.
+This repository contains code and results from my [master’s thesis (PDF)](V_Despland_master_project_compressed.pdf), carried out at the Swiss Plasma Center, EPFL, under the supervision of Dr. Christopher Smiet and Dr. Joaquim Loizu.
 
-This work was carried out by Victor Léonard Despland under the supervision of Dr. Christopher Smiet and Dr. Joaquim Loizu. More detailed documentation of the numerical routine and a computable example is available [here](https://gitlab.epfl.ch/spc/tcv/analysis/tokatangle).
+The project investigated homoclinic tangles in the divertor region of the TCV tokamak and their spatial correspondence with anomalous light-emission patterns observed by the MANTIS diagnostic.
 
-The analysis consists of extracting the axisymmetric equilibrium magnetic field of a TCV discharge at a specific time using [LIUQE](https://www.researchgate.net/publication/270825456_Tokamak_equilibrium_reconstruction_code_LIUQE_and_its_real_time_implementation). The `n = 1` component of the non-axisymmetric magnetic perturbation caused by coil displacements is then calculated using a modified version of [Piras et al.’s method](https://www.sciencedirect.com/science/article/abs/pii/S0920379610001900).
+- [Project overview](RESUME.md): methods, results and my contributions.
+- [Numerical documentation and runnable example](https://gitlab.epfl.ch/spc/tcv/analysis/tokatangle): documentation of the numerical workflow. (EPFL access required)
 
-Poincaré plots and invariant manifolds are subsequently computed using the methods implemented in [pyoculus](https://pypi.org/project/pyoculus/). These manifolds form a homoclinic tangle around the divertor X-point.
+## Method
 
-The resulting magnetic structures can be overlaid on tomographic reconstructions of the MANTIS light emission, allowing the spatial correlation between the homoclinic tangle and the anomalous emission patterns to be investigated.
+The axisymmetric magnetic equilibrium of a TCV discharge at a selected time was combined with the $n = 1$ component of the non-axisymmetric magnetic perturbation induced by poloidal field (PF) coil displacements. These displacements were estimated from magnetic measurements using an adapted implementation of an [existing TCV method](https://www.sciencedirect.com/science/article/abs/pii/S0920379610001900).
 
-More detailed documentation of the numerical routine is available [here](https://gitlab.epfl.ch/spc/tcv/analysis/tokatangle).
+Poincaré plots and invariant manifolds were then computed using tools from [pyoculus](https://pypi.org/project/pyoculus/), adapted to TCV magnetic configurations. The computed manifolds formed homoclinic tangles near the divertor X-point.
 
-<img src="figures/MANTIS_MF_He.png" alt="Poincaré" width="600">
+## Main result
 
-*Figure 1 — Error-field tangles for 4 Jellyfish shots and one standard shot. On top,
-poincaré plots with manifolds/ fixed-points. On the middle, MANTIS/ Manifold plot
-zoomed in the divertor region. On bottom, simple MANTIS diagnostic plots. The
-appearance and the spatial location of the tentacles seem to correlate with the manifolds*
+The computed magnetic manifolds were overlaid on tomographic reconstructions of the MANTIS light emission. The comparison revealed a qualitative spatial correspondence between the manifolds and the observed tentacle-like emission structures, supporting further investigation of the proposed turnstile transport mechanism.
+
+![Comparison of computed magnetic manifolds and MANTIS emission](figures/MANTIS_MF_He.png)
+
+*Figure 1. Comparison of computed magnetic manifolds and MANTIS emission for four “jellyfish” discharges and one standard divertor discharge. Top row: Poincaré plots showing invariant manifolds and fixed points. Middle row: manifolds overlaid on MANTIS tomographic reconstructions, with a close-up of the divertor region. Bottom row: corresponding MANTIS reconstructions without overlays. The tentacle-like emission structures show a qualitative spatial correspondence with the computed manifolds.*
