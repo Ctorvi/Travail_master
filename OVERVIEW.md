@@ -4,7 +4,7 @@
 This project investigated error-field-induced homoclinic tangles in the divertor region of the TCV tokamak at EPFL, Lausanne. The aim was to investigate whether these magnetic structures could explain unusual light-emission patterns observed by the MANTIS diagnostic in configurations with secondary X-points. Figure 1 shows three “jellyfish” discharges exhibiting tentacle-like emission structures. 
 
 <p align="center">
-<img src="figures/MANTIS_MF_intro.png" alt="MANTIS tomographic reconstructions" width="400">
+<img src="figures/MANTIS_MF_intro.png" alt="MANTIS tomographic reconstructions" width="450">
 </p>
 
 <p align="center">
@@ -55,7 +55,10 @@ In the perturbed configuration, these manifolds split and intersect, forming a h
 
 The computed manifolds were overlaid on tomographic reconstructions of the MANTIS light emission to assess their spatial correspondence with the observed tentacle-like structures. The agreement provides qualitative support for the hypothesis that these emission patterns are associated with plasma transport from the confined region through the turnstile transport mechanism. For more detailed explanations, please refer to the master's thesis.
 
-![Poincaré](figures/MANTIS_only_high_n.png)
+<p align="center">
+<img src="figures/MANTIS_only_high_n.png" alt="Poincaré" width="850">
+</p>
+
 
 Figure 4. Comparison of computed magnetic manifolds and MANTIS emission in the divertor region. Top row: manifolds overlaid on MANTIS tomographic reconstructions. Bottom row: corresponding reconstructions without overlays. The comparison shows a qualitative spatial correspondence between the manifolds and the tentacle-like emission structures. This figure differs from the comparison presented in the master's thesis.
 
