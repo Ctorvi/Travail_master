@@ -4,7 +4,7 @@ This repository contains code and results from my [master’s thesis (PDF)](V_De
 
 The project investigated homoclinic tangles in the divertor region of the TCV tokamak and their spatial correspondence with anomalous light-emission patterns observed by the MANTIS diagnostic.
 
-- [Project overview](RESUME.md): methods, results and my contributions.
+- [Project overview](OVERVIEW.md): methods, results and my contributions.
 - [Numerical documentation and runnable example](https://gitlab.epfl.ch/spc/tcv/analysis/tokatangle): documentation of the numerical workflow. (EPFL access required)
 
 ## Method
