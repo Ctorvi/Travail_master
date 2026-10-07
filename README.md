@@ -2,7 +2,7 @@
 
 This project focused on computing homoclinic tangles in the divertor region of the TCV tokamak at EPFL in Lausanne and comparing these calculations with MANTIS observations of anomalous light emission in this region.
 
-This work was carried out by Victor Léonard Despland.
+This work was carried out by Victor Léonard Despland under the supervision of Dr. Christopher Smiet and Dr. Joaquim Loizu. More detailed documentation of the numerical routine and a computable example is available [here](https://gitlab.epfl.ch/spc/tcv/analysis/tokatangle).
 
 The analysis consists of extracting the axisymmetric equilibrium magnetic field of a TCV discharge at a specific time using [LIUQE](https://www.researchgate.net/publication/270825456_Tokamak_equilibrium_reconstruction_code_LIUQE_and_its_real_time_implementation). The `n = 1` component of the non-axisymmetric magnetic perturbation caused by coil displacements is then calculated using a modified version of [Piras et al.’s method](https://www.sciencedirect.com/science/article/abs/pii/S0920379610001900).
 
@@ -12,7 +12,7 @@ The resulting magnetic structures can be overlaid on tomographic reconstructions
 
 More detailed documentation of the numerical routine is available [here](https://gitlab.epfl.ch/spc/tcv/analysis/tokatangle).
 
-![Poincaré](figures/MANTIS_MF_He.png)
+<img src="figures/MANTIS_MF_He.png" alt="Poincaré" width="600">
 
 *Figure 1 — Error-field tangles for 4 Jellyfish shots and one standard shot. On top,
 poincaré plots with manifolds/ fixed-points. On the middle, MANTIS/ Manifold plot
