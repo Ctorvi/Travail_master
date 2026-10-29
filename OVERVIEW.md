@@ -67,12 +67,14 @@ Figure 4. Comparison of computed magnetic manifolds and MANTIS emission in the d
 Further analyses are available in the master's thesis and will be summarised here in a future update.
 
 
-## My contributions
+## Contributions
 
-- Building on an initial fitting script developed by C. Heiss, I further developed and refined the coil-displacement estimation procedure. I removed magnetic probe measurements from the fit, adapted the regularisation procedure and added error bars to the estimated displacements.
-- I adapted existing pyoculus tools to TCV experimental magnetic configurations with support from C. Smiet.
-- I carried out the analyses with guidance from J. Loizu and C. Smiet.
-- I produced the plots and developed or adapted the scripts included in this repository.
+My contributions to this work included:
+
+- Extending and refining the coil-displacement estimation procedure, building on an initial fitting script developed by C. Heiss. This included excluding magnetic probe measurements from the fit, adapting the regularisation procedure, and adding uncertainty estimates for the inferred displacements.
+- Adapting existing pyoculus tools to experimental TCV magnetic configurations, with support from C. Smiet.
+- Performing the analyses under the guidance of J. Loizu and C. Smiet.
+- Producing the figures and developing or adapting the scripts provided in this repository.
 
 Additional MANTIS tomographic reconstructions were computed by R. L. Morgan.
 
